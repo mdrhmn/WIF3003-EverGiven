@@ -1,6 +1,6 @@
 import java.util.Random;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
+// import java.util.concurrent.locks.Lock;
+// import java.util.concurrent.locks.ReentrantLock;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.concurrent.TimeUnit;
 
 public class Main {
     public static void main(String[] args) {
@@ -18,11 +19,11 @@ public class Main {
          * 1. Visitor class = handles purchasing of Tickets 2. Ticket class = handles
          * entry
          */
-        // int timeOfPurchase, String visitorID, int noOfTickets, Museum museum
-        Visitor v1 = new Visitor(5, "001", 2, museum);
-        Visitor v2 = new Visitor(5, "002", 3, museum);
-        Visitor v3 = new Visitor(800, "003", 1, museum);
-        Visitor v4 = new Visitor(5, "004", 4, museum);
+        // String visitorID, int noOfTickets, Museum museum
+        Visitor v1 = new Visitor("001", 2, museum);
+        Visitor v2 = new Visitor("002", 3, museum);
+        Visitor v3 = new Visitor("003", 1, museum);
+        Visitor v4 = new Visitor("004", 4, museum);
 
         Thread th1 = new Thread(v1);
         Thread th2 = new Thread(v2);
@@ -43,6 +44,9 @@ class Museum {
 
     // Count total number of visitors (same as totalVisitors) - used for ticket ID
     public static Counter totalTickets;
+
+    // World time
+    public static Time worldTime;
 
     // Not more than 100 visitors are allowed in the museum at one time.
     private final int currentVisitorsLimit;
@@ -119,7 +123,7 @@ class Museum {
         return name;
     }
 
-    public synchronized void purchaseTicket(Visitor visitor) {
+    public synchronized void purchaseTicket(Visitor visitor) throws InterruptedException {
         String ticketsList = "";
 
         // Case 1: If number of tickets > 1
@@ -147,22 +151,12 @@ class Museum {
                     ticketsList += ticketID;
                 }
 
-                /*
-                 * Each visitor stays in the museum for 50-150 minutes. The duration of stay
-                 * will be randomly assigned to the visitor when the visitor is entering the
-                 * museum.
-                 */
-                int duration = random.nextInt((150 - 50) + 1) + 50;
-
-                /*
-                 * How to ensure that tickets bought from same Visitor will enter at the same
-                 * time and using same entrance?
-                 */
-                visitorThread[i] = new Thread(new Ticket(ticketID, visitor.getTimeOfPurchase(), duration,
-                        selectedEntrance, selectedExit, visitor.museum, visitor));
+                visitorThread[i] = new Thread(
+                        new Ticket(ticketID, selectedEntrance, selectedExit, visitor.museum, visitor));
             }
 
             System.out.println(Thread.currentThread().getName() + ":    Tickets " + ticketsList + " sold");
+            visitor.visitorTime.purchaseTime(visitor.getNoOfTickets());
 
             for (int i = 0; i < visitorThread.length; i++) {
                 visitorThread[i].start();
@@ -190,10 +184,9 @@ class Museum {
              * will be randomly assigned to the visitor when the visitor is entering the
              * museum.
              */
-            int duration = random.nextInt((150 - 50) + 1) + 50;
 
-            visitorThread[0] = new Thread(new Ticket(ticketID, visitor.getTimeOfPurchase(), duration, selectedEntrance,
-                    selectedExit, visitor.museum, visitor));
+            visitorThread[0] = new Thread(
+                    new Ticket(ticketID, selectedEntrance, selectedExit, visitor.museum, visitor));
 
             System.out.println(Thread.currentThread().getName() + ":    Ticket " + ticketID + " sold");
 
@@ -241,23 +234,16 @@ class Museum {
 class Visitor implements Runnable {
     private final String visitorID;
     private final int noOfTickets;
-
+    Time visitorTime;
     Museum museum;
     Random random;
 
-    // ! Data type of timeOfPurchase needs to be revised
-    private final int timeOfPurchase;
-
-    public Visitor(int timeOfPurchase, String visitorID, int noOfTickets, Museum museum) {
-        this.timeOfPurchase = timeOfPurchase;
+    public Visitor(String visitorID, int noOfTickets, Museum museum) {
         this.visitorID = visitorID;
         this.noOfTickets = noOfTickets;
         this.museum = museum;
         this.random = new Random();
-    }
-
-    public int getTimeOfPurchase() {
-        return timeOfPurchase;
+        this.visitorTime = new Time();
     }
 
     public int getNoOfTickets() {
@@ -266,6 +252,10 @@ class Visitor implements Runnable {
 
     public String getVisitorID() {
         return visitorID;
+    }
+
+    public long getVisitorTime() {
+        return this.visitorTime.getCurrentTime();
     }
 
     @Override
@@ -284,33 +274,16 @@ class Ticket implements Runnable {
     Museum museum;
     Visitor visitor;
 
-    // ! Data type of timeOfPurchase needs to be revised
-    private final int timeOfPurchase;
-
-    // ! Data type of duration needs to be revised
-    private final int duration;
-
     // Entrance and Exit
     private final int selectedEntrance;
     private final int selectedExit;
 
-    public Ticket(String ticketID, int timeOfPurchase, int duration, int selectedEntrance, int selectedExit,
-            Museum museum, Visitor visitor) {
+    public Ticket(String ticketID, int selectedEntrance, int selectedExit, Museum museum, Visitor visitor) {
         this.ticketID = ticketID;
         this.museum = museum;
         this.visitor = visitor;
-        this.timeOfPurchase = timeOfPurchase;
-        this.duration = duration;
         this.selectedEntrance = selectedEntrance;
         this.selectedExit = selectedExit;
-    }
-
-    public long getDuration() {
-        return duration;
-    }
-
-    public long getTimeOfPurchase() {
-        return timeOfPurchase;
     }
 
     public String getTicketID() {
@@ -343,6 +316,7 @@ class Entrance {
     Museum museum;
     Turnstile[] turnstile = new Turnstile[4];
     Random random;
+    int turnstileInUse;
 
     public Entrance(String entranceName, Museum museum) {
         this.entranceName = entranceName;
@@ -364,18 +338,20 @@ class Entrance {
     }
 
     public synchronized void entry(Ticket ticket) {
-        int selected_turnstile = random.nextInt(4);
+        int selected_turnstile;
+
+        do {
+            selected_turnstile = random.nextInt(4);
+
+            if (turnstileInUse == selected_turnstile) {
+                System.out.println(Thread.currentThread().getName() + ":    " + entranceName + "T"
+                        + (selected_turnstile + 1) + " in use.");
+            }
+
+        } while (turnstileInUse == selected_turnstile);
         turnstile[selected_turnstile].entry(ticket.getTicketID());
+        turnstileInUse = selected_turnstile;
     }
-
-    // @Override
-    // public void run() {
-    // try {
-    // } catch (Exception ex) {
-    // Logger.getLogger(Entrance.class.getName()).log(Level.SEVERE, null, ex);
-    // }
-    // }
-
 }
 
 class Exit {
@@ -383,6 +359,7 @@ class Exit {
     Museum museum;
     Turnstile[] turnstile = new Turnstile[4];
     Random random;
+    int turnstileInUse;
 
     public Exit(String exitName, Museum museum) {
         this.exitName = exitName;
@@ -404,17 +381,20 @@ class Exit {
     }
 
     public synchronized void exit(Ticket ticket) {
-        int selected_turnstile = random.nextInt(4);
-        turnstile[selected_turnstile].exit(ticket.getTicketID());
-    }
+        int selected_turnstile;
 
-    // @Override
-    // public void run() {
-    // try {
-    // } catch (Exception ex) {
-    // Logger.getLogger(Exit.class.getName()).log(Level.SEVERE, null, ex);
-    // }
-    // }
+        do {
+            selected_turnstile = random.nextInt(4);
+
+            if (turnstileInUse == selected_turnstile) {
+                System.out.println(Thread.currentThread().getName() + ":    " + exitName + "T"
+                        + (selected_turnstile + 1) + " in use.");
+            }
+
+        } while (turnstileInUse == selected_turnstile);
+        turnstile[selected_turnstile].exit(ticket.getTicketID());
+        turnstileInUse = selected_turnstile;
+    }
 }
 
 class Turnstile {
@@ -500,4 +480,76 @@ class TicketingSystem implements Runnable {
         }
     }
 
+}
+
+class Time {
+    private long sysStartTime;
+    private long sysCurrTime;
+    private long currentTime;
+    private long duration;
+    public long startTime = 8000;
+
+    public Time() {
+        this.sysStartTime = System.currentTimeMillis();
+    }
+
+    public void calcRealtime(long sysStartTime, long sysCurrTime, long startTime) {
+
+        long timeElapse = sysCurrTime - sysStartTime;
+        this.duration = timeElapse;
+
+        // System.out.println("Time elapsed: " + timeElapse);
+
+        long hr1 = (timeElapse / 600);
+        long min1 = timeElapse - (hr1 * 600);
+
+        long hr2 = startTime / 1000;
+        long min2 = startTime % 1000;
+
+        long hr3 = (hr1 + hr2) * 1000;
+        long min3 = min1 + min2;
+
+        if (min3 >= 600) {
+            long hr4 = (min3 / 600) * 1000;
+            long min4 = min3 - ((hr4 / 1000) * 600);
+            long sum = (hr3 + hr4 + min4) / 10;
+            this.currentTime = sum;
+        } else {
+            this.currentTime = (hr3 + min3) / 10;
+        }
+        this.startTime = this.currentTime;
+    }
+
+    public long getCurrentTime() {
+        return currentTime;
+    }
+
+    public void purchaseTime(int no_ticket) throws InterruptedException {
+        // System.out.println("Start time: " + this.startTime);
+        this.sysStartTime = System.currentTimeMillis();
+
+        int randomSubsequentPurchase = (int) ((Math.random() * (4 - 1)) + 1) * 10;
+        TimeUnit.MILLISECONDS.sleep(randomSubsequentPurchase);
+
+        this.sysCurrTime = System.currentTimeMillis();
+        calcRealtime(this.sysStartTime, this.sysCurrTime, this.startTime);
+    }
+
+    public void entryTime() throws InterruptedException {
+        this.sysStartTime = System.currentTimeMillis();
+        /*
+         * Each visitor stays in the museum for 50-150 minutes. The duration of stay
+         * will be randomly assigned to the visitor when the visitor is entering the
+         * museum.
+         */
+        int randomDuration = (int) ((Math.random() * (150 - 50)) + 50) * 10;
+
+        TimeUnit.MILLISECONDS.sleep(randomDuration);
+        this.sysCurrTime = System.currentTimeMillis();
+        calcRealtime(this.sysStartTime, this.sysCurrTime, this.startTime);
+    }
+
+    public long getDuration() {
+        return duration;
+    }
 }
