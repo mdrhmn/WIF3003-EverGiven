@@ -8,10 +8,10 @@ public class Main {
          * entry
          */
         // String visitorID, int noOfTickets, Museum museum
-        Visitor v1 = new Visitor("001", 2, museum);
-        Visitor v2 = new Visitor("002", 3, museum);
-        Visitor v3 = new Visitor("003", 1, museum);
-        Visitor v4 = new Visitor("004", 4, museum);
+        Visitor v1 = new Visitor("V001", 2, museum);
+        Visitor v2 = new Visitor("V002", 3, museum);
+        Visitor v3 = new Visitor("V003", 1, museum);
+        Visitor v4 = new Visitor("V004", 4, museum);
 
         Thread th1 = new Thread(v1);
         Thread th2 = new Thread(v2);

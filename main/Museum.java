@@ -105,7 +105,8 @@ public class Museum {
             int selectedEntrance = random.nextInt(2);
             int selectedExit = random.nextInt(2);
 
-            Thread[] visitorThread = new Thread[visitor.getNoOfTickets()];
+            Ticket[] visitorTickets = new Ticket[visitor.getNoOfTickets()];
+            Thread[] ticketThread = new Thread[visitor.getNoOfTickets()];
 
             for (int i = 0; i < visitor.getNoOfTickets(); i++) {
 
@@ -123,17 +124,26 @@ public class Museum {
                     ticketsList += ticketID;
                 }
 
-                visitorThread[i] = new Thread(
-                        new Ticket(ticketID, selectedEntrance, selectedExit, visitor.museum, visitor));
+                visitorTickets[i] = new Ticket(ticketID, selectedEntrance, selectedExit, visitor.museum, visitor);
+                ticketThread[i] = new Thread(visitorTickets[i]);
             }
 
-            System.out.println(Thread.currentThread().getName() + ":\t" + Museum.worldTime.getFormattedCurrentTime() + " - Tickets " + ticketsList + " sold");
-            // visitor.visitorTime.purchaseTime(visitor.getNoOfTickets());
+            System.out.println(Thread.currentThread().getName() + ":\t" + Museum.worldTime.getFormattedCurrentTime()
+                    + " - Tickets " + ticketsList + " sold");
 
-            for (int i = 0; i < visitorThread.length; i++) {
-                visitorThread[i].start();
+            visitor.visitorTime.entryTime();
+
+            for (int i = 0; i < ticketThread.length; i++) {
+                ticketThread[i].start();
             }
 
+            // if (!visitor.getEntryStatus() == true) {
+            // System.out.println(visitor.getVisitorID());
+            // try {
+            // wait(20);
+            // } catch (Exception e) {
+            // }
+            // }
         }
 
         // Case 2: If number of tickets == 1
@@ -145,7 +155,7 @@ public class Museum {
             int selectedEntrance = random.nextInt(2);
             int selectedExit = random.nextInt(2);
 
-            Thread[] visitorThread = new Thread[visitor.getNoOfTickets()];
+            Thread[] ticketThread = new Thread[visitor.getNoOfTickets()];
 
             totalTickets.increase();
 
@@ -159,13 +169,13 @@ public class Museum {
              * will be randomly assigned to the visitor when the visitor is entering the
              * museum.
              */
-            visitorThread[0] = new Thread(
-                    new Ticket(ticketID, selectedEntrance, selectedExit, visitor.museum, visitor));
+            ticketThread[0] = new Thread(new Ticket(ticketID, selectedEntrance, selectedExit, visitor.museum, visitor));
 
-            System.out.println(Thread.currentThread().getName() + ":\t" + Museum.worldTime.getFormattedCurrentTime() + " - Ticket " + ticketID + " sold");
-            // visitor.visitorTime.purchaseTime(visitor.getNoOfTickets());
+            System.out.println(Thread.currentThread().getName() + ":\t" + Museum.worldTime.getFormattedCurrentTime()
+                    + " - Ticket " + ticketID + " sold");
+            visitor.visitorTime.entryTime();
+            ticketThread[0].start();
 
-            visitorThread[0].start();
         }
     }
 
@@ -177,7 +187,6 @@ public class Museum {
          * Each visitor randomly uses a turnstile at either South Entrance or North
          * Entrance to enter the museum.
          */
-
         if (ticket.getSelectedEntrance() == 0) {
             northEntrance.entry(ticket);
         } else {

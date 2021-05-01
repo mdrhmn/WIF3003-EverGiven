@@ -1,4 +1,6 @@
 import java.util.Random;
+import java.util.Arrays;
+import java.util.Collections;
 
 public class Entrance {
     private final String entranceName;
@@ -27,19 +29,32 @@ public class Entrance {
     }
 
     public synchronized void entry(Ticket ticket) throws InterruptedException {
-        int selected_turnstile;
-        //! Need to revisit by using Thread locks, conditions etc.
-        do {
-            selected_turnstile = random.nextInt(4);
 
-            if (turnstileInUse == selected_turnstile) {
-                // System.out.println(Thread.currentThread().getName() + ":\tTicket " + ticket.getTicketID()
-                //         + " cannot enter through " + entranceName + "T" + (selected_turnstile + 1)
-                //         + " as it is in use.");
+        int selected_turnstile = -1;
+        // ! Need to revisit by using Thread locks, conditions etc.
+
+        // do {
+        // selected_turnstile = random.nextInt(4);
+        // if (turnstileInUse == selected_turnstile) {
+        // System.out.println(Thread.currentThread().getName() + ":\tTicket " +
+        // ticket.getTicketID()
+        // + " cannot enter through " + entranceName + "T" + (selected_turnstile + 1)
+        // + " as it is in use.");
+        // }
+        // } while (turnstileInUse == selected_turnstile);
+
+        Integer[] turnstileNum = { 0, 1, 2, 3 };
+        Collections.shuffle(Arrays.asList(turnstileNum));
+        // System.out.println(Arrays.toString(turnstileNum));
+
+        for (int i = 0; i < 4; i++) {
+            selected_turnstile = turnstileNum[i];
+            if (!turnstile[selected_turnstile].getTurnstileStatus()) {
+                turnstile[selected_turnstile].entry(ticket);
+                break;
             }
-
-        } while (turnstileInUse == selected_turnstile);
-        turnstile[selected_turnstile].entry(ticket);
-        turnstileInUse = selected_turnstile;
+            System.out.println(Thread.currentThread().getName() + ":\tTicket " + ticket.getTicketID()
+                    + " cannot enter through " + entranceName + "T" + (selected_turnstile + 1) + " as it is in use.");
+        }
     }
 }
