@@ -41,6 +41,8 @@ public class Museum {
 
     Random random;
 
+    // public static Condition c = lock.newCondition();
+
     // Constructor
     public Museum(String name, int currentVisitorsLimit) {
         this.name = name;
@@ -94,6 +96,7 @@ public class Museum {
     }
 
     public synchronized void purchaseTicket(Visitor visitor) throws InterruptedException {
+
         String ticketsList = "";
 
         // Case 1: If number of tickets > 1
@@ -131,19 +134,13 @@ public class Museum {
             System.out.println(Thread.currentThread().getName() + ":\t" + Museum.worldTime.getFormattedCurrentTime()
                     + " - Tickets " + ticketsList + " sold");
 
+            // Saves entry time and duration of visitor
             visitor.visitorTime.entryTime();
 
             for (int i = 0; i < ticketThread.length; i++) {
                 ticketThread[i].start();
             }
-
-            // if (!visitor.getEntryStatus() == true) {
-            // System.out.println(visitor.getVisitorID());
-            // try {
-            // wait(20);
-            // } catch (Exception e) {
-            // }
-            // }
+            
         }
 
         // Case 2: If number of tickets == 1
@@ -175,7 +172,6 @@ public class Museum {
                     + " - Ticket " + ticketID + " sold");
             visitor.visitorTime.entryTime();
             ticketThread[0].start();
-
         }
     }
 

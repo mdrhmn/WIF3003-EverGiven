@@ -1,13 +1,16 @@
 import java.util.Random;
+import java.util.concurrent.locks.*;
 
 public class Visitor implements Runnable {
     private final String visitorID;
     private final int noOfTickets;
     private boolean hasEntered;
     private int ticketsEnteredCount;
+    
     Time visitorTime;
     Museum museum;
     Random random;
+    public static Lock lock = new ReentrantLock(); // Create a lock
 
     public Visitor(String visitorID, int noOfTickets, Museum museum) {
         this.visitorID = visitorID;
@@ -50,7 +53,10 @@ public class Visitor implements Runnable {
     @Override
     public void run() {
         try {
+            lock.lock();
             museum.purchaseTicket(this);
+            Thread.sleep(50);
+            lock.unlock();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

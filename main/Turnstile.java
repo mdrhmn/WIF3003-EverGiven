@@ -17,11 +17,6 @@ public class Turnstile {
         turnstileStatus = true;
         Museum.totalVisitors.increase();
         museum.visitorCount.increase();
-        // System.out.println(Thread.currentThread().getName() + ":\t" +
-        // Museum.worldTime.getFormattedCurrentTime()
-        // + " - Ticket " + ticketID + " entered through Turnstile " + this.turnstileID
-        // + "; Visitors count = "
-        // + museum.visitorCount.getNumber());
 
         System.out.println(Thread.currentThread().getName() + ":\t" + Museum.worldTime.getFormattedCurrentTime()
                 + " - Ticket " + ticket.getTicketID() + " entered through Turnstile " + this.turnstileID
@@ -31,9 +26,9 @@ public class Turnstile {
         ticket.visitor.increaseTicketsEnteredCount();
 
         // if (ticket.visitor.getTicketsEnteredCount() == ticket.visitor.getNoOfTickets()) {
-        //     System.out.println(ticket.visitor.getVisitorID() + " has entered");
+        //     // System.out.println(ticket.visitor.getVisitorID() + " has entered");
+        //     // System.out.println("Unlock lock");
         //     ticket.visitor.setEntryStatus(true);
-        //     notifyAll();
         // }
 
         ticket.visitor.visitorTime.purchaseTime(ticket.visitor.getNoOfTickets());

@@ -85,6 +85,7 @@ public class Time {
          */
         int randomDuration = (int) ((Math.random() * (150 - 50)) + 50) * 10;
         this.visitDuration = randomDuration / 10;
+        // No need sleep, will use wait() instead
         // TimeUnit.MILLISECONDS.sleep(randomDuration);
         this.sysCurrTime = System.currentTimeMillis();
         calcRealtime(this.sysStartTime, this.sysCurrTime, museum.getOpenTime());

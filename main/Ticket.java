@@ -43,10 +43,7 @@ public class Ticket implements Runnable {
     @Override
     public void run() {
         try {
-            // System.out.println(visitor.getVisitorID() + "-" + this.ticketID + "=" + visitor.getEntryStatus());
             museum.enterMuseum(this);
-            // this.visitor.setEntryStatus(true);
-            // System.out.println(visitor.getVisitorID() + "-" + this.ticketID + "=" + visitor.getEntryStatus());
             // ! Duration of sleep = duration of stay for visitor
             Thread.sleep(1000);
             museum.exitMuseum(this);

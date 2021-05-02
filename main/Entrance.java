@@ -33,16 +33,6 @@ public class Entrance {
         int selected_turnstile = -1;
         // ! Need to revisit by using Thread locks, conditions etc.
 
-        // do {
-        // selected_turnstile = random.nextInt(4);
-        // if (turnstileInUse == selected_turnstile) {
-        // System.out.println(Thread.currentThread().getName() + ":\tTicket " +
-        // ticket.getTicketID()
-        // + " cannot enter through " + entranceName + "T" + (selected_turnstile + 1)
-        // + " as it is in use.");
-        // }
-        // } while (turnstileInUse == selected_turnstile);
-
         Integer[] turnstileNum = { 0, 1, 2, 3 };
         Collections.shuffle(Arrays.asList(turnstileNum));
         // System.out.println(Arrays.toString(turnstileNum));
