@@ -17,4 +17,8 @@ public class Counter {
     public int getNumber() {
         return count;
     }
+
+    public void setNumber(int number) {
+        this.count = number;
+    }
 }

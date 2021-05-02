@@ -1,4 +1,5 @@
 import java.util.Random;
+import java.util.concurrent.locks.*;
 
 public class Museum {
 
@@ -27,8 +28,10 @@ public class Museum {
     // Count current number of visitors
     public Counter visitorCount;
 
-    private long openTime = 8000;
-    private long closeTime = 17000;
+    private long museumTicketOpenTime = 800;
+    private long museumTicketCloseTime = 1700;
+    private long museumOpenTime = 900;
+    private long museumCloseTime = 930;
 
     /*
      * The museum has 2 entrances – South Entrance (SE) and North Entrance (NE); and
@@ -41,6 +44,7 @@ public class Museum {
 
     Random random;
 
+    public static Lock lock = new ReentrantLock();
     // public static Condition c = lock.newCondition();
 
     // Constructor
@@ -63,20 +67,36 @@ public class Museum {
         this.westExit = new Exit("WE", this);
     }
 
-    public long getCloseTime() {
-        return closeTime;
+    public long getMuseumOpenTime() {
+        return museumOpenTime;
     }
 
-    public void setCloseTime(long closeTime) {
-        this.closeTime = closeTime;
+    public long getMuseumCloseTime() {
+        return museumCloseTime;
     }
 
-    public long getOpenTime() {
-        return openTime;
+    public long getMuseumTicketOpenTime() {
+        return museumTicketOpenTime;
     }
 
-    public void setOpenTime(long openTime) {
-        this.openTime = openTime;
+    public long getMuseumTicketCloseTime() {
+        return museumTicketCloseTime;
+    }
+
+    public long getMuseumOpenTimeInMillis() {
+        return museumOpenTime * 10;
+    }
+
+    public long getMuseumCloseTimeInMillis() {
+        return museumCloseTime * 10;
+    }
+
+    public long getMuseumTicketOpenTimeInMillis() {
+        return museumTicketOpenTime * 10;
+    }
+
+    public long getMuseumTicketCloseTimeInMillis() {
+        return museumTicketCloseTime * 10;
     }
 
     public boolean getStatus() {
@@ -122,7 +142,6 @@ public class Museum {
                 String ticketID = String.format("T%04d", totalTickets.getNumber());
                 if (i < visitor.getNoOfTickets() - 1) {
                     ticketsList += ticketID + ", ";
-
                 } else {
                     ticketsList += ticketID;
                 }
@@ -136,8 +155,9 @@ public class Museum {
             visitor.visitorTime.entryTime();
             System.out.println(Thread.currentThread().getName() + ":\t" + visitor.visitorTime.getPurchaseTime()
                     + " - Tickets " + ticketsList + " sold");
-
-            // System.out.println(Thread.currentThread().getName() + ":\t" + Museum.worldTime.getFormattedCurrentTime()
+            // System.out.println(Museum.worldTime.getFormattedCurrentTime());
+            // System.out.println(Thread.currentThread().getName() + ":\t" +
+            // Museum.worldTime.getFormattedCurrentTime()
             // + " - Tickets " + ticketsList + " sold");
             // visitor.visitorTime.entryTime();
 
@@ -176,8 +196,9 @@ public class Museum {
             visitor.visitorTime.entryTime();
             System.out.println(Thread.currentThread().getName() + ":\t" + visitor.visitorTime.getPurchaseTime()
                     + " - Ticket " + ticketID + " sold");
-
-            // System.out.println(Thread.currentThread().getName() + ":\t" + Museum.worldTime.getFormattedCurrentTime()
+            // System.out.println(Museum.worldTime.getFormattedCurrentTime());
+            // System.out.println(Thread.currentThread().getName() + ":\t" +
+            // Museum.worldTime.getFormattedCurrentTime()
             // + " - Ticket " + ticketID + " sold");
             // visitor.visitorTime.entryTime();
 
@@ -203,7 +224,7 @@ public class Museum {
     /*
      * Level of thread granularity – Use a thread per entrance/exit
      */
-    public synchronized void exitMuseum(Ticket ticket) {
+    public void exitMuseum(Ticket ticket) throws InterruptedException {
         /*
          * After the duration of stay is over, the visitor randomly uses a turnstile at
          * either East Exit or West Exit to leave the museum.

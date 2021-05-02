@@ -6,6 +6,7 @@ public class Time {
     private long purchaseTime;
     private long purchaseDuration;
     private long visitDuration;
+    private long exitTime;
 
     Museum museum;
 
@@ -21,10 +22,6 @@ public class Time {
 
     public void setPurchaseTime(long purchaseTime) {
         this.purchaseTime = purchaseTime;
-    }
-
-    public long getVisitDuration() {
-        return visitDuration;
     }
 
     public long getSysStartTime() {
@@ -53,19 +50,19 @@ public class Time {
         } else {
             this.currentTime = (hr3 + min3) / 10;
         }
-        
+
     }
 
     public String getFormattedCurrentTime() {
         this.sysCurrTime = System.currentTimeMillis();
-        calcRealtime(this.sysStartTime, this.sysCurrTime, museum.getOpenTime());
+        calcRealtime(this.sysStartTime, this.sysCurrTime, museum.getMuseumTicketOpenTimeInMillis());
         String normalisedTime = String.format("%04d", this.currentTime);
         return normalisedTime;
     }
 
     public long getCurrentTime() {
         this.sysCurrTime = System.currentTimeMillis();
-        calcRealtime(this.sysStartTime, this.sysCurrTime, museum.getOpenTime());
+        calcRealtime(this.sysStartTime, this.sysCurrTime, museum.getMuseumTicketOpenTimeInMillis());
         return this.currentTime;
     }
 
@@ -75,9 +72,9 @@ public class Time {
         this.purchaseDuration = randomSubsequentPurchase;
         // this.purchaseDuration = randomSubsequentPurchase / 10;
         // TimeUnit.MILLISECONDS.sleep(this.purchaseDuration);
-        
+
         this.sysCurrTime = System.currentTimeMillis();
-        calcRealtime(this.sysStartTime, this.sysCurrTime, museum.getOpenTime());
+        calcRealtime(this.sysStartTime, this.sysCurrTime, museum.getMuseumTicketOpenTimeInMillis());
         this.purchaseTime = this.currentTime;
     }
 
@@ -89,13 +86,54 @@ public class Time {
          * museum.
          */
         int randomDuration = (int) ((Math.random() * (150 - 50)) + 50) * 10;
-        this.visitDuration = randomDuration / 10;
+        // this.visitDuration = randomDuration / 10;
+        this.visitDuration = randomDuration;
 
         this.sysCurrTime = System.currentTimeMillis();
-        calcRealtime(this.sysStartTime, this.sysCurrTime, museum.getOpenTime());
+        calcRealtime(this.sysStartTime, this.sysCurrTime, museum.getMuseumTicketOpenTimeInMillis());
     }
 
     public long getPurchaseDuration() {
+        return this.purchaseDuration / 10;
+    }
+
+    public long getVisitDuration() {
+        return this.visitDuration / 10;
+    }
+
+    public long getPurchaseDurationInMillis() {
         return this.purchaseDuration;
+    }
+
+    public long getVisitDurationInMillis() {
+        return this.visitDuration;
+    }
+
+    public long getLongPurchaseTime() {
+        return this.purchaseTime;
+    }
+
+    public void setExitTime(long duration, long startTime) {
+        long hr1 = (duration / 60);
+        long min1 = duration - (hr1 * 60);
+
+        long hr2 = startTime / 100;
+        long min2 = startTime % 100;
+
+        long hr3 = (hr1 + hr2) * 100;
+        long min3 = min1 + min2;
+
+        if (min3 >= 60) {
+            long hr4 = (min3 / 60) * 100;
+            long min4 = min3 - ((hr4 / 100) * 60);
+            long sum = hr3 + hr4 + min4;
+            this.exitTime = sum;
+        } else {
+            this.exitTime = hr3 + min3;
+        }
+    }
+
+    public long getExitTime() {
+        return this.exitTime;
     }
 }

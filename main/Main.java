@@ -12,15 +12,18 @@ public class Main {
         Visitor v2 = new Visitor("V002", 3, museum);
         Visitor v3 = new Visitor("V003", 1, museum);
         Visitor v4 = new Visitor("V004", 4, museum);
+        Visitor v5 = new Visitor("V005", 4, museum);
 
         Thread th1 = new Thread(v1);
         Thread th2 = new Thread(v2);
         Thread th3 = new Thread(v3);
         Thread th4 = new Thread(v4);
+        Thread th5 = new Thread(v5);
 
         th1.start();
         th2.start();
         th3.start();
         th4.start();
+        th5.start();
     }
 }

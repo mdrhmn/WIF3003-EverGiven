@@ -43,9 +43,13 @@ public class Ticket implements Runnable {
     @Override
     public void run() {
         try {
+            // while (Museum.worldTime.getCurrentTime() < 900) {
+            // }
             museum.enterMuseum(this);
-            // ! Duration of sleep = duration of stay for visitor
-            Thread.sleep(1000);
+            // Duration of sleep = duration of stay for visitor
+            // Thread.sleep(this.visitor.visitorTime.getVisitDurationInMillis());
+            while (Museum.worldTime.getCurrentTime() < museum.getMuseumCloseTime() && Museum.worldTime.getCurrentTime() < this.visitor.visitorTime.getExitTime() ) {
+            }
             museum.exitMuseum(this);
         } catch (Exception ex) {
             Logger.getLogger(Visitor.class.getName()).log(Level.SEVERE, null, ex);

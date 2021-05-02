@@ -5,8 +5,8 @@ public class Visitor implements Runnable {
     private final String visitorID;
     private final int noOfTickets;
     private boolean hasEntered;
-    private int ticketsEnteredCount;
-    
+    public Counter ticketsEnteredCount;
+    public Counter ticketsExitCount;
     Time visitorTime;
     Museum museum;
     Random random;
@@ -17,21 +17,10 @@ public class Visitor implements Runnable {
         this.noOfTickets = noOfTickets;
         this.museum = museum;
         this.hasEntered = false;
-        this.ticketsEnteredCount = 0;
+        this.ticketsEnteredCount = new Counter();
+        this.ticketsExitCount = new Counter();
         this.random = new Random();
         this.visitorTime = new Time(museum);
-    }
-
-    public int getTicketsEnteredCount() {
-        return ticketsEnteredCount;
-    }
-
-    public void setTicketsEnteredCount(int ticketsEnteredCount) {
-        this.ticketsEnteredCount = ticketsEnteredCount;
-    }
-
-    public void increaseTicketsEnteredCount() {
-        this.ticketsEnteredCount++;
     }
 
     public boolean getEntryStatus() {
@@ -55,8 +44,8 @@ public class Visitor implements Runnable {
         try {
             lock.lock();
             museum.purchaseTicket(this);
-            // System.out.println("Next purchase: " + this.visitorTime.getPurchaseDuration() / 10 + " minutes");
-            Thread.sleep(this.visitorTime.getPurchaseDuration());
+            // System.out.println("Next purchase: " + this.visitorTime.getPurchaseDuration() + " minutes");
+            Thread.sleep(this.visitorTime.getPurchaseDurationInMillis());
             lock.unlock();
         } catch (InterruptedException e) {
             e.printStackTrace();
