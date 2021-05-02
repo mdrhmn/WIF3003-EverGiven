@@ -1,6 +1,7 @@
 import java.util.Random;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.concurrent.locks.*;
 
 public class Entrance {
     private final String entranceName;
@@ -8,6 +9,7 @@ public class Entrance {
     Turnstile[] turnstile = new Turnstile[4];
     Random random;
     int turnstileInUse;
+    public static Lock lock = new ReentrantLock(); // Create a lock
 
     public Entrance(String entranceName, Museum museum) {
         this.entranceName = entranceName;
@@ -28,7 +30,7 @@ public class Entrance {
         return entranceName;
     }
 
-    public synchronized void entry(Ticket ticket) throws InterruptedException {
+    public void entry(Ticket ticket) throws InterruptedException {
 
         int selected_turnstile = -1;
         // ! Need to revisit by using Thread locks, conditions etc.
@@ -39,12 +41,20 @@ public class Entrance {
 
         for (int i = 0; i < 4; i++) {
             selected_turnstile = turnstileNum[i];
+            // System.out.println(turnstile[selected_turnstile].getTurnstileID() + "-"
+            //         + turnstile[selected_turnstile].getTurnstileStatus());
             if (!turnstile[selected_turnstile].getTurnstileStatus()) {
+                // turnstile[selected_turnstile].setTurnstileStatus(true);
                 turnstile[selected_turnstile].entry(ticket);
+                // System.out.println(turnstile[selected_turnstile].getTurnstileID() + "-"
+                //         + turnstile[selected_turnstile].getTurnstileStatus());
+                // turnstile[selected_turnstile].setTurnstileStatus(false);
                 break;
             }
-            System.out.println(Thread.currentThread().getName() + ":\tTicket " + ticket.getTicketID()
-                    + " cannot enter through " + entranceName + "T" + (selected_turnstile + 1) + " as it is in use.");
+            // System.out.println(Thread.currentThread().getName() + ":\tTicket " +
+            // ticket.getTicketID()
+            // + " cannot enter through " + entranceName + "T" + (selected_turnstile + 1) +
+            // " as it is in use.");
         }
     }
 }

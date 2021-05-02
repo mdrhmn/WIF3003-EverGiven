@@ -131,16 +131,20 @@ public class Museum {
                 ticketThread[i] = new Thread(visitorTickets[i]);
             }
 
-            System.out.println(Thread.currentThread().getName() + ":\t" + Museum.worldTime.getFormattedCurrentTime()
+            // Saves entry time and duration of visitor
+            visitor.visitorTime.purchaseTime();
+            visitor.visitorTime.entryTime();
+            System.out.println(Thread.currentThread().getName() + ":\t" + visitor.visitorTime.getPurchaseTime()
                     + " - Tickets " + ticketsList + " sold");
 
-            // Saves entry time and duration of visitor
-            visitor.visitorTime.entryTime();
+            // System.out.println(Thread.currentThread().getName() + ":\t" + Museum.worldTime.getFormattedCurrentTime()
+            // + " - Tickets " + ticketsList + " sold");
+            // visitor.visitorTime.entryTime();
 
             for (int i = 0; i < ticketThread.length; i++) {
                 ticketThread[i].start();
             }
-            
+
         }
 
         // Case 2: If number of tickets == 1
@@ -168,9 +172,15 @@ public class Museum {
              */
             ticketThread[0] = new Thread(new Ticket(ticketID, selectedEntrance, selectedExit, visitor.museum, visitor));
 
-            System.out.println(Thread.currentThread().getName() + ":\t" + Museum.worldTime.getFormattedCurrentTime()
-                    + " - Ticket " + ticketID + " sold");
+            visitor.visitorTime.purchaseTime();
             visitor.visitorTime.entryTime();
+            System.out.println(Thread.currentThread().getName() + ":\t" + visitor.visitorTime.getPurchaseTime()
+                    + " - Ticket " + ticketID + " sold");
+
+            // System.out.println(Thread.currentThread().getName() + ":\t" + Museum.worldTime.getFormattedCurrentTime()
+            // + " - Ticket " + ticketID + " sold");
+            // visitor.visitorTime.entryTime();
+
             ticketThread[0].start();
         }
     }
@@ -178,7 +188,7 @@ public class Museum {
     /*
      * Level of thread granularity – Use a thread per entrance/exit
      */
-    public synchronized void enterMuseum(Ticket ticket) throws InterruptedException {
+    public void enterMuseum(Ticket ticket) throws InterruptedException {
         /*
          * Each visitor randomly uses a turnstile at either South Entrance or North
          * Entrance to enter the museum.

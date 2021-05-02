@@ -1,9 +1,9 @@
-import java.util.concurrent.TimeUnit;
-
+// import java.util.concurrent.TimeUnit;
 public class Time {
     private long sysStartTime;
     private long sysCurrTime;
     private long currentTime;
+    private long purchaseTime;
     private long purchaseDuration;
     private long visitDuration;
 
@@ -12,6 +12,15 @@ public class Time {
     public Time(Museum museum) {
         this.sysStartTime = System.currentTimeMillis();
         this.museum = museum;
+    }
+
+    public String getPurchaseTime() {
+        String normalisedTime = String.format("%04d", this.purchaseTime);
+        return normalisedTime;
+    }
+
+    public void setPurchaseTime(long purchaseTime) {
+        this.purchaseTime = purchaseTime;
     }
 
     public long getVisitDuration() {
@@ -25,14 +34,10 @@ public class Time {
     public void calcRealtime(long sysStartTime, long sysCurrTime, long startTime) {
         // startTime = purchase time, enter museum
         // currentTime = System current time but normalised
-        //
-        long timeElapse = sysCurrTime - sysStartTime;
-        this.purchaseDuration = timeElapse;
+        long timeElapsed = sysCurrTime - sysStartTime;
 
-        // System.out.println("Time elapsed: " + timeElapse);
-
-        long hr1 = (timeElapse / 600);
-        long min1 = timeElapse - (hr1 * 600);
+        long hr1 = (timeElapsed / 600);
+        long min1 = timeElapsed - (hr1 * 600);
 
         long hr2 = startTime / 1000;
         long min2 = startTime % 1000;
@@ -48,8 +53,7 @@ public class Time {
         } else {
             this.currentTime = (hr3 + min3) / 10;
         }
-
-        // this.startTime = this.currentTime;
+        
     }
 
     public String getFormattedCurrentTime() {
@@ -65,15 +69,16 @@ public class Time {
         return this.currentTime;
     }
 
-    public void purchaseTime(int no_ticket) throws InterruptedException {
-        // System.out.println("Start time: " + this.startTime);
-        this.sysStartTime = System.currentTimeMillis();
-
+    public void purchaseTime() throws InterruptedException {
+        // this.sysStartTime = System.currentTimeMillis();
         int randomSubsequentPurchase = (int) ((Math.random() * (4 - 1)) + 1) * 10;
-        this.purchaseDuration = randomSubsequentPurchase / 10;
-        TimeUnit.MILLISECONDS.sleep(randomSubsequentPurchase);
+        this.purchaseDuration = randomSubsequentPurchase;
+        // this.purchaseDuration = randomSubsequentPurchase / 10;
+        // TimeUnit.MILLISECONDS.sleep(this.purchaseDuration);
+        
         this.sysCurrTime = System.currentTimeMillis();
         calcRealtime(this.sysStartTime, this.sysCurrTime, museum.getOpenTime());
+        this.purchaseTime = this.currentTime;
     }
 
     public void entryTime() throws InterruptedException {
@@ -85,8 +90,7 @@ public class Time {
          */
         int randomDuration = (int) ((Math.random() * (150 - 50)) + 50) * 10;
         this.visitDuration = randomDuration / 10;
-        // No need sleep, will use wait() instead
-        // TimeUnit.MILLISECONDS.sleep(randomDuration);
+
         this.sysCurrTime = System.currentTimeMillis();
         calcRealtime(this.sysStartTime, this.sysCurrTime, museum.getOpenTime());
     }

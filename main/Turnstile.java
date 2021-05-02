@@ -13,26 +13,21 @@ public class Turnstile {
         return turnstileID;
     }
 
-    public synchronized void entry(Ticket ticket) throws InterruptedException {
-        turnstileStatus = true;
+    public void entry(Ticket ticket) throws InterruptedException {
+        this.turnstileStatus = true;
         Museum.totalVisitors.increase();
         museum.visitorCount.increase();
+        // System.out.println(Thread.currentThread().getName() + ":\t" + Museum.worldTime.getFormattedCurrentTime()
+        //         + " - Ticket " + ticket.getTicketID() + " entered through Turnstile " + this.turnstileID
+        //         + ". Staying for " + ticket.visitor.visitorTime.getVisitDuration() + " minutes");
 
-        System.out.println(Thread.currentThread().getName() + ":\t" + Museum.worldTime.getFormattedCurrentTime()
+        System.out.println(Thread.currentThread().getName() + ":\t" + ticket.visitor.visitorTime.getPurchaseTime()
                 + " - Ticket " + ticket.getTicketID() + " entered through Turnstile " + this.turnstileID
                 + ". Staying for " + ticket.visitor.visitorTime.getVisitDuration() + " minutes");
 
         ticket.setEntryStatus(true);
         ticket.visitor.increaseTicketsEnteredCount();
-
-        // if (ticket.visitor.getTicketsEnteredCount() == ticket.visitor.getNoOfTickets()) {
-        //     // System.out.println(ticket.visitor.getVisitorID() + " has entered");
-        //     // System.out.println("Unlock lock");
-        //     ticket.visitor.setEntryStatus(true);
-        // }
-
-        ticket.visitor.visitorTime.purchaseTime(ticket.visitor.getNoOfTickets());
-        turnstileStatus = false;
+        this.turnstileStatus = false;
     }
 
     public synchronized void exit(Ticket ticket) {
@@ -42,7 +37,11 @@ public class Turnstile {
                 + "; Visitors count = " + museum.visitorCount.getNumber());
     }
 
-    public synchronized boolean getTurnstileStatus() {
+    public boolean getTurnstileStatus() {
         return turnstileStatus;
+    }
+
+    public void setTurnstileStatus(boolean turnstileStatus) {
+        this.turnstileStatus = turnstileStatus;
     }
 }

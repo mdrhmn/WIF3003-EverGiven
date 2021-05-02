@@ -55,7 +55,8 @@ public class Visitor implements Runnable {
         try {
             lock.lock();
             museum.purchaseTicket(this);
-            Thread.sleep(50);
+            // System.out.println("Next purchase: " + this.visitorTime.getPurchaseDuration() / 10 + " minutes");
+            Thread.sleep(this.visitorTime.getPurchaseDuration());
             lock.unlock();
         } catch (InterruptedException e) {
             e.printStackTrace();
