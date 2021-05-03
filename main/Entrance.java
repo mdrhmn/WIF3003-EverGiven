@@ -35,28 +35,30 @@ public class Entrance {
 
         lock.lock();
         int selected_turnstile = -1;
-        // ! Need to revisit by using Thread locks, conditions etc.
 
         Integer[] turnstileNum = { 0, 1, 2, 3 };
         Collections.shuffle(Arrays.asList(turnstileNum));
-        // System.out.println(Arrays.toString(turnstileNum));
 
         for (int i = 0; i < 4; i++) {
             selected_turnstile = turnstileNum[i];
+            // when the selected turnstile is not in use
             if (!turnstile[selected_turnstile].getTurnstileStatus()) {
                 turnstile[selected_turnstile].setTurnstileStatus(true);
                 turnstile[selected_turnstile].entry(ticket);
-                while (ticket.visitor.ticketsEnteredCount.getNumber() != ticket.visitor.getNoOfTickets()) {
+                while (i < 3) {
                     occupied.await();
                 }
                 occupied.signalAll();
                 turnstile[selected_turnstile].setTurnstileStatus(false);
                 break;
+            } // when all turnstiles occupied and there are more tickets to enter
+            else if (i == 3 && turnstile[selected_turnstile].getTurnstileStatus()) {
+                occupied.signalAll();
+                turnstile[selected_turnstile].setTurnstileStatus(false);
+                i = 0;
+            } else {
+                occupied.signalAll();
             }
-            // System.out.println(Thread.currentThread().getName() + ":\tTicket " +
-            // ticket.getTicketID()
-            // + " cannot enter through " + entranceName + "T" + (selected_turnstile + 1) +
-            // " as it is in use.");
         }
 
         lock.unlock();

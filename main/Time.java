@@ -6,6 +6,7 @@ public class Time {
     private long purchaseTime;
     private long purchaseDuration;
     private long visitDuration;
+    private long entryTime;
     private long exitTime;
 
     Museum museum;
@@ -13,6 +14,15 @@ public class Time {
     public Time(Museum museum) {
         this.sysStartTime = System.currentTimeMillis();
         this.museum = museum;
+    }
+
+    public String getEntryTime() {
+        String normalisedTime = String.format("%04d", this.entryTime);
+        return normalisedTime;
+    }
+
+    public long getLongEntryTime() {
+        return entryTime;
     }
 
     public String getPurchaseTime() {
@@ -67,11 +77,8 @@ public class Time {
     }
 
     public void purchaseTime() throws InterruptedException {
-        // this.sysStartTime = System.currentTimeMillis();
         int randomSubsequentPurchase = (int) ((Math.random() * (4 - 1)) + 1) * 10;
         this.purchaseDuration = randomSubsequentPurchase;
-        // this.purchaseDuration = randomSubsequentPurchase / 10;
-        // TimeUnit.MILLISECONDS.sleep(this.purchaseDuration);
 
         this.sysCurrTime = System.currentTimeMillis();
         calcRealtime(this.sysStartTime, this.sysCurrTime, museum.getMuseumTicketOpenTimeInMillis());
@@ -91,6 +98,13 @@ public class Time {
 
         this.sysCurrTime = System.currentTimeMillis();
         calcRealtime(this.sysStartTime, this.sysCurrTime, museum.getMuseumTicketOpenTimeInMillis());
+
+        if (this.currentTime < museum.getMuseumOpenTime()) {
+            this.entryTime = museum.getMuseumOpenTime();
+        } else {
+            this.entryTime = this.currentTime;
+        }
+
     }
 
     public long getPurchaseDuration() {

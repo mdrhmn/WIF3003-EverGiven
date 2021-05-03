@@ -31,7 +31,7 @@ public class Museum {
     private long museumTicketOpenTime = 800;
     private long museumTicketCloseTime = 1700;
     private long museumOpenTime = 900;
-    private long museumCloseTime = 930;
+    private long museumCloseTime = 1800;
 
     /*
      * The museum has 2 entrances – South Entrance (SE) and North Entrance (NE); and
@@ -45,7 +45,6 @@ public class Museum {
     Random random;
 
     public static Lock lock = new ReentrantLock();
-    // public static Condition c = lock.newCondition();
 
     // Constructor
     public Museum(String name, int currentVisitorsLimit) {
@@ -155,11 +154,6 @@ public class Museum {
             visitor.visitorTime.entryTime();
             System.out.println(Thread.currentThread().getName() + ":\t" + visitor.visitorTime.getPurchaseTime()
                     + " - Tickets " + ticketsList + " sold");
-            // System.out.println(Museum.worldTime.getFormattedCurrentTime());
-            // System.out.println(Thread.currentThread().getName() + ":\t" +
-            // Museum.worldTime.getFormattedCurrentTime()
-            // + " - Tickets " + ticketsList + " sold");
-            // visitor.visitorTime.entryTime();
 
             for (int i = 0; i < ticketThread.length; i++) {
                 ticketThread[i].start();
@@ -196,11 +190,6 @@ public class Museum {
             visitor.visitorTime.entryTime();
             System.out.println(Thread.currentThread().getName() + ":\t" + visitor.visitorTime.getPurchaseTime()
                     + " - Ticket " + ticketID + " sold");
-            // System.out.println(Museum.worldTime.getFormattedCurrentTime());
-            // System.out.println(Thread.currentThread().getName() + ":\t" +
-            // Museum.worldTime.getFormattedCurrentTime()
-            // + " - Ticket " + ticketID + " sold");
-            // visitor.visitorTime.entryTime();
 
             ticketThread[0].start();
         }
@@ -210,6 +199,7 @@ public class Museum {
      * Level of thread granularity – Use a thread per entrance/exit
      */
     public void enterMuseum(Ticket ticket) throws InterruptedException {
+
         /*
          * Each visitor randomly uses a turnstile at either South Entrance or North
          * Entrance to enter the museum.

@@ -1,120 +1,63 @@
+import java.util.concurrent.Semaphore;
 
-// java program to demonstrate  
-// use of semaphores Locks 
-import java.util.concurrent.*;
-
-//A shared resource/class. 
-class Shared {
-    static int count = 0;
+public class SampleSemaphore {
+    public static void main(String[] args) {
+        Semaphore s = new Semaphore(1);
+        SharedCounter counter = new SharedCounter(s);
+        // Creating three threads
+        Thread t1 = new Thread(counter, "Thread-A");
+        Thread t2 = new Thread(counter, "Thread-B");
+        Thread t3 = new Thread(counter, "Thread-C");
+        t1.start();
+        t2.start();
+        t3.start();
+    }
 }
 
-class MyThread extends Thread {
-    Semaphore sem;
-    String threadName;
+class SharedCounter implements Runnable {
+    private int c = 0;
+    private Semaphore s;
 
-    public MyThread(Semaphore sem, String threadName) {
-        super(threadName);
-        this.sem = sem;
-        this.threadName = threadName;
+    SharedCounter(Semaphore s) {
+        this.s = s;
+    }
+
+    // incrementing the value
+    public void increment() {
+        try {
+            // used sleep for context switching
+            Thread.sleep(10);
+        } catch (InterruptedException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        c++;
+    }
+
+    // decrementing the value
+    public void decrement() {
+        c--;
+    }
+
+    public int getValue() {
+        return c;
     }
 
     @Override
     public void run() {
-
-        // run by thread A
-        if (this.getName().equals("A")) {
-            System.out.println("Starting " + threadName);
-            try {
-                // First, get a permit.
-                System.out.println(threadName + " is waiting for a permit.");
-
-                // acquiring the lock
-                sem.acquire();
-
-                System.out.println(threadName + " gets a permit.");
-
-                // Now, accessing the shared resource.
-                // other waiting threads will wait, until this
-                // thread release the lock
-                for (int i = 0; i < 5; i++) {
-                    Shared.count++;
-                    System.out.println(threadName + ": " + Shared.count);
-
-                    // Now, allowing a context switch -- if possible.
-                    // for thread B to execute
-                    Thread.sleep(10);
-                }
-            } catch (InterruptedException exc) {
-                System.out.println(exc);
-            }
-
-            // Release the permit.
-            System.out.println(threadName + " releases the permit.");
-            sem.release();
+        try {
+            // acquire method to get one permit
+            s.acquire();
+            this.increment();
+            System.out.println(
+                    "Value for Thread After increment - " + Thread.currentThread().getName() + " " + this.getValue());
+            this.decrement();
+            System.out.println("Value for Thread at last " + Thread.currentThread().getName() + " " + this.getValue());
+            // releasing permit
+            s.release();
+        } catch (InterruptedException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
         }
-
-        // run by thread B
-        else {
-            System.out.println("Starting " + threadName);
-            try {
-                // First, get a permit.
-                System.out.println(threadName + " is waiting for a permit.");
-
-                // acquiring the lock
-                sem.acquire();
-
-                System.out.println(threadName + " gets a permit.");
-
-                // Now, accessing the shared resource.
-                // other waiting threads will wait, until this
-                // thread release the lock
-                for (int i = 0; i < 5; i++) {
-                    Shared.count--;
-                    System.out.println(threadName + ": " + Shared.count);
-
-                    // Now, allowing a context switch -- if possible.
-                    // for thread A to execute
-                    Thread.sleep(10);
-                }
-            } catch (InterruptedException exc) {
-                System.out.println(exc);
-            }
-            // Release the permit.
-            System.out.println(threadName + " releases the permit.");
-            sem.release();
-        }
-    }
-}
-
-// Driver class
-public class SampleSemaphore {
-    public static void main(String args[]) throws InterruptedException {
-        // creating a Semaphore object
-        // with number of permits 1
-        Semaphore sem = new Semaphore(3);
-
-        // creating two threads with name A and B
-        // Note that thread A will increment the count
-        // and thread B will decrement the count
-        MyThread mt1 = new MyThread(sem, "A");
-        MyThread mt2 = new MyThread(sem, "B");
-        MyThread mt3 = new MyThread(sem, "A");
-        MyThread mt4 = new MyThread(sem, "B");
-
-        // stating threads A and B
-        mt1.start();
-        mt2.start();
-        mt3.start();
-        mt4.start();
-
-        // waiting for threads A and B
-        mt1.join();
-        mt2.join();
-        mt3.join();
-        mt4.join();
-
-        // count will always remain 0 after
-        // both threads will complete their execution
-        System.out.println("count: " + Shared.count);
     }
 }

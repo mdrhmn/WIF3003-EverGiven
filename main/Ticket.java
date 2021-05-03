@@ -1,11 +1,17 @@
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.locks.*;
 
 public class Ticket implements Runnable {
     private final String ticketID;
     // Entrance and Exit
     private final int selectedEntrance;
     private final int selectedExit;
+
+    public static Lock lock = new ReentrantLock(); // Create a lock
+    private Condition isOpen = lock.newCondition();
+    private Condition isClose = lock.newCondition();
 
     private boolean hasEntered;
     Museum museum;
@@ -43,14 +49,32 @@ public class Ticket implements Runnable {
     @Override
     public void run() {
         try {
-            // while (Museum.worldTime.getCurrentTime() < 900) {
-            // }
+            try {
+                lock.lock();
+                while (Museum.worldTime.getCurrentTime() < museum.getMuseumOpenTime()) {
+                    // System.out.println(Museum.worldTime.getCurrentTime());
+                    isOpen.await(10, TimeUnit.MILLISECONDS);
+                }
+                isOpen.signalAll();
+            } finally {
+                lock.unlock();
+            }
             museum.enterMuseum(this);
             // Duration of sleep = duration of stay for visitor
             // Thread.sleep(this.visitor.visitorTime.getVisitDurationInMillis());
-            while (Museum.worldTime.getCurrentTime() < museum.getMuseumCloseTime() && Museum.worldTime.getCurrentTime() < this.visitor.visitorTime.getExitTime() ) {
+            try {
+                lock.lock();
+                while (Museum.worldTime.getCurrentTime() < museum.getMuseumCloseTime()
+                        && Museum.worldTime.getCurrentTime() < this.visitor.visitorTime.getExitTime()) {
+                    isClose.await(10, TimeUnit.MILLISECONDS);
+                }
+                isClose.signalAll();
+            } finally {
+                lock.unlock();
             }
+
             museum.exitMuseum(this);
+
         } catch (Exception ex) {
             Logger.getLogger(Visitor.class.getName()).log(Level.SEVERE, null, ex);
         }
