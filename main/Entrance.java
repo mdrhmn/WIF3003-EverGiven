@@ -9,7 +9,7 @@ public class Entrance {
     Turnstile[] turnstile = new Turnstile[4];
     Random random;
     int turnstileInUse;
-    public static Lock lock = new ReentrantLock(); // Create a lock
+    public static Lock lock = new ReentrantLock();
     private Condition occupied = lock.newCondition();
 
     public Entrance(String entranceName, Museum museum) {
@@ -45,7 +45,7 @@ public class Entrance {
             if (!turnstile[selected_turnstile].getTurnstileStatus()) {
                 turnstile[selected_turnstile].setTurnstileStatus(true);
                 turnstile[selected_turnstile].entry(ticket);
-                while (i < 3) {
+                while (ticket.visitor.ticketsEnteredCount.getNumber() != ticket.visitor.getNoOfTickets()) {
                     occupied.await();
                 }
                 occupied.signalAll();

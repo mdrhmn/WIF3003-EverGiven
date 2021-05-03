@@ -59,9 +59,9 @@ public class Ticket implements Runnable {
             } finally {
                 lock.unlock();
             }
+
             museum.enterMuseum(this);
-            // Duration of sleep = duration of stay for visitor
-            // Thread.sleep(this.visitor.visitorTime.getVisitDurationInMillis());
+
             try {
                 lock.lock();
                 while (Museum.worldTime.getCurrentTime() < museum.getMuseumCloseTime()
