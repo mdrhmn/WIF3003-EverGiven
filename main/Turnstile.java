@@ -16,9 +16,12 @@ public class Turnstile {
     public void entry(Ticket ticket) throws InterruptedException {
         Museum.totalVisitors.increase();
         museum.visitorCount.increase();
-        System.out.println(Thread.currentThread().getName() + ":\t" + ticket.visitor.visitorTime.getEntryTime()
+
+        System.out.println(Thread.currentThread().getName() + ":\t" + Museum.worldTime.getFormattedCurrentTime()
                 + " - Ticket " + ticket.getTicketID() + " entered through Turnstile " + this.turnstileID
                 + ". Staying for " + ticket.visitor.visitorTime.getVisitDuration() + " minutes");
+        System.out.println(Thread.currentThread().getName() + ":\t" + Museum.worldTime.getFormattedCurrentTime()
+                + " - Total visitors count: " + Museum.totalVisitors.getNumber());
         ticket.visitor.visitorTime.setExitTime(ticket.visitor.visitorTime.getVisitDuration(),
                 ticket.visitor.visitorTime.getLongEntryTime());
         ticket.setEntryStatus(true);
@@ -31,6 +34,7 @@ public class Turnstile {
         System.out.println(Thread.currentThread().getName() + ":\t" + Museum.worldTime.getFormattedCurrentTime()
                 + " - Ticket " + ticket.getTicketID() + " exited through Turnstile " + this.turnstileID
                 + "; Visitors count = " + museum.visitorCount.getNumber());
+
         ticket.setEntryStatus(false);
         ticket.visitor.ticketsExitCount.increase();
     }

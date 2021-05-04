@@ -22,7 +22,7 @@ public class Time {
     }
 
     public long getLongEntryTime() {
-        return entryTime;
+        return this.entryTime;
     }
 
     public String getPurchaseTime() {
@@ -30,19 +30,47 @@ public class Time {
         return normalisedTime;
     }
 
-    public void setPurchaseTime(long purchaseTime) {
-        this.purchaseTime = purchaseTime;
+    public long getLongPurchaseTime() {
+        return this.purchaseTime;
+    }
+
+    public long getPurchaseDuration() {
+        return this.purchaseDuration / 10;
+    }
+
+    public long getVisitDuration() {
+        return this.visitDuration / 10;
+    }
+
+    public long getPurchaseDurationInMillis() {
+        return this.purchaseDuration;
+    }
+
+    public long getVisitDurationInMillis() {
+        return this.visitDuration;
     }
 
     public long getSysStartTime() {
         return this.sysStartTime;
     }
 
+    public String getFormattedCurrentTime() {
+        this.sysCurrTime = System.currentTimeMillis();
+        calcRealtime(this.sysStartTime, this.sysCurrTime, museum.getMuseumTicketOpenTimeInMillis());
+        String normalisedTime = String.format("%04d", this.currentTime);
+        return normalisedTime;
+    }
+
+    public long getCurrentTime() {
+        this.sysCurrTime = System.currentTimeMillis();
+        calcRealtime(this.sysStartTime, this.sysCurrTime, museum.getMuseumTicketOpenTimeInMillis());
+        return this.currentTime;
+    }
+
     public void calcRealtime(long sysStartTime, long sysCurrTime, long startTime) {
         // startTime = purchase time, enter museum
         // currentTime = System current time but normalised
         long timeElapsed = sysCurrTime - sysStartTime;
-
         long hr1 = (timeElapsed / 600);
         long min1 = timeElapsed - (hr1 * 600);
 
@@ -63,20 +91,15 @@ public class Time {
 
     }
 
-    public String getFormattedCurrentTime() {
-        this.sysCurrTime = System.currentTimeMillis();
-        calcRealtime(this.sysStartTime, this.sysCurrTime, museum.getMuseumTicketOpenTimeInMillis());
-        String normalisedTime = String.format("%04d", this.currentTime);
-        return normalisedTime;
-    }
-
-    public long getCurrentTime() {
-        this.sysCurrTime = System.currentTimeMillis();
-        calcRealtime(this.sysStartTime, this.sysCurrTime, museum.getMuseumTicketOpenTimeInMillis());
-        return this.currentTime;
-    }
-
+    /*
+     * First request to purchase tickets will be made at 8.00 a.m.
+     */
     public void purchaseTime() throws InterruptedException {
+
+        /*
+         * Subsequent purchase will be made every 1-4 minutes. Each purchase will be
+         * for 1-4 tickets
+         */
         int randomSubsequentPurchase = (int) ((Math.random() * (4 - 1)) + 1) * 10;
         this.purchaseDuration = randomSubsequentPurchase;
 
@@ -86,45 +109,21 @@ public class Time {
     }
 
     public void entryTime() throws InterruptedException {
-        this.sysStartTime = System.currentTimeMillis();
         /*
          * Each visitor stays in the museum for 50-150 minutes. The duration of stay
          * will be randomly assigned to the visitor when the visitor is entering the
          * museum.
          */
         int randomDuration = (int) ((Math.random() * (150 - 50)) + 50) * 10;
-        // this.visitDuration = randomDuration / 10;
         this.visitDuration = randomDuration;
 
         this.sysCurrTime = System.currentTimeMillis();
         calcRealtime(this.sysStartTime, this.sysCurrTime, museum.getMuseumTicketOpenTimeInMillis());
-
         if (this.currentTime < museum.getMuseumOpenTime()) {
             this.entryTime = museum.getMuseumOpenTime();
         } else {
             this.entryTime = this.currentTime;
         }
-
-    }
-
-    public long getPurchaseDuration() {
-        return this.purchaseDuration / 10;
-    }
-
-    public long getVisitDuration() {
-        return this.visitDuration / 10;
-    }
-
-    public long getPurchaseDurationInMillis() {
-        return this.purchaseDuration;
-    }
-
-    public long getVisitDurationInMillis() {
-        return this.visitDuration;
-    }
-
-    public long getLongPurchaseTime() {
-        return this.purchaseTime;
     }
 
     public void setExitTime(long duration, long startTime) {

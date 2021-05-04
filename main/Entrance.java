@@ -9,7 +9,7 @@ public class Entrance {
     Turnstile[] turnstile = new Turnstile[4];
     Random random;
     int turnstileInUse;
-    public static Lock lock = new ReentrantLock();
+    private static Lock lock = new ReentrantLock();
     private Condition occupied = lock.newCondition();
 
     public Entrance(String entranceName, Museum museum) {

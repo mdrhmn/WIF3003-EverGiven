@@ -1,5 +1,6 @@
 import java.util.Random;
 import java.util.concurrent.locks.*;
+import java.util.concurrent.*;
 
 public class Museum {
 
@@ -12,12 +13,12 @@ public class Museum {
     // World time
     public static Time worldTime;
 
-    // Not more than 100 visitors are allowed in the museum at one time.
-    private final int currentVisitorsLimit;
-
     // The ticketing system refuses the purchase when the daily limit of visitors
     // (900) has been reached
-    // private final int dailyVisitorsLimit;
+    private final int dailyVisitorsLimit;
+    private boolean dailyVisitorsLimitFlag;
+    // Not more than 100 visitors are allowed in the museum at one time.
+    private Semaphore currentVisitorsLimit;
 
     // Museum name
     private final String name;
@@ -28,6 +29,9 @@ public class Museum {
     // Count current number of visitors
     public Counter visitorCount;
 
+    /*
+     * First request to purchase tickets will be made at 8.00 a.m.
+     */
     private long museumTicketOpenTime = 800;
     private long museumTicketCloseTime = 1700;
     private long museumOpenTime = 900;
@@ -47,9 +51,11 @@ public class Museum {
     public static Lock lock = new ReentrantLock();
 
     // Constructor
-    public Museum(String name, int currentVisitorsLimit) {
+    public Museum(String name, int currentVisitorsLimit, int dailyVisitorsLimit) {
         this.name = name;
-        this.currentVisitorsLimit = currentVisitorsLimit;
+        this.dailyVisitorsLimit = dailyVisitorsLimit;
+        this.setDailyVisitorsLimitFlag(false);
+        this.currentVisitorsLimit = new Semaphore(currentVisitorsLimit);
 
         this.status = true;
         this.visitorCount = new Counter();
@@ -64,6 +70,22 @@ public class Museum {
         this.southEntrance = new Entrance("SE", this);
         this.eastExit = new Exit("EE", this);
         this.westExit = new Exit("WE", this);
+    }
+
+    public boolean isDailyVisitorsLimitFlag() {
+        return dailyVisitorsLimitFlag;
+    }
+
+    public void setDailyVisitorsLimitFlag(boolean dailyVisitorsLimitFlag) {
+        this.dailyVisitorsLimitFlag = dailyVisitorsLimitFlag;
+    }
+
+    public int getDailyVisitorsLimit() {
+        return dailyVisitorsLimit;
+    }
+
+    public Semaphore getCurrentVisitorsLimit() {
+        return currentVisitorsLimit;
     }
 
     public long getMuseumOpenTime() {
@@ -106,9 +128,9 @@ public class Museum {
         this.status = status;
     }
 
-    public int getCurrentVisitorsLimit() {
-        return currentVisitorsLimit;
-    }
+    // public int getCurrentVisitorsLimit() {
+    // return currentVisitorsLimit;
+    // }
 
     public String getName() {
         return name;
@@ -122,7 +144,10 @@ public class Museum {
         if (visitor.getNoOfTickets() > 1 && visitor.getNoOfTickets() <= 4) {
 
             /*
-             * Assuming that entrance and exit has been determined during ticket purchase
+             * Each visitor randomly uses a turnstile at either South Entrance or North
+             * Entrance to enter the museum. After the duration of stay is over, the visitor
+             * randomly uses a turnstile at either East Exit or West Exit to leave the
+             * museum (assuming that entrance and exit has been determined during ticket purchase)
              */
             int selectedEntrance = random.nextInt(2);
             int selectedExit = random.nextInt(2);
@@ -136,7 +161,9 @@ public class Museum {
                 totalTickets.increase();
 
                 /*
-                 * Example of TicketID format: Tickets T0001, T0002 sold
+                 * Every ticket has an ID in the form of T****, where **** are running numbers
+                 * from 0001 to 9999. Example of TicketID format: Tickets T0001, T0002 sold.
+                 * There is also a timestamp of purchase on each ticket
                  */
                 String ticketID = String.format("T%04d", totalTickets.getNumber());
                 if (i < visitor.getNoOfTickets() - 1) {
@@ -145,11 +172,17 @@ public class Museum {
                     ticketsList += ticketID;
                 }
 
-                visitorTickets[i] = new Ticket(ticketID, selectedEntrance, selectedExit, visitor.museum, visitor);
+                visitorTickets[i] = new Ticket(currentVisitorsLimit, ticketID, selectedEntrance, selectedExit,
+                        visitor.museum, visitor);
                 ticketThread[i] = new Thread(visitorTickets[i]);
             }
 
-            // Saves entry time and duration of visitor
+            /*
+             * There is also a timestamp of purchase on each ticket. 4. Visitors enter the
+             * museum based on the timestamps on their tickets, i.e., visitors who purchased
+             * their tickets earlier enter the museum before those purchase their tickets
+             * later
+             */
             visitor.visitorTime.purchaseTime();
             visitor.visitorTime.entryTime();
             System.out.println(Thread.currentThread().getName() + ":\t" + visitor.visitorTime.getPurchaseTime()
@@ -165,7 +198,10 @@ public class Museum {
         else if (visitor.getNoOfTickets() == 1) {
 
             /*
-             * Assuming that entrance and exit has been determined during ticket purchase
+             * Each visitor randomly uses a turnstile at either South Entrance or North
+             * Entrance to enter the museum. After the duration of stay is over, the visitor
+             * randomly uses a turnstile at either East Exit or West Exit to leave the
+             * museum (assuming that entrance and exit has been determined during ticket purchase)
              */
             int selectedEntrance = random.nextInt(2);
             int selectedExit = random.nextInt(2);
@@ -175,17 +211,21 @@ public class Museum {
             totalTickets.increase();
 
             /*
-             * Example of TicketID format: Tickets T0001, T0002 sold
+             * Every ticket has an ID in the form of T****, where **** are running numbers
+             * from 0001 to 9999. Example of TicketID format: Tickets T0001, T0002 sold.
+             * There is also a timestamp of purchase on each ticket
              */
             String ticketID = String.format("T%04d", totalTickets.getNumber());
 
-            /*
-             * Each visitor stays in the museum for 50-150 minutes. The duration of stay
-             * will be randomly assigned to the visitor when the visitor is entering the
-             * museum.
-             */
-            ticketThread[0] = new Thread(new Ticket(ticketID, selectedEntrance, selectedExit, visitor.museum, visitor));
+            ticketThread[0] = new Thread(new Ticket(currentVisitorsLimit, ticketID, selectedEntrance, selectedExit,
+                    visitor.museum, visitor));
 
+            /*
+             * There is also a timestamp of purchase on each ticket. 4. Visitors enter the
+             * museum based on the timestamps on their tickets, i.e., visitors who purchased
+             * their tickets earlier enter the museum before those purchase their tickets
+             * later
+             */
             visitor.visitorTime.purchaseTime();
             visitor.visitorTime.entryTime();
             System.out.println(Thread.currentThread().getName() + ":\t" + visitor.visitorTime.getPurchaseTime()

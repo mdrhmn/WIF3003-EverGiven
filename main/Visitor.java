@@ -10,7 +10,8 @@ public class Visitor implements Runnable {
     Time visitorTime;
     Museum museum;
     Random random;
-    public static Lock lock = new ReentrantLock(); // Create a lock
+    
+    public static Lock lock = new ReentrantLock();
 
     public Visitor(String visitorID, int noOfTickets, Museum museum) {
         this.visitorID = visitorID;
@@ -43,8 +44,28 @@ public class Visitor implements Runnable {
     public void run() {
         try {
             lock.lock();
-            museum.purchaseTicket(this);
-            Thread.sleep(this.visitorTime.getPurchaseDurationInMillis());
+            /*
+             * Tickets cannot be purchased after 5:00 p.m. (Tickets will be sold from 8.00
+             * a.m. to 5.00 p.m. daily). Tickets cannot be purchased if daily limit of
+             * visitors has been reached (The museum receives not more than 900 visitors per
+             * day)
+             */
+            if (Museum.worldTime.getCurrentTime() > museum.getMuseumTicketCloseTime()
+                    || Museum.totalTickets.getNumber() >= museum.getDailyVisitorsLimit()) {
+                if (!museum.isDailyVisitorsLimitFlag()) {
+                    System.out.println(Thread.currentThread().getName() + ":\t"
+                            + Museum.worldTime.getFormattedCurrentTime() + " - Maximum daily visitors limit reached ("
+                            + Museum.totalTickets.getNumber() + "). ");
+                }
+                museum.setDailyVisitorsLimitFlag(true);
+                Thread.currentThread().interrupt();
+            } else {
+                museum.purchaseTicket(this);
+                /*
+                 * Subsequent purchase will be made every 1-4 minutes
+                 */
+                Thread.sleep(this.visitorTime.getPurchaseDurationInMillis());
+            }
             lock.unlock();
         } catch (InterruptedException e) {
             e.printStackTrace();

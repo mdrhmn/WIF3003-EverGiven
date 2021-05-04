@@ -2,22 +2,26 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.*;
+import java.util.concurrent.*;
 
 public class Ticket implements Runnable {
     private final String ticketID;
     // Entrance and Exit
     private final int selectedEntrance;
     private final int selectedExit;
+    private boolean hasEntered;
 
-    public static Lock lock = new ReentrantLock(); // Create a lock
+    private static Lock lock = new ReentrantLock();
     private Condition isOpen = lock.newCondition();
     private Condition isClose = lock.newCondition();
+    private Semaphore currentVisitorsLimit;
 
-    private boolean hasEntered;
     Museum museum;
     Visitor visitor;
 
-    public Ticket(String ticketID, int selectedEntrance, int selectedExit, Museum museum, Visitor visitor) {
+    public Ticket(Semaphore currentVisitorsLimit, String ticketID, int selectedEntrance, int selectedExit,
+            Museum museum, Visitor visitor) {
+        this.currentVisitorsLimit = currentVisitorsLimit;
         this.ticketID = ticketID;
         this.museum = museum;
         this.visitor = visitor;
@@ -50,16 +54,28 @@ public class Ticket implements Runnable {
     public void run() {
         try {
             try {
+
                 lock.lock();
+                /*
+                 * Tickets purchased before museum open time (9:00 a.m.) will have to wait until
+                 * museum has opened for entry
+                 */
                 while (Museum.worldTime.getCurrentTime() < museum.getMuseumOpenTime()) {
-                    // System.out.println(Museum.worldTime.getCurrentTime());
                     isOpen.await(10, TimeUnit.MILLISECONDS);
                 }
                 isOpen.signalAll();
             } finally {
                 lock.unlock();
             }
-
+            // System.out.println(Thread.currentThread().getName() + ":\t" + "Current museum
+            // capacity is full ("
+            // + museum.visitorCount.getNumber() + "). " + ticketID + " will have to wait
+            // for entry.");
+            if (currentVisitorsLimit.hasQueuedThreads()) {
+                System.out.println(Thread.currentThread().getName() + ":\t" + Museum.worldTime.getFormattedCurrentTime()
+                        + " - Current museum capacity is full. " + ticketID + " will have to queue for entry.");
+            }
+            currentVisitorsLimit.acquire();
             museum.enterMuseum(this);
 
             try {
@@ -74,6 +90,7 @@ public class Ticket implements Runnable {
             }
 
             museum.exitMuseum(this);
+            currentVisitorsLimit.release();
 
         } catch (Exception ex) {
             Logger.getLogger(Visitor.class.getName()).log(Level.SEVERE, null, ex);
