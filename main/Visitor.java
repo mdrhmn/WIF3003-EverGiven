@@ -10,7 +10,7 @@ public class Visitor implements Runnable {
     Time visitorTime;
     Museum museum;
     Random random;
-    
+
     public static Lock lock = new ReentrantLock();
 
     public Visitor(String visitorID, int noOfTickets, Museum museum) {
@@ -51,13 +51,24 @@ public class Visitor implements Runnable {
              * day)
              */
             if (Museum.worldTime.getCurrentTime() > museum.getMuseumTicketCloseTime()
-                    || Museum.totalTickets.getNumber() >= museum.getDailyVisitorsLimit()) {
-                if (!museum.isDailyVisitorsLimitFlag()) {
-                    System.out.println(Thread.currentThread().getName() + ":\t"
-                            + Museum.worldTime.getFormattedCurrentTime() + " - Maximum daily visitors limit reached ("
-                            + Museum.totalTickets.getNumber() + "). ");
+                    || Museum.totalTickets.getNumber() + this.getNoOfTickets() > museum.getDailyVisitorsLimit()) {
+
+                if (Museum.worldTime.getCurrentTime() > museum.getMuseumTicketCloseTime()) {
+                    if (!museum.isTicketsCloseFlag()) {
+                        System.out.println(Thread.currentThread().getName() + ":\t"
+                                + Museum.worldTime.getFormattedCurrentTime() + " - Museum will no longer sell tickets");
+                        museum.setTicketsCloseFlag(true);
+                    }
+                } else if (Museum.totalTickets.getNumber() + this.getNoOfTickets() > museum.getDailyVisitorsLimit()) {
+                    if (!museum.isDailyVisitorsLimitFlag()) {
+                        System.out.println(
+                                Thread.currentThread().getName() + ":\t" + Museum.worldTime.getFormattedCurrentTime()
+                                        + " - Maximum daily visitors limit reached (" + Museum.totalTickets.getNumber()
+                                        + "). Tickets are no longer available for purchase.");
+                        museum.setDailyVisitorsLimitFlag(true);
+                    }
                 }
-                museum.setDailyVisitorsLimitFlag(true);
+
                 Thread.currentThread().interrupt();
             } else {
                 museum.purchaseTicket(this);

@@ -15,25 +15,37 @@ public class Turnstile {
 
     public void entry(Ticket ticket) throws InterruptedException {
         Museum.totalVisitors.increase();
-        museum.visitorCount.increase();
+        Museum.visitorCount.increase();
 
         System.out.println(Thread.currentThread().getName() + ":\t" + Museum.worldTime.getFormattedCurrentTime()
                 + " - Ticket " + ticket.getTicketID() + " entered through Turnstile " + this.turnstileID
-                + ". Staying for " + ticket.visitor.visitorTime.getVisitDuration() + " minutes");
-        System.out.println(Thread.currentThread().getName() + ":\t" + Museum.worldTime.getFormattedCurrentTime()
-                + " - Total visitors count: " + Museum.totalVisitors.getNumber());
+                + ". Staying for " + ticket.visitor.visitorTime.getVisitDuration() + " minutes; Visitors count = "
+                + Museum.visitorCount.getNumber());
+
         ticket.visitor.visitorTime.setExitTime(ticket.visitor.visitorTime.getVisitDuration(),
                 ticket.visitor.visitorTime.getLongEntryTime());
+
+        // System.out.println(
+        // Thread.currentThread().getName() + ":\t" +
+        // Museum.worldTime.getFormattedCurrentTime() + " - Ticket "
+        // + ticket.getTicketID() + " - Purchase Time : " +
+        // ticket.visitor.visitorTime.getPurchaseTime());
+        // System.out.println(Thread.currentThread().getName() + ":\t" +
+        // Museum.worldTime.getFormattedCurrentTime()
+        // + " - Ticket " + ticket.getTicketID() + " - Exit Time : " +
+        // ticket.visitor.visitorTime.getExitTime());
+
         ticket.setEntryStatus(true);
         ticket.visitor.ticketsEnteredCount.increase();
     }
 
     public void exit(Ticket ticket) {
-        museum.visitorCount.decrease();
+        Museum.visitorCount.decrease();
 
         System.out.println(Thread.currentThread().getName() + ":\t" + Museum.worldTime.getFormattedCurrentTime()
                 + " - Ticket " + ticket.getTicketID() + " exited through Turnstile " + this.turnstileID
-                + "; Visitors count = " + museum.visitorCount.getNumber());
+                + "; Visitors count = " + Museum.visitorCount.getNumber() + "; Total visitors count = "
+                + Museum.totalVisitors.getNumber());
 
         ticket.setEntryStatus(false);
         ticket.visitor.ticketsExitCount.increase();

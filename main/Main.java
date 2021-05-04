@@ -14,7 +14,7 @@ public class Main {
 
         // Create Visitors and Museum
         ArrayList<String[]> readList = read.getVisitorList();
-        Museum museum = new Museum("Kuching Museum", 50, 300);
+        Museum museum = new Museum("Kuching Museum", 100, 500);
         ArrayList<Visitor> visitorList = new ArrayList<>();
 
         for (int i = 0; i < readList.size(); i++) {
@@ -39,9 +39,9 @@ public class Main {
         // Museum museum = new Museum("Kuching Museum", 10);
         // // Museum m = new Museum(100, 100, timer);
         // /*
-        //  * 1. Visitor class = handles purchasing of Tickets 2. Ticket class = handles
-        //  * entry
-        //  */
+        // * 1. Visitor class = handles purchasing of Tickets 2. Ticket class = handles
+        // * entry
+        // */
         // // String visitorID, int noOfTickets, Museum museum
         // Visitor v1 = new Visitor("V001", 2, museum);
         // Visitor v2 = new Visitor("V002", 3, museum);
@@ -61,6 +61,6 @@ public class Main {
         // th4.start();
         // th5.start();
 
-        museumOperation("TestCase.txt");
+        museumOperation("TestCase2.txt");
     }
 }

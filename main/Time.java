@@ -54,6 +54,10 @@ public class Time {
         return this.sysStartTime;
     }
 
+    public long getSysCurrTime() {
+        return this.sysCurrTime;
+    }
+
     public String getFormattedCurrentTime() {
         this.sysCurrTime = System.currentTimeMillis();
         calcRealtime(this.sysStartTime, this.sysCurrTime, museum.getMuseumTicketOpenTimeInMillis());
@@ -88,7 +92,6 @@ public class Time {
         } else {
             this.currentTime = (hr3 + min3) / 10;
         }
-
     }
 
     /*

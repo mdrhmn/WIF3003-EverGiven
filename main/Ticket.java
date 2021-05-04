@@ -67,10 +67,7 @@ public class Ticket implements Runnable {
             } finally {
                 lock.unlock();
             }
-            // System.out.println(Thread.currentThread().getName() + ":\t" + "Current museum
-            // capacity is full ("
-            // + museum.visitorCount.getNumber() + "). " + ticketID + " will have to wait
-            // for entry.");
+
             if (currentVisitorsLimit.hasQueuedThreads()) {
                 System.out.println(Thread.currentThread().getName() + ":\t" + Museum.worldTime.getFormattedCurrentTime()
                         + " - Current museum capacity is full. " + ticketID + " will have to queue for entry.");

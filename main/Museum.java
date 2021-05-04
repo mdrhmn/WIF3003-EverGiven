@@ -17,6 +17,7 @@ public class Museum {
     // (900) has been reached
     private final int dailyVisitorsLimit;
     private boolean dailyVisitorsLimitFlag;
+
     // Not more than 100 visitors are allowed in the museum at one time.
     private Semaphore currentVisitorsLimit;
 
@@ -27,7 +28,7 @@ public class Museum {
     private boolean status;
 
     // Count current number of visitors
-    public Counter visitorCount;
+    public static Counter visitorCount;
 
     /*
      * First request to purchase tickets will be made at 8.00 a.m.
@@ -36,6 +37,7 @@ public class Museum {
     private long museumTicketCloseTime = 1700;
     private long museumOpenTime = 900;
     private long museumCloseTime = 1800;
+    private boolean ticketsCloseFlag;
 
     /*
      * The museum has 2 entrances – South Entrance (SE) and North Entrance (NE); and
@@ -55,11 +57,11 @@ public class Museum {
         this.name = name;
         this.dailyVisitorsLimit = dailyVisitorsLimit;
         this.setDailyVisitorsLimitFlag(false);
+        this.setTicketsCloseFlag(false);
         this.currentVisitorsLimit = new Semaphore(currentVisitorsLimit);
 
         this.status = true;
-        this.visitorCount = new Counter();
-
+        visitorCount = new Counter();
         totalTickets = new Counter();
         totalVisitors = new Counter();
         worldTime = new Time(this);
@@ -70,6 +72,14 @@ public class Museum {
         this.southEntrance = new Entrance("SE", this);
         this.eastExit = new Exit("EE", this);
         this.westExit = new Exit("WE", this);
+    }
+
+    public boolean isTicketsCloseFlag() {
+        return ticketsCloseFlag;
+    }
+
+    public void setTicketsCloseFlag(boolean ticketsCloseFlag) {
+        this.ticketsCloseFlag = ticketsCloseFlag;
     }
 
     public boolean isDailyVisitorsLimitFlag() {
@@ -127,10 +137,6 @@ public class Museum {
     public void setStatus(boolean status) {
         this.status = status;
     }
-
-    // public int getCurrentVisitorsLimit() {
-    // return currentVisitorsLimit;
-    // }
 
     public String getName() {
         return name;
