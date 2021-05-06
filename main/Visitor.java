@@ -55,23 +55,25 @@ public class Visitor implements Runnable {
 
                 if (Museum.worldTime.getCurrentTime() > museum.getMuseumTicketCloseTime()) {
                     if (!museum.isTicketsCloseFlag()) {
-                        System.out.println(Thread.currentThread().getName() + ":\t"
-                                + Museum.worldTime.getFormattedCurrentTime() + " - Museum will no longer sell tickets");
+                        System.out.println(
+                                "\n############################################## MUSEUM TICKETS CLOSED ##############################################\n");
+                        // System.out.println(
+                        // Museum.worldTime.getFormattedCurrentTime() + " - Museum will no longer sell
+                        // tickets");
                         museum.setTicketsCloseFlag(true);
                     }
                 } else if (Museum.totalTickets.getNumber() + this.getNoOfTickets() > museum.getDailyVisitorsLimit()) {
                     if (!museum.isDailyVisitorsLimitFlag()) {
                         int totalVisitors = Museum.totalTickets.getNumber() + 1;
                         if (totalVisitors != 500) {
-                            System.out.println(Thread.currentThread().getName() + ":\t"
-                                    + Museum.worldTime.getFormattedCurrentTime()
-                                    + " - Maximum daily visitors limit reached (" + Museum.totalTickets.getNumber()
-                                    + ").");
+                            System.out.println(Museum.worldTime.getFormattedCurrentTime()
+                                    + " - Number of purchased tickets exceed daily visitors limit (" + Museum.totalTickets.getNumber()
+                                    + "). Tickets are no longer available for purchase.");
                         } else {
-                            System.out.println(Thread.currentThread().getName() + ":\t"
-                                    + Museum.worldTime.getFormattedCurrentTime()
-                                    + " - Maximum daily visitors limit reached (" + totalVisitors
-                                    + "). Tickets are no longer available for purchase after T0500.");
+                            System.out.println(Museum.worldTime.getFormattedCurrentTime()
+                                    + " - Number of purchased tickets exceed daily visitors limit (" + totalVisitors
+                                    + "). Tickets are no longer available for purchase after T0"
+                                    + museum.getDailyVisitorsLimit() + ".");
                         }
                         museum.setDailyVisitorsLimitFlag(true);
                     }

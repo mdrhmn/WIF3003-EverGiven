@@ -15,7 +15,7 @@ public class Ticket implements Runnable {
     private Condition isOpen = lock.newCondition();
     private Condition isClose = lock.newCondition();
     private Semaphore currentVisitorsLimit;
-    // Time ticketTime;
+    Time ticketTime;
     Museum museum;
     Visitor visitor;
 
@@ -28,8 +28,8 @@ public class Ticket implements Runnable {
         this.hasEntered = false;
         this.selectedEntrance = selectedEntrance;
         this.selectedExit = selectedExit;
-        // this.ticketTime = new Time(museum);
-        // this.ticketTime.setSysStartTime(this.visitor.visitorTime.getSysStartTime());
+        this.ticketTime = new Time(museum);
+        this.ticketTime.setSysStartTime(this.visitor.visitorTime.getSysStartTime());
     }
 
     public boolean getEntryStatus() {
@@ -66,22 +66,41 @@ public class Ticket implements Runnable {
                 }
                 isOpen.signalAll();
             } finally {
+                if (!museum.getStatus()) {
+                    System.out.println(
+                            "\n################################################## MUSEUM OPEN ##################################################\n");
+                    museum.setStatus(true);
+                }
                 lock.unlock();
             }
 
-            if (currentVisitorsLimit.hasQueuedThreads()) {
-                System.out.println(Thread.currentThread().getName() + ":\t" + Museum.worldTime.getFormattedCurrentTime()
-                        + " - Current museum capacity is full. " + ticketID + " will have to queue for entry.");
+            if (currentVisitorsLimit.hasQueuedThreads()
+                    || Museum.visitorCount.getNumber() + 1 > museum.getIntCurrentVisitorsLimit()) {
+                System.out.println(Museum.worldTime.getFormattedCurrentTime() + " - Current museum capacity is full. "
+                        + ticketID + " will have to queue for entry.");
             }
+
             currentVisitorsLimit.acquire();
             visitor.visitorTime.entryTime();
-            // this.ticketTime.entryTime();
+            this.ticketTime.entryTime();
             museum.enterMuseum(this);
+
+            // try {
+            // lock.lock();
+            // while (Museum.worldTime.getCurrentTime() < museum.getMuseumCloseTime()
+            // && Museum.worldTime.getCurrentTime() <
+            // this.visitor.visitorTime.getExitTime()) {
+            // isClose.await(10, TimeUnit.MILLISECONDS);
+            // }
+            // isClose.signalAll();
+            // } finally {
+            // lock.unlock();
+            // }
 
             try {
                 lock.lock();
                 while (Museum.worldTime.getCurrentTime() < museum.getMuseumCloseTime()
-                        && Museum.worldTime.getCurrentTime() < this.visitor.visitorTime.getExitTime()) {
+                        && Museum.worldTime.getCurrentTime() < this.ticketTime.getExitTime()) {
                     isClose.await(10, TimeUnit.MILLISECONDS);
                 }
                 isClose.signalAll();
@@ -89,16 +108,18 @@ public class Ticket implements Runnable {
                 lock.unlock();
             }
 
-            // try {
-            // lock.lock();
-            // while (Museum.worldTime.getCurrentTime() < museum.getMuseumCloseTime()
-            // && Museum.worldTime.getCurrentTime() < this.ticketTime.getExitTime()) {
-            // isClose.await(10, TimeUnit.MILLISECONDS);
-            // }
-            // isClose.signalAll();
-            // } finally {
-            // lock.unlock();
-            // }
+            try {
+                lock.lock();
+                if (Museum.worldTime.getCurrentTime() == museum.getMuseumCloseTime()) {
+                    if (museum.getStatus()) {
+                        System.out.println(
+                                "\n################################################## MUSEUM CLOSED ##################################################\n");
+                        museum.setStatus(false);
+                    }
+                }
+            } finally {
+                lock.unlock();
+            }
 
             museum.exitMuseum(this);
             currentVisitorsLimit.release();

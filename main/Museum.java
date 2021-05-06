@@ -19,6 +19,7 @@ public class Museum {
 
     // Not more than 100 visitors are allowed in the museum at one time.
     private Semaphore currentVisitorsLimit;
+    private int currentIntVisitorsLimit;
 
     // Museum name
     private final String name;
@@ -57,8 +58,9 @@ public class Museum {
         this.setDailyVisitorsLimitFlag(false);
         this.setTicketsCloseFlag(false);
         this.currentVisitorsLimit = new Semaphore(currentVisitorsLimit);
+        this.currentIntVisitorsLimit = currentVisitorsLimit;
 
-        this.status = true;
+        this.status = false;
         visitorCount = new Counter();
         totalTickets = new Counter();
         totalVisitors = new Counter();
@@ -70,7 +72,8 @@ public class Museum {
         this.southEntrance = new Entrance("SE", this);
         this.eastExit = new Exit("EE", this);
         this.westExit = new Exit("WE", this);
-
+        System.out.println(
+                "\n############################################## MUSEUM TICKETS OPEN ##############################################\n");
     }
 
     public boolean isTicketsCloseFlag() {
@@ -95,6 +98,10 @@ public class Museum {
 
     public Semaphore getCurrentVisitorsLimit() {
         return currentVisitorsLimit;
+    }
+
+    public int getIntCurrentVisitorsLimit() {
+        return currentIntVisitorsLimit;
     }
 
     public long getMuseumOpenTime() {
@@ -191,7 +198,12 @@ public class Museum {
              */
             visitor.visitorTime.purchaseTime();
             visitor.visitorTime.setVisitDuration();
-            System.out.println(Thread.currentThread().getName() + ":\t" + visitor.visitorTime.getPurchaseTime()
+
+            // System.out.println(Thread.currentThread().getName() + ":\t" +
+            // visitor.visitorTime.getPurchaseTime()
+            // + " - Tickets " + ticketsList + " sold");
+
+            System.out.println(Museum.worldTime.getFormattedCurrentTime()
                     + " - Tickets " + ticketsList + " sold");
 
             for (int i = 0; i < ticketThread.length; i++) {
@@ -223,7 +235,7 @@ public class Museum {
              * There is also a timestamp of purchase on each ticket
              */
             String ticketID = String.format("T%04d", totalTickets.getNumber());
-            
+
             ticketThread[0] = new Thread(new Ticket(currentVisitorsLimit, ticketID, selectedEntrance, selectedExit,
                     visitor.museum, visitor));
 
@@ -235,9 +247,13 @@ public class Museum {
              */
             visitor.visitorTime.purchaseTime();
             visitor.visitorTime.setVisitDuration();
-            
-            System.out.println(Thread.currentThread().getName() + ":\t" + visitor.visitorTime.getPurchaseTime()
-                    + " - Ticket " + ticketID + " sold" + visitor.getVisitorID());
+
+            // System.out.println(Thread.currentThread().getName() + ":\t" +
+            // visitor.visitorTime.getPurchaseTime()
+            // + " - Ticket " + ticketID + " sold");
+
+            System.out.println(Museum.worldTime.getFormattedCurrentTime()
+                    + " - Ticket " + ticketID + " sold");
 
             ticketThread[0].start();
         }

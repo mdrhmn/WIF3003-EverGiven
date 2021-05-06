@@ -17,16 +17,16 @@ public class Turnstile {
         Museum.totalVisitors.increase();
         Museum.visitorCount.increase();
 
-        System.out.println(Thread.currentThread().getName() + ":\t" + Museum.worldTime.getFormattedCurrentTime()
+        System.out.println(Museum.worldTime.getFormattedCurrentTime()
                 + " - Ticket " + ticket.getTicketID() + " entered through Turnstile " + this.turnstileID
-                + ". Staying for " + ticket.visitor.visitorTime.getVisitDuration() + " minutes; Visitors count = "
+                + ". Staying for " + ticket.visitor.visitorTime.getVisitDuration() + " minutes; Current visitors count = "
                 + Museum.visitorCount.getNumber());
 
-        ticket.visitor.visitorTime.setExitTime(ticket.visitor.visitorTime.getVisitDuration(),
-                ticket.visitor.visitorTime.getLongEntryTime());
+        // ticket.visitor.visitorTime.setExitTime(ticket.visitor.visitorTime.getVisitDuration(),
+        //         ticket.visitor.visitorTime.getLongEntryTime());
 
-        // ticket.ticketTime.setExitTime(ticket.visitor.visitorTime.getVisitDuration(),
-        //         ticket.ticketTime.getLongEntryTime());
+        ticket.ticketTime.setExitTime(ticket.visitor.visitorTime.getVisitDuration(),
+                ticket.ticketTime.getLongEntryTime());
         // System.out.println(ticket.ticketTime.getLongEntryTime());
 
         ticket.setEntryStatus(true);
@@ -36,7 +36,7 @@ public class Turnstile {
     public void exit(Ticket ticket) {
         Museum.visitorCount.decrease();
 
-        System.out.println(Thread.currentThread().getName() + ":\t" + Museum.worldTime.getFormattedCurrentTime()
+        System.out.println(Museum.worldTime.getFormattedCurrentTime()
                 + " - Ticket " + ticket.getTicketID() + " exited through Turnstile " + this.turnstileID
                 + "; Visitors count = " + Museum.visitorCount.getNumber() + "; Total visitors count = "
                 + Museum.totalVisitors.getNumber());
