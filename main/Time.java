@@ -54,6 +54,10 @@ public class Time {
         return this.sysStartTime;
     }
 
+    public void setSysStartTime(long sysStartTime) {
+        this.sysStartTime = sysStartTime;
+    }
+
     public long getSysCurrTime() {
         return this.sysCurrTime;
     }
@@ -98,10 +102,9 @@ public class Time {
      * First request to purchase tickets will be made at 8.00 a.m.
      */
     public void purchaseTime() throws InterruptedException {
-
         /*
-         * Subsequent purchase will be made every 1-4 minutes. Each purchase will be
-         * for 1-4 tickets
+         * Subsequent purchase will be made every 1-4 minutes. Each purchase will be for
+         * 1-4 tickets
          */
         int randomSubsequentPurchase = (int) ((Math.random() * (4 - 1)) + 1) * 10;
         this.purchaseDuration = randomSubsequentPurchase;
@@ -117,8 +120,8 @@ public class Time {
          * will be randomly assigned to the visitor when the visitor is entering the
          * museum.
          */
-        int randomDuration = (int) ((Math.random() * (150 - 50)) + 50) * 10;
-        this.visitDuration = randomDuration;
+        // int randomDuration = (int) ((Math.random() * (150 - 50)) + 50) * 10;
+        // this.visitDuration = randomDuration;
 
         this.sysCurrTime = System.currentTimeMillis();
         calcRealtime(this.sysStartTime, this.sysCurrTime, museum.getMuseumTicketOpenTimeInMillis());
@@ -127,6 +130,11 @@ public class Time {
         } else {
             this.entryTime = this.currentTime;
         }
+    }
+
+    public void setVisitDuration() {
+        int randomDuration = (int) ((Math.random() * (150 - 50)) + 50) * 10;
+        this.visitDuration = randomDuration;
     }
 
     public void setExitTime(long duration, long startTime) {

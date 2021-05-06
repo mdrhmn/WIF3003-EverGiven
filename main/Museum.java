@@ -1,5 +1,4 @@
 import java.util.Random;
-import java.util.concurrent.locks.*;
 import java.util.concurrent.*;
 
 public class Museum {
@@ -37,6 +36,7 @@ public class Museum {
     private long museumTicketCloseTime = 1700;
     private long museumOpenTime = 900;
     private long museumCloseTime = 1800;
+    // Acting as flag for print statement of museum ticket closure
     private boolean ticketsCloseFlag;
 
     /*
@@ -49,8 +49,6 @@ public class Museum {
     public Exit westExit;
 
     Random random;
-
-    public static Lock lock = new ReentrantLock();
 
     // Constructor
     public Museum(String name, int currentVisitorsLimit, int dailyVisitorsLimit) {
@@ -72,6 +70,7 @@ public class Museum {
         this.southEntrance = new Entrance("SE", this);
         this.eastExit = new Exit("EE", this);
         this.westExit = new Exit("WE", this);
+
     }
 
     public boolean isTicketsCloseFlag() {
@@ -142,7 +141,7 @@ public class Museum {
         return name;
     }
 
-    public synchronized void purchaseTicket(Visitor visitor) throws InterruptedException {
+    public void purchaseTicket(Visitor visitor) throws InterruptedException {
 
         String ticketsList = "";
 
@@ -153,7 +152,8 @@ public class Museum {
              * Each visitor randomly uses a turnstile at either South Entrance or North
              * Entrance to enter the museum. After the duration of stay is over, the visitor
              * randomly uses a turnstile at either East Exit or West Exit to leave the
-             * museum (assuming that entrance and exit has been determined during ticket purchase)
+             * museum (assuming that entrance and exit has been determined during ticket
+             * purchase)
              */
             int selectedEntrance = random.nextInt(2);
             int selectedExit = random.nextInt(2);
@@ -190,7 +190,7 @@ public class Museum {
              * later
              */
             visitor.visitorTime.purchaseTime();
-            visitor.visitorTime.entryTime();
+            visitor.visitorTime.setVisitDuration();
             System.out.println(Thread.currentThread().getName() + ":\t" + visitor.visitorTime.getPurchaseTime()
                     + " - Tickets " + ticketsList + " sold");
 
@@ -207,7 +207,8 @@ public class Museum {
              * Each visitor randomly uses a turnstile at either South Entrance or North
              * Entrance to enter the museum. After the duration of stay is over, the visitor
              * randomly uses a turnstile at either East Exit or West Exit to leave the
-             * museum (assuming that entrance and exit has been determined during ticket purchase)
+             * museum (assuming that entrance and exit has been determined during ticket
+             * purchase)
              */
             int selectedEntrance = random.nextInt(2);
             int selectedExit = random.nextInt(2);
@@ -222,7 +223,7 @@ public class Museum {
              * There is also a timestamp of purchase on each ticket
              */
             String ticketID = String.format("T%04d", totalTickets.getNumber());
-
+            
             ticketThread[0] = new Thread(new Ticket(currentVisitorsLimit, ticketID, selectedEntrance, selectedExit,
                     visitor.museum, visitor));
 
@@ -233,9 +234,10 @@ public class Museum {
              * later
              */
             visitor.visitorTime.purchaseTime();
-            visitor.visitorTime.entryTime();
+            visitor.visitorTime.setVisitDuration();
+            
             System.out.println(Thread.currentThread().getName() + ":\t" + visitor.visitorTime.getPurchaseTime()
-                    + " - Ticket " + ticketID + " sold");
+                    + " - Ticket " + ticketID + " sold" + visitor.getVisitorID());
 
             ticketThread[0].start();
         }

@@ -25,15 +25,9 @@ public class Turnstile {
         ticket.visitor.visitorTime.setExitTime(ticket.visitor.visitorTime.getVisitDuration(),
                 ticket.visitor.visitorTime.getLongEntryTime());
 
-        // System.out.println(
-        // Thread.currentThread().getName() + ":\t" +
-        // Museum.worldTime.getFormattedCurrentTime() + " - Ticket "
-        // + ticket.getTicketID() + " - Purchase Time : " +
-        // ticket.visitor.visitorTime.getPurchaseTime());
-        // System.out.println(Thread.currentThread().getName() + ":\t" +
-        // Museum.worldTime.getFormattedCurrentTime()
-        // + " - Ticket " + ticket.getTicketID() + " - Exit Time : " +
-        // ticket.visitor.visitorTime.getExitTime());
+        // ticket.ticketTime.setExitTime(ticket.visitor.visitorTime.getVisitDuration(),
+        //         ticket.ticketTime.getLongEntryTime());
+        // System.out.println(ticket.ticketTime.getLongEntryTime());
 
         ticket.setEntryStatus(true);
         ticket.visitor.ticketsEnteredCount.increase();

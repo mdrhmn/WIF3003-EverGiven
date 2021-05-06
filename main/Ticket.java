@@ -15,7 +15,7 @@ public class Ticket implements Runnable {
     private Condition isOpen = lock.newCondition();
     private Condition isClose = lock.newCondition();
     private Semaphore currentVisitorsLimit;
-
+    // Time ticketTime;
     Museum museum;
     Visitor visitor;
 
@@ -28,6 +28,8 @@ public class Ticket implements Runnable {
         this.hasEntered = false;
         this.selectedEntrance = selectedEntrance;
         this.selectedExit = selectedExit;
+        // this.ticketTime = new Time(museum);
+        // this.ticketTime.setSysStartTime(this.visitor.visitorTime.getSysStartTime());
     }
 
     public boolean getEntryStatus() {
@@ -54,7 +56,6 @@ public class Ticket implements Runnable {
     public void run() {
         try {
             try {
-
                 lock.lock();
                 /*
                  * Tickets purchased before museum open time (9:00 a.m.) will have to wait until
@@ -73,6 +74,8 @@ public class Ticket implements Runnable {
                         + " - Current museum capacity is full. " + ticketID + " will have to queue for entry.");
             }
             currentVisitorsLimit.acquire();
+            visitor.visitorTime.entryTime();
+            // this.ticketTime.entryTime();
             museum.enterMuseum(this);
 
             try {
@@ -85,6 +88,17 @@ public class Ticket implements Runnable {
             } finally {
                 lock.unlock();
             }
+
+            // try {
+            // lock.lock();
+            // while (Museum.worldTime.getCurrentTime() < museum.getMuseumCloseTime()
+            // && Museum.worldTime.getCurrentTime() < this.ticketTime.getExitTime()) {
+            // isClose.await(10, TimeUnit.MILLISECONDS);
+            // }
+            // isClose.signalAll();
+            // } finally {
+            // lock.unlock();
+            // }
 
             museum.exitMuseum(this);
             currentVisitorsLimit.release();

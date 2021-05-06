@@ -61,10 +61,18 @@ public class Visitor implements Runnable {
                     }
                 } else if (Museum.totalTickets.getNumber() + this.getNoOfTickets() > museum.getDailyVisitorsLimit()) {
                     if (!museum.isDailyVisitorsLimitFlag()) {
-                        System.out.println(
-                                Thread.currentThread().getName() + ":\t" + Museum.worldTime.getFormattedCurrentTime()
-                                        + " - Maximum daily visitors limit reached (" + Museum.totalTickets.getNumber()
-                                        + "). Tickets are no longer available for purchase.");
+                        int totalVisitors = Museum.totalTickets.getNumber() + 1;
+                        if (totalVisitors != 500) {
+                            System.out.println(Thread.currentThread().getName() + ":\t"
+                                    + Museum.worldTime.getFormattedCurrentTime()
+                                    + " - Maximum daily visitors limit reached (" + Museum.totalTickets.getNumber()
+                                    + ").");
+                        } else {
+                            System.out.println(Thread.currentThread().getName() + ":\t"
+                                    + Museum.worldTime.getFormattedCurrentTime()
+                                    + " - Maximum daily visitors limit reached (" + totalVisitors
+                                    + "). Tickets are no longer available for purchase after T0500.");
+                        }
                         museum.setDailyVisitorsLimitFlag(true);
                     }
                 }
