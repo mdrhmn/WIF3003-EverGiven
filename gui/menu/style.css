@@ -1,26 +1,30 @@
-* {
-    -fx-background-color: white;
+#gridPane{
+    -fx-background-color: #F5F7FA;
 }
 
-#case1, #case2, #case3, #case4, #case5 {
-    -fx-background-color: white;
-    -fx-text-fill: #0d47a1;
+#intro{
+    -fx-alignment: center;
+    -fx-border-color: white;
     -fx-border-radius: 5px;
-    -fx-border-color: #0d47a1;
+    -fx-padding:5 15 5 15;
+    -fx-control-inner-background:white;
+    -fx-font: 20px "Courier New";
+    -fx-background-color: white;
+    -fx-effect: dropshadow(two-pass-box, rgba(0, 0, 0, 0.2), 5, 0.0, 0, 0);
 }
 
-#case1:hover, #case2:hover, #case3:hover, #case4:hover, #case5:hover {
-    -fx-border-radius: 5px;
-    -fx-background-color: #add8e6;
-    -fx-border-color: transparent;
+#intro * {
+    -fx-background-color: white;
+    -fx-text-alignment: justify;
 }
 
 #start {
     -fx-background-color: #33b5e5;
     -fx-text-fill: white;
-    -fx-border-radius: 5px;
+    -fx-border-radius: 10;
     -fx-border-color: #33b5e5;
     -fx-padding: 5 15 5 15;
+    -fx-pref-height:5;
 }
 
 #start:hover {
@@ -28,29 +32,20 @@
     -fx-border-color: transparent;
 }
 
-#ins, #welcome {
-    -fx-border-color: black;
-    -fx-border-radius: 5px;
-    -fx-min-height:50px;
-    -fx-padding:5 15 5 15;
-    -fx-background-color: white;
-}
-
 #opt {
     -fx-border-color: #33b5e5;
-    -fx-text-fill: #33b5e5;
+    /*-fx-background-fills: #33b5e5;*/
     -fx-border-radius: 5px;
-    -fx-padding:3 10 3 10;
-    /*-fx-background-color: #33b5e5;*/
+    -fx-padding:1 10 1 10;
+    -fx-background-color: #33b5e5;
+    -fx-pref-width: 130;
+    -fx-text-fill: white;
 }
 
-#welcome {
-    -fx-font: 20px Tahoma;
-    /*-fx-fill: linear-gradient(from 0% 0% to 100% 200%, repeat, aqua 0%, red 50%);*/
-    -fx-stroke: black;
-    /*-fx-stroke-width: 1;*/
+#opt * {
+    -fx-text-fill: white;
 }
 
-/*#opt:hover {
-    -fx-text-fill: red;
-}*/
+#opt:hover *{
+    -fx-text-fill: #0099CC;
+}
