@@ -1,64 +1,17 @@
-import javafx.util.Duration;
-import javafx.animation.KeyFrame;
-import javafx.animation.KeyValue;
-import javafx.animation.Timeline;
 import javafx.application.Application;
-import javafx.scene.control.TextField;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Border;
-import javafx.scene.layout.BorderStroke;
-import javafx.scene.layout.BorderStrokeStyle;
-import javafx.scene.layout.BorderWidths;
-import javafx.scene.layout.ColumnConstraints;
-import javafx.scene.layout.CornerRadii;
-import javafx.scene.layout.GridPane;
-import javafx.scene.shape.Circle;
-import javafx.scene.shape.Rectangle;
-import javafx.scene.control.Button;
-import javafx.event.EventHandler;
-import javafx.event.ActionEvent;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
-import javafx.scene.text.Text;
-import javafx.geometry.Insets;
-import javafx.geometry.HPos;
-import javafx.geometry.Pos;
-import javafx.scene.Group;
-import javafx.scene.Scene;
-import javafx.stage.Stage;
-
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-
-import javafx.animation.*;
-import javafx.application.Application;
-import javafx.event.*;
+import javafx.scene.control.*;
+import javafx.scene.layout.*;
+import javafx.scene.input.*;
+import javafx.scene.paint.*;
+import javafx.scene.text.*;
 import javafx.geometry.*;
 import javafx.scene.*;
-import javafx.scene.control.*;
-import javafx.scene.effect.*;
-import javafx.scene.input.*;
-import javafx.scene.layout.*;
-import javafx.scene.paint.*;
-import javafx.scene.shape.*;
-import javafx.scene.transform.*;
 import javafx.stage.*;
-import javafx.util.*;
+import javafx.event.*;
 
-public class MuseumStatistic extends Application {
+public class Stats extends Application {
 
-    // private TextField totalVisitorTxtField, currentVisitorTxtField,
-    // queuedVisitorTxtField, timeTxtField;
-    // totalVisitor
-    // dailyVisitorLimit
-    // currentVisitor
-    // hourlyVisitorLimit
-    // queuedVisitor
-    // expectedTotalVisitors
-    // rejectedPurchases
+    static VBox statsLayout;
     private int totalVisitor, currentVisitor, queuedVisitor, rejectedPurchases = 0;
     private int dailyVisitorLimit = 20, hourlyVisitorLimit = 5, expectedTotalVisitors = 12;
     private String museumStatus = "";
@@ -67,7 +20,7 @@ public class MuseumStatistic extends Application {
             statusTxtField;
 
     @Override
-    public void start(Stage stage) {
+    public void start(Stage stage) throws Exception {
 
         Text museumStatisticsTxt = new Text("Museum Statistics");
         Text totalVisitorTxt = new Text("Total Visitors");
@@ -112,14 +65,6 @@ public class MuseumStatistic extends Application {
         statusTxtField.setStyle("-fx-font: 16 arial;");
         statusTxtField.setPrefWidth(120);
         statusTxtField.setPrefHeight(40);
-        // totalVisitorTxtField.getStyleClass().add("text-field");
-        // dailyVisitorLimitTxtField.getStyleClass().add("textfield");
-        // currentVisitorTxtField.getStyleClass().add("textfield");
-        // hourlyVisitorLimitTxtField.getStyleClass().add("textfield");
-        // queuedVisitorTxtField.getStyleClass().add("textfield");
-        // expectedTotalVisitorsTxtField.getStyleClass().add("textfield");
-        // rejectedPurchasesTxtField.getStyleClass().add("textfield");
-        // statusTxtField.getStyleClass().add("textfield");
 
         Button visitorEnterBtn = new Button("visitorEnterBtn");
         Button visitorExitBtn = new Button("visitorExitBtn");
@@ -195,9 +140,6 @@ public class MuseumStatistic extends Application {
         colConstraint.setPrefWidth(40.0);
         museumStatsPane.getColumnConstraints().addAll(colConstraint, colConstraint, colConstraint, colConstraint,
                 colConstraint, colConstraint, colConstraint);
-        // museumStatsPane.setBorder(new Border(
-        // new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, CornerRadii.EMPTY,
-        // BorderWidths.DEFAULT)));
 
         museumStatsPane.add(museumStatisticsTxt, 2, 0, 3, 1);
         museumStatsPane.add(queuedVisitorTxtField, 0, 1, 3, 1);
@@ -224,10 +166,6 @@ public class MuseumStatistic extends Application {
         GridPane.setHalignment(expectedTotalVisitorsTxtField, HPos.CENTER);
         GridPane.setHalignment(expectedTotalVisitorsTxt, HPos.CENTER);
 
-        Circle clock = new Circle();
-        clock.setRadius(100.0);
-        clock.setFill(Color.DARKCYAN);
-
         GridPane museumMainPane = new GridPane();
         museumMainPane.setMinSize(350, 150);
         museumMainPane.setId("museumMain");
@@ -236,7 +174,9 @@ public class MuseumStatistic extends Application {
         museumMainPane.setHgap(20);
         museumMainPane.setAlignment(Pos.CENTER);
 
-        museumMainPane.add(clock, 0, 0, 6, 6);
+        Clock clockLayout = new Clock();
+
+        museumMainPane.add(clockLayout.getLayout(), 0, 0, 6, 6);
         museumMainPane.add(statusTxtField, 7, 0);
         museumMainPane.add(statusTxt, 7, 1);
         museumMainPane.add(totalVisitorTxtField, 7, 2);
@@ -244,7 +184,7 @@ public class MuseumStatistic extends Application {
         museumMainPane.add(currentVisitorTxtField, 7, 4);
         museumMainPane.add(currentVisitorTxt, 7, 5);
 
-        GridPane.setHalignment(clock, HPos.CENTER);
+        // GridPane.setHalignment(clock, HPos.CENTER);
         GridPane.setHalignment(statusTxtField, HPos.CENTER);
         GridPane.setHalignment(statusTxt, HPos.CENTER);
         GridPane.setHalignment(totalVisitorTxtField, HPos.CENTER);
@@ -252,15 +192,15 @@ public class MuseumStatistic extends Application {
         GridPane.setHalignment(currentVisitorTxtField, HPos.CENTER);
         GridPane.setHalignment(currentVisitorTxt, HPos.CENTER);
 
-        GridPane museumLogPane = new GridPane();
-        museumLogPane.setMinSize(400, 350);
-        museumLogPane.setId("pane");
-        museumLogPane.add(museumClosedBtn, 0, 0);
-        museumLogPane.add(museumOpenBtn, 0, 1);
-        museumLogPane.add(museumFullBtn, 0, 2);
-        museumLogPane.add(visitorEnterBtn, 0, 3);
-        museumLogPane.add(visitorExitBtn, 0, 4);
-        museumLogPane.add(rejectedPurchasesBtn, 0, 5);
+        // GridPane museumLogPane = new GridPane();
+        // museumLogPane.setMinSize(400, 350);
+        // museumLogPane.setId("pane");
+        // museumLogPane.add(museumClosedBtn, 0, 0);
+        // museumLogPane.add(museumOpenBtn, 0, 1);
+        // museumLogPane.add(museumFullBtn, 0, 2);
+        // museumLogPane.add(visitorEnterBtn, 0, 3);
+        // museumLogPane.add(visitorExitBtn, 0, 4);
+        // museumLogPane.add(rejectedPurchasesBtn, 0, 5);
 
         Text cursorPosition = new Text();
         museumStatsPane.setOnMousePressed(e -> {
@@ -278,31 +218,36 @@ public class MuseumStatistic extends Application {
         GridPane gapPane = new GridPane();
         gapPane.setMinSize(20, 20);
 
-        HBox hBox = new HBox(museumLogPane, gapPane, vBox);
+        HBox hBox = new HBox(gapPane, vBox);
         hBox.setAlignment(Pos.CENTER);
 
-        VBox vBox2 = new VBox(hBox);
-        vBox2.setAlignment(Pos.CENTER);
-        vBox2.getStyleClass().add("background");
+        statsLayout = new VBox(hBox);
+        statsLayout.setAlignment(Pos.CENTER);
+        statsLayout.getStyleClass().add("background");
 
         // Setting title to the Stage
         stage.setTitle("Ever Given Museum");
 
         // Creating a scene object
-        Scene scene = new Scene(vBox2);
+        Scene scene = new Scene(statsLayout);
         scene.setFill(Color.WHITESMOKE);
 
-        String cssFile1 = this.getClass().getResource("style.css").toExternalForm();
+        String cssFile1 = this.getClass().getResource("stats.css").toExternalForm();
         // String cssFile2 = this.getClass().getResource("clock.css").toExternalForm();
         scene.getStylesheets().addAll(cssFile1);
-        
+
         // Adding scene to the stage
         stage.setScene(scene);
         stage.setHeight(600);
         stage.setWidth(900);
 
         // Displaying the contents of the stage
-        stage.show();
+        // stage.show();
+    }
+
+    public VBox getLayout() throws Exception {
+        start(new Stage());
+        return statsLayout;
     }
 
     private void museumOpen() {
@@ -384,26 +329,8 @@ public class MuseumStatistic extends Application {
         cursorPosition.setVisible(true);
     }
 
-    private String pad(int fieldWidth, char padChar, String s) {
-        StringBuilder sb = new StringBuilder();
-        for (int i = s.length(); i < fieldWidth; i++) {
-            sb.append(padChar);
-        }
-        sb.append(s);
-
-        return sb.toString();
-    }
-
-    static String getResource(String path) {
-        return Clock.class.getResource(path).toExternalForm();
-    }
-
     // records relative x and y co-ordinates.
     class Delta {
         double x, y;
-    }
-
-    public static void main(String args[]) {
-        launch(args);
     }
 }

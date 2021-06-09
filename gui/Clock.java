@@ -12,14 +12,11 @@ import javafx.scene.shape.*;
 import javafx.scene.transform.Rotate;
 import javafx.stage.*;
 import javafx.util.Duration;
-
 import java.util.*;
 
-/**
- * Note that this clock does not keep perfect time, but is close. It's main
- * purpose is to demonstrate various features of JavaFX.
- */
-public class ClockOne extends Application {
+public class Clock extends Application {
+
+    static VBox layout;
     public static void main(String[] args) throws Exception {
         launch(args);
     }
@@ -153,7 +150,7 @@ public class ClockOne extends Application {
         });
 
         // layout the scene.
-        final VBox layout = new VBox();
+        layout = new VBox();
         layout.getChildren().addAll(analogueClock, digitalClock);
         layout.setAlignment(Pos.CENTER);
         final Scene scene = new Scene(layout, Color.TRANSPARENT);
@@ -202,7 +199,7 @@ public class ClockOne extends Application {
         });
 
         // show the scene.
-        stage.show();
+        // stage.show();
     }
 
     private String pad(int fieldWidth, char padChar, String s) {
@@ -216,7 +213,12 @@ public class ClockOne extends Application {
     }
 
     static String getResource(String path) {
-        return ClockOne.class.getResource(path).toExternalForm();
+        return Clock.class.getResource(path).toExternalForm();
+    }
+
+    public VBox getLayout() throws Exception{
+        start(new Stage());
+        return layout;
     }
 
     // records relative x and y co-ordinates.
