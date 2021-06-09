@@ -1,0 +1,58 @@
+/** clock.css (place input same directory as Clock.java and ensure build script copies the file to the same location as Clock.class) */
+
+.root {
+    -fx-background-color: linear-gradient(to bottom, rgb(255, 255, 255), rgb(255, 255, 255));
+    -fx-padding: 12;
+    -fx-background-insets: 5;
+    -fx-effect: dropshadow(three-pass-box, rgb(255, 255, 255), 10, 0, 0, 0);
+}
+
+#face {
+    /* -fx-fill: radial-gradient(radius 180%, burlywood, derive(burlywood, -30%), derive(burlywood, 30%)); */
+    -fx-fill: radial-gradient(radius 180%, rgb(255, 255, 255), derive(rgb(255, 255, 255), -30%), derive(rgb(255, 255, 255), 30%));
+    /* -fx-stroke: derive(burlywood, -45%); */
+    -fx-stroke: derive(rgb(0, 0, 0), -45%);
+    -fx-stroke-width: 5;
+    -fx-effect: dropshadow(three-pass-box, grey, 10, 0, 4, 4);
+}
+
+#brand {
+    -fx-font-size: 14px;
+}
+
+#hourHand {
+    /* -fx-stroke: darkslategray; */
+    -fx-stroke: rgb(0, 0, 0);
+    -fx-stroke-width: 4;
+    -fx-stroke-line-cap: round;
+}
+
+#minuteHand {
+    /* -fx-stroke: derive(darkslategray, -5%); */
+    -fx-stroke: derive(rgb(0, 0, 0), -5%);
+    -fx-stroke-width: 3;
+    -fx-stroke-line-cap: round;
+}
+
+#secondHand {
+    -fx-stroke: derive(firebrick, -15%);
+    -fx-stroke-width: 2;
+    -fx-stroke-line-cap: round;
+}
+
+#spindle {
+    /* -fx-fill: derive(darkslategray, +5%); */
+    -fx-fill: derive(rgb(0, 0, 0), +5%);
+}
+
+#digitalClock {
+    -fx-font-size: 14px;
+    -fx-font-family: 'Courier New';
+}
+
+.tick {
+    /* -fx-stroke: derive(darkgoldenrod, -15%); */
+    -fx-stroke: derive(rgb(0, 0, 0), -15%);
+    -fx-stroke-width: 3;
+    -fx-stroke-line-cap: round;
+}

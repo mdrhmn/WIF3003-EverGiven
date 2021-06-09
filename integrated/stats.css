@@ -1,0 +1,17 @@
+#pane {
+    -fx-border-color: #5F4339;
+    -fx-size-adjust: 10px;
+    -fx-background-color: white;
+}
+
+.background {
+    -fx-background-color: #FDFBE5;
+}
+
+#museumMain {
+    -fx-style-background-color: #FDFBE5;
+}
+
+.text-field {
+    -fx-alignment: center;
+}
