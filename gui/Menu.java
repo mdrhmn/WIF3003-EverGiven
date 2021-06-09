@@ -5,27 +5,29 @@ import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 public class Menu extends Application {
 
-    Scene scene1, scene2;
     private int selectID;
 
     @Override
     public void start(Stage stage) {
-        String instruction = "Lorem ipsum dolor sit amet, consectetur adipiscing elit Lorem ipsum dolor sit amet, consectetur adipiscing elit";
+        String instruction = "This is a JavaFX application for our team (Ever Given)'s submission for Concurrent Programming [WIF3003] Group Project (Phase 2) titled 'Museum Under Pandemic' in Semester 2, 2020/2021 session."
+                + "The purpose of this assignment is to assess the students’ ability to apply adequate programming skills and use appropriate constructs in the Java language to solve a concurrent problem. "
+                + "\n\nTeam Members:\n1. Muhammad Rahiman bin Abdulmanab\n2. Nur Faidz Hazirah binti Nor'Azman\n3. Muhammad Luqman bin Sulaiman\n4. Muhammad Farouq bin Shaharuddin"
+                + "\n\nPlease select a test case before running the program:";
 
         TextArea intro = new TextArea(instruction);
         intro.setWrapText(true);
         intro.setEditable(false);
         intro.setId("intro");
-        intro.getStyleClass().setAll("border", "shadow");
+        intro.getStyleClass().setAll("text-area");
+        intro.setPrefHeight(500);
 
         // Select option
         // VBox message = new VBox(5, intro);
@@ -40,26 +42,20 @@ public class Menu extends Application {
             System.out.println("Selection made: [" + selectedIndex + "] " + selectedItem);
             System.out.println("ComboBox.getValue(): " + opt.getValue());
         });
-
-        // opt.getStyleClass().setAll("combo-box");
-
-        TextArea m2 = new TextArea();
-        m2.setWrapText(true);
-        m2.setEditable(false);
-        m2.setId("welcome");
+        opt.getStyleClass().setAll("combo-box");
 
         // Start Button
         Button start = new Button("Start");
         start.setId("start");
-        // start.getStyleClass().setAll("button", "danger", "p-5");
         HBox line1 = new HBox(20, opt, start);
         line1.setAlignment(Pos.CENTER);
+        start.getStyleClass().setAll("button", "primary");
+        start.setStyle("-fx-font-size:18;");
 
-        // Scene 2
-        Label label1 = new Label("Scene 2");
-        label1.setAlignment(Pos.CENTER);
-        VBox l2 = new VBox(20);
-        l2.getChildren().addAll(label1, m2);
+        Text label1 = new Text("Ever Given - Museum Under Pandemic");
+        label1.getStyleClass().setAll("lg");
+        HBox top = new HBox(20, label1);
+        top.setAlignment(Pos.CENTER);
 
         // Creating a Grid Pane for Scene 1
         GridPane gridPane = new GridPane();
@@ -70,14 +66,13 @@ public class Menu extends Application {
         gridPane.setAlignment(Pos.CENTER);
 
         // Arranging all the nodes in the grid
-        gridPane.add(intro, 0, 0);
+        gridPane.add(top, 0, 0);
+        gridPane.add(intro, 0, 1);
         gridPane.add(line1, 0, 4);
         gridPane.setId("gridPane");
 
-        // Creating a Group object
-        Scene scene = new Scene(gridPane, 500, 350);
-        scene2 = new Scene(l2, 500, 350);
-        scene.getStylesheets().add("menu.css");
+        Scene scene = new Scene(gridPane, 600, 450);
+        scene.getStylesheets().add("bootstrap.css");
 
         GUI gui = new GUI();
 
@@ -89,11 +84,11 @@ public class Menu extends Application {
             } catch (Exception e1) {
                 e1.printStackTrace();
             }
-            m2.setText("Test Case ID: " + getID());
         });
 
         // Adding scene to the stage
         stage.setScene(scene);
+        stage.setResizable(false);
         stage.show();
     }
 

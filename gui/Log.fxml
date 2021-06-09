@@ -8,13 +8,13 @@
 
 <BorderPane xmlns:fx="http://javafx.com/fxml/1" fx:controller="LogController">
     <center>
-        <TextArea minHeight="600.0" prefHeight="600.0" maxHeight="10000.0" fx:id="console"/>
+        <TextArea minHeight="600.0" fx:id="console"/>
     </center>
-    <bottom>
+    <!-- <bottom>
         <Button onAction="#button" text="Output">
             <BorderPane.alignment>CENTER</BorderPane.alignment>
             <BorderPane.margin><Insets top="5" left="5" right="5" bottom="5"/></BorderPane.margin>
         </Button>
-    </bottom>
+    </bottom> -->
 </BorderPane>
 

@@ -22,13 +22,13 @@ public class GUI extends Application {
 
         String cssFile1 = this.getClass().getResource("stats.css").toExternalForm();
         String cssFile2 = this.getClass().getResource("clock.css").toExternalForm();
-        scene.getStylesheets().addAll(cssFile1, cssFile2);
+        String cssFile3 = this.getClass().getResource("bootstrap.css").toExternalForm();
+        scene.getStylesheets().addAll(cssFile1, cssFile2, cssFile3);
 
         // Adding scene to the stage
         stage.setScene(scene);
         stage.setHeight(600);
         stage.setWidth(1000);
-
         // Displaying the contents of the stage
         // stage.show();
     }

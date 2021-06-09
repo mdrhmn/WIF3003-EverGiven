@@ -14,6 +14,7 @@ public class Log extends Application {
         museumLogPane = new GridPane();
         museumLogPane.setMinSize(400, 350);
         museumLogPane.setId("pane");
+        // museumLogPane.getChildren().add(root);
         museumLogPane.add(root,0,0);
     }
 

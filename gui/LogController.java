@@ -28,9 +28,10 @@ public class LogController {
 
         public Console(TextArea console) {
             this.console = console;
+            console.setEditable(false);
+            console.setWrapText(true);
             // console.setPrefHeight(500);
             // console.setPrefWidth(500);
-            // console.setPrefSize( Double.MAX_VALUE, Double.MAX_VALUE );
         }
 
         public void appendText(String valueOf) {

@@ -41,6 +41,15 @@ public class Stats extends Application {
         rejectedPurchasesTxtField = new TextField(String.valueOf(rejectedPurchases));
         statusTxtField = new TextField(String.valueOf(museumStatus));
 
+        totalVisitorTxtField.setEditable(false);
+        dailyVisitorLimitTxtField.setEditable(false);
+        currentVisitorTxtField.setEditable(false);
+        hourlyVisitorLimitTxtField.setEditable(false);
+        queuedVisitorTxtField.setEditable(false);
+        expectedTotalVisitorsTxtField.setEditable(false);
+        rejectedPurchasesTxtField.setEditable(false);
+        statusTxtField.setEditable(false);
+
         totalVisitorTxtField.setStyle("-fx-font: 16 arial;");
         totalVisitorTxtField.setPrefWidth(120);
         totalVisitorTxtField.setPrefHeight(40);
@@ -72,6 +81,7 @@ public class Stats extends Application {
         Button museumClosedBtn = new Button("museumClosedBtn");
         Button museumFullBtn = new Button("museumFullBtn");
         Button rejectedPurchasesBtn = new Button("rejectedPurchasesBtn");
+        
 
         visitorEnterBtn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -134,7 +144,7 @@ public class Stats extends Application {
         // welcome.getStyleClass().setAll("border", "border-dark", "p-5");
         museumStatsPane.setMinSize(350, 280);
         museumStatsPane.setPadding(new Insets(10, 10, 10, 10));
-        museumStatsPane.setVgap(5);
+        museumStatsPane.setVgap(10);
         museumStatsPane.setAlignment(Pos.CENTER);
         ColumnConstraints colConstraint = new ColumnConstraints();
         colConstraint.setPrefWidth(40.0);
@@ -152,7 +162,6 @@ public class Stats extends Application {
         museumStatsPane.add(hourlyVisitorLimitTxt, 4, 4, 3, 1);
         museumStatsPane.add(expectedTotalVisitorsTxtField, 2, 5, 3, 1);
         museumStatsPane.add(expectedTotalVisitorsTxt, 2, 6, 3, 1);
-        // museumStatsPane.setGridLinesVisible(true);
 
         GridPane.setHalignment(museumStatisticsTxt, HPos.CENTER);
         GridPane.setHalignment(queuedVisitorTxtField, HPos.CENTER);
@@ -166,23 +175,28 @@ public class Stats extends Application {
         GridPane.setHalignment(expectedTotalVisitorsTxtField, HPos.CENTER);
         GridPane.setHalignment(expectedTotalVisitorsTxt, HPos.CENTER);
 
-        GridPane museumMainPane = new GridPane();
-        museumMainPane.setMinSize(350, 150);
-        museumMainPane.setId("museumMain");
-        museumMainPane.setPadding(new Insets(20, 20, 20, 20));
-        museumMainPane.setVgap(5);
-        museumMainPane.setHgap(20);
-        museumMainPane.setAlignment(Pos.CENTER);
-
         Clock clockLayout = new Clock();
+        VBox clockVBox = new VBox(clockLayout.getLayout());
+        VBox statusVBox = new VBox(statusTxtField, statusTxt);
+        VBox totalVisitorVBox = new VBox(totalVisitorTxtField, totalVisitorTxt);
+        VBox currentVisitorVBox = new VBox(currentVisitorTxtField, currentVisitorTxt);
+        VBox mainStatsVBox = new VBox(statusVBox,totalVisitorVBox,currentVisitorVBox);
+        HBox mainPaneHBox = new HBox(clockVBox, mainStatsVBox);
 
-        museumMainPane.add(clockLayout.getLayout(), 0, 0, 6, 6);
-        museumMainPane.add(statusTxtField, 7, 0);
-        museumMainPane.add(statusTxt, 7, 1);
-        museumMainPane.add(totalVisitorTxtField, 7, 2);
-        museumMainPane.add(totalVisitorTxt, 7, 3);
-        museumMainPane.add(currentVisitorTxtField, 7, 4);
-        museumMainPane.add(currentVisitorTxt, 7, 5);
+        clockVBox.setAlignment(Pos.CENTER);
+        statusVBox.setAlignment(Pos.CENTER);
+        totalVisitorVBox.setAlignment(Pos.CENTER);
+        currentVisitorVBox.setAlignment(Pos.CENTER);
+        mainStatsVBox.setAlignment(Pos.CENTER);
+        mainPaneHBox.setAlignment(Pos.CENTER);
+
+        mainPaneHBox.setPadding(new Insets(15, 12, 15, 12));
+
+        statusVBox.setSpacing(5);
+        totalVisitorVBox.setSpacing(5);
+        currentVisitorVBox.setSpacing(5);
+        mainStatsVBox.setSpacing(15);
+        mainPaneHBox.setSpacing(50);
 
         // GridPane.setHalignment(clock, HPos.CENTER);
         GridPane.setHalignment(statusTxtField, HPos.CENTER);
@@ -191,16 +205,6 @@ public class Stats extends Application {
         GridPane.setHalignment(totalVisitorTxt, HPos.CENTER);
         GridPane.setHalignment(currentVisitorTxtField, HPos.CENTER);
         GridPane.setHalignment(currentVisitorTxt, HPos.CENTER);
-
-        // GridPane museumLogPane = new GridPane();
-        // museumLogPane.setMinSize(400, 350);
-        // museumLogPane.setId("pane");
-        // museumLogPane.add(museumClosedBtn, 0, 0);
-        // museumLogPane.add(museumOpenBtn, 0, 1);
-        // museumLogPane.add(museumFullBtn, 0, 2);
-        // museumLogPane.add(visitorEnterBtn, 0, 3);
-        // museumLogPane.add(visitorExitBtn, 0, 4);
-        // museumLogPane.add(rejectedPurchasesBtn, 0, 5);
 
         Text cursorPosition = new Text();
         museumStatsPane.setOnMousePressed(e -> {
@@ -212,7 +216,7 @@ public class Stats extends Application {
         museumStatsPane.setOnMouseReleased(e -> cursorPosition.setVisible(true));
         // museumStatsPane.add(cursorPosition, 2, 9);
 
-        VBox vBox = new VBox(museumMainPane, museumStatsPane);
+        VBox vBox = new VBox(mainPaneHBox, museumStatsPane);
         vBox.setAlignment(Pos.CENTER);
 
         GridPane gapPane = new GridPane();
@@ -232,14 +236,13 @@ public class Stats extends Application {
         Scene scene = new Scene(statsLayout);
         scene.setFill(Color.WHITESMOKE);
 
-        String cssFile1 = this.getClass().getResource("stats.css").toExternalForm();
-        // String cssFile2 = this.getClass().getResource("clock.css").toExternalForm();
+        String cssFile1 = this.getClass().getResource("bootstrap.css").toExternalForm();
         scene.getStylesheets().addAll(cssFile1);
 
         // Adding scene to the stage
         stage.setScene(scene);
         stage.setHeight(600);
-        stage.setWidth(900);
+        stage.setWidth(1000);
 
         // Displaying the contents of the stage
         // stage.show();
@@ -275,7 +278,7 @@ public class Stats extends Application {
         totalVisitorTxtField.setText(String.valueOf(getTotalVisitor()));
         currentVisitorTxtField.setText(String.valueOf(getCurrentVisitor()));
     }
-
+    
     private void increaseQueuedVisitor() {
         queuedVisitor++;
         queuedVisitorTxtField.setText(String.valueOf(getQueuedVisitor()));

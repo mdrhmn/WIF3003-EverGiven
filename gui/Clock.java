@@ -131,24 +131,6 @@ public class Clock extends Application {
             }
         });
 
-        // fade out the scene and shut it down when the mouse is clicked on the clock.
-        analogueClock.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent mouseEvent) {
-                analogueClock.setMouseTransparent(true);
-                FadeTransition fade = new FadeTransition(Duration.seconds(1.2), analogueClock);
-                fade.setOnFinished(new EventHandler<ActionEvent>() {
-                    @Override
-                    public void handle(ActionEvent actionEvent) {
-                        stage.close();
-                    }
-                });
-                fade.setFromValue(1);
-                fade.setToValue(0);
-                fade.play();
-            }
-        });
-
         // layout the scene.
         layout = new VBox();
         layout.getChildren().addAll(analogueClock, digitalClock);
@@ -156,47 +138,6 @@ public class Clock extends Application {
         final Scene scene = new Scene(layout, Color.TRANSPARENT);
         scene.getStylesheets().add(getResource("clock.css"));
         stage.setScene(scene);
-
-        // allow the clock background to be used to drag the clock around.
-        final Delta dragDelta = new Delta();
-        layout.setOnMousePressed(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent mouseEvent) {
-                // record a delta distance for the drag and drop operation.
-                dragDelta.x = stage.getX() - mouseEvent.getScreenX();
-                dragDelta.y = stage.getY() - mouseEvent.getScreenY();
-                scene.setCursor(Cursor.MOVE);
-            }
-        });
-        layout.setOnMouseReleased(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent mouseEvent) {
-                scene.setCursor(Cursor.HAND);
-            }
-        });
-        layout.setOnMouseDragged(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent mouseEvent) {
-                stage.setX(mouseEvent.getScreenX() + dragDelta.x);
-                stage.setY(mouseEvent.getScreenY() + dragDelta.y);
-            }
-        });
-        layout.setOnMouseEntered(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent mouseEvent) {
-                if (!mouseEvent.isPrimaryButtonDown()) {
-                    scene.setCursor(Cursor.HAND);
-                }
-            }
-        });
-        layout.setOnMouseExited(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent mouseEvent) {
-                if (!mouseEvent.isPrimaryButtonDown()) {
-                    scene.setCursor(Cursor.DEFAULT);
-                }
-            }
-        });
 
         // show the scene.
         // stage.show();
