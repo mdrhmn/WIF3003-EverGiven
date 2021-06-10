@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Museum;
 
 import javafx.application.Application;
 import javafx.scene.control.*;
@@ -20,14 +19,20 @@ public class Stats extends Application {
 
     static VBox statsLayout;
     private int totalVisitor, currentVisitor, queuedVisitor, rejectedPurchases = 0;
-    private int dailyVisitorLimit = 20, hourlyVisitorLimit = 5, expectedTotalVisitors = 12;
+    private int dailyVisitorLimit, hourlyVisitorLimit, expectedTotalVisitors;
     private String museumStatus = "";
     private TextField totalVisitorTxtField, dailyVisitorLimitTxtField, currentVisitorTxtField,
             hourlyVisitorLimitTxtField, queuedVisitorTxtField, expectedTotalVisitorsTxtField, rejectedPurchasesTxtField,
             statusTxtField;
+    public Button visitorEnterBtn, visitorExitBtn, museumOpenBtn, museumClosedBtn, museumFullBtn, rejectedPurchasesBtn;
 
     @Override
     public void start(Stage stage) throws Exception {
+
+        // Museum museum;
+        // dailyVisitorLimit = Museum.getDailyVisitorsLimit();
+        // hourlyVisitorLimit = Museum.getIntCurrentVisitorsLimit();
+        // expectedTotalVisitors;
 
         Text museumStatisticsTxt = new Text("Museum Statistics");
         Text totalVisitorTxt = new Text("Total Visitors");
@@ -82,13 +87,12 @@ public class Stats extends Application {
         statusTxtField.setPrefWidth(120);
         statusTxtField.setPrefHeight(40);
 
-        Button visitorEnterBtn = new Button("visitorEnterBtn");
-        Button visitorExitBtn = new Button("visitorExitBtn");
-        Button museumOpenBtn = new Button("museumOpenBtn");
-        Button museumClosedBtn = new Button("museumClosedBtn");
-        Button museumFullBtn = new Button("museumFullBtn");
-        Button rejectedPurchasesBtn = new Button("rejectedPurchasesBtn");
-        
+        visitorEnterBtn = new Button("visitorEnterBtn");
+        visitorExitBtn = new Button("visitorExitBtn");
+        museumOpenBtn = new Button("museumOpenBtn");
+        museumClosedBtn = new Button("museumClosedBtn");
+        museumFullBtn = new Button("museumFullBtn");
+        rejectedPurchasesBtn = new Button("rejectedPurchasesBtn");
 
         visitorEnterBtn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -187,7 +191,7 @@ public class Stats extends Application {
         VBox statusVBox = new VBox(statusTxtField, statusTxt);
         VBox totalVisitorVBox = new VBox(totalVisitorTxtField, totalVisitorTxt);
         VBox currentVisitorVBox = new VBox(currentVisitorTxtField, currentVisitorTxt);
-        VBox mainStatsVBox = new VBox(statusVBox,totalVisitorVBox,currentVisitorVBox);
+        VBox mainStatsVBox = new VBox(statusVBox, totalVisitorVBox, currentVisitorVBox);
         HBox mainPaneHBox = new HBox(clockVBox, mainStatsVBox);
 
         clockVBox.setAlignment(Pos.CENTER);
@@ -285,7 +289,7 @@ public class Stats extends Application {
         totalVisitorTxtField.setText(String.valueOf(getTotalVisitor()));
         currentVisitorTxtField.setText(String.valueOf(getCurrentVisitor()));
     }
-    
+
     private void increaseQueuedVisitor() {
         queuedVisitor++;
         queuedVisitorTxtField.setText(String.valueOf(getQueuedVisitor()));

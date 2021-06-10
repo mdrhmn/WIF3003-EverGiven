@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Museum;
+
 import java.util.Random;
 import java.util.concurrent.*;
 

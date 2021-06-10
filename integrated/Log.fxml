@@ -6,15 +6,9 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.stage.Screen?>
 
-<BorderPane xmlns:fx="http://javafx.com/fxml/1" fx:controller="Museum.LogController">
+<BorderPane xmlns:fx="http://javafx.com/fxml/1" fx:controller="LogController">
     <center>
         <TextArea minHeight="600.0" fx:id="console"/>
     </center>
-    <!-- <bottom>
-        <Button onAction="#button" text="Output">
-            <BorderPane.alignment>CENTER</BorderPane.alignment>
-            <BorderPane.margin><Insets top="5" left="5" right="5" bottom="5"/></BorderPane.margin>
-        </Button>
-    </bottom> -->
 </BorderPane>
 

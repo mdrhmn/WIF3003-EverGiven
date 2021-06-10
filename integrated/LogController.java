@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Museum;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -16,17 +15,22 @@ import javafx.scene.control.TextArea;
 public class LogController {
 
     @FXML
-    private TextArea console;
+    private static TextArea console;
     private PrintStream ps;
 
     public void initialize() {
         ps = new PrintStream(new Console(console));
+        ps.println("Hello World");
     }
 
     public void button(ActionEvent event) {
         System.setOut(ps);
         System.setErr(ps);
         System.out.println("Hello World");
+    }
+
+    public static void displayText(String text) {
+        console.appendText(text);
     }
 
     public class Console extends OutputStream {
@@ -36,8 +40,6 @@ public class LogController {
             this.console = console;
             console.setEditable(false);
             console.setWrapText(true);
-            // console.setPrefHeight(500);
-            // console.setPrefWidth(500);
         }
 
         public void appendText(String valueOf) {

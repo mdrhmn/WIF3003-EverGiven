@@ -1,4 +1,3 @@
-package Museum;
 
 import javafx.scene.control.Button;
 import javafx.geometry.Insets;
@@ -69,21 +68,17 @@ public class Menu extends Application {
         gridPane.setId("gridPane");
 
         Scene scene = new Scene(gridPane, 600, 450);
-        scene.getStylesheets().add("Museum/bootstrap.css");
+        scene.getStylesheets().add("bootstrap.css");
 
         GUI gui = new GUI();
-        Main runMuseum = new Main();
-
+        MainTest runMuseum = new MainTest();
         // Setting title to the Stage
         stage.setTitle("Ever Given Museum");
         start.setOnAction(e -> {
             try {
+                // stage.setScene(gui.getScene());
                 if (getID() > -1) {
-                    
-//                    Process p = Runtime.getRuntime().exec("java Main");
                     runMuseum.setTestCase(1);
-                    runMuseum.main(null);
-                    
                     stage.setScene(gui.getScene());
                 } else {
                     opt.setStyle("-fx-border-width:3;-fx-border-color:#b4d1f3;");
@@ -99,16 +94,16 @@ public class Menu extends Application {
         stage.show();
     }
 
-    public static void main(String[] args) {
-        launch(args);
-    }
-
     public void setID(int x) {
         this.selectID = x;
     }
 
     public int getID() {
         return selectID;
+    }
+
+    public static void main(String[] args) {
+        launch(args);
     }
 
 }

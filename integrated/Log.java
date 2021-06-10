@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Museum;
+
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.*;
@@ -16,7 +16,7 @@ public class Log extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("Test.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("Log.fxml"));
         museumLogPane = new GridPane();
         museumLogPane.setMinSize(400, 350);
         museumLogPane.setId("pane");

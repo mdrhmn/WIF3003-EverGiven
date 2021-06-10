@@ -1,10 +1,8 @@
 
-package Museum;
 import java.util.ArrayList;
-import java.util.Scanner;
 
-public class Main {
-    
+public class MainTest {
+
     private static int tcID;
 
     public static void museumOperation(String filename) throws InterruptedException {
@@ -39,39 +37,8 @@ public class Main {
         }
     }
 
-    public static void main(String[] args) throws InterruptedException {
-        Scanner scanner = new Scanner(System.in); // Create a Scanner object
-        int option;
-        boolean flag = true;
-
-        System.out.println("\nWelcome to Ever Given's Museum During Pandemic simulation!");
-        
-        option = getTestCase();
-
-//        do {
-//            System.out.println("\nSelect test case option (enter -1 to exit):");
-//            System.out.println("1. Within Daily Limit");
-//            System.out.println("2. Exceed Daily Limit");
-//            System.out.println("3. Within Current Limit");
-//            System.out.println("4. Exceed Current Limit");
-//            System.out.print("\nEnter option: ");
-//            option = scanner.nextInt();
-//            
-//
-//            if (option == -1)
-//                flag = true;
-//            else if (!(option > 0 && option < 5))
-//                flag = false;
-//            else
-//                flag = true;
-//
-//            if (flag == false) {
-//                System.out.println("Invalid input. Please choose between option 1 and 4.");
-//            }
-//
-//        } while (flag == false);
-
-        switch (option) {
+    public void setTestCase(int id) throws InterruptedException {
+        switch (id) {
             case -1:
                 System.out.println("System will terminate.");
                 System.exit(0);
@@ -92,20 +59,10 @@ public class Main {
                 museumOperation("TestCase-5.txt");
                 break;
         }
-
-//        scanner.close();
-
-        // museumOperation("TestCaseExceedDailyLimit.txt");
-        // museumOperation("TestCaseWithinDailyLimit.txt");
-        // museumOperation("TestCase2.txt");
-
-    }
-    
-    public void setTestCase(int id){
         tcID = id + 1;
     }
-    
-    public static int getTestCase(){
+
+    public static int getTestCase() {
         return tcID;
     }
 }
