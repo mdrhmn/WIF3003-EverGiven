@@ -55,6 +55,10 @@ public class Turnstile {
 
         ticket.setEntryStatus(true);
         ticket.visitor.ticketsEnteredCount.increase();
+    
+        Platform.runLater(() -> {
+            Stats.visitorEnterBtn.fire();
+        });
     }
 
     public void exit(Ticket ticket) {
@@ -66,6 +70,9 @@ public class Turnstile {
 
         ticket.setEntryStatus(false);
         ticket.visitor.ticketsExitCount.increase();
+        Platform.runLater(() -> {
+            Stats.visitorExitBtn.fire();
+        });
     }
 
     public boolean getTurnstileStatus() {

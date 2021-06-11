@@ -6,6 +6,9 @@
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import javafx.application.Platform;
+
 //import java.lang.System.Logger;
 //import java.lang.System.Logger.Level;
 import java.util.concurrent.TimeUnit;
@@ -78,6 +81,9 @@ public class Ticket implements Runnable {
                     System.out.println(
                             "\n################################################## MUSEUM OPEN ##################################################\n");
                     museum.setStatus(true);
+                    Platform.runLater(() -> {
+                        Stats.museumOpenBtn.fire();
+                    });
                 }
                 lock.unlock();
             }
@@ -119,6 +125,9 @@ public class Ticket implements Runnable {
             try {
                 lock.lock();
                 if (Museum.worldTime.getCurrentTime() == museum.getMuseumCloseTime()) {
+                    Platform.runLater(() -> {
+                        Stats.rejectedPurchasesBtn.fire();
+                    });
                     if (museum.getStatus()) {
                         System.out.println(
                                 "\n################################################## MUSEUM CLOSED ##################################################\n");

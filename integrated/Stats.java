@@ -19,12 +19,18 @@ public class Stats extends Application {
 
     static VBox statsLayout;
     private int totalVisitor, currentVisitor, queuedVisitor, rejectedPurchases = 0;
-    private int dailyVisitorLimit, hourlyVisitorLimit, expectedTotalVisitors;
+    private int dailyVisitorLimit = 500, hourlyVisitorLimit = 100, expectedTotalVisitors;
     private String museumStatus = "";
     private TextField totalVisitorTxtField, dailyVisitorLimitTxtField, currentVisitorTxtField,
             hourlyVisitorLimitTxtField, queuedVisitorTxtField, expectedTotalVisitorsTxtField, rejectedPurchasesTxtField,
             statusTxtField;
-    public Button visitorEnterBtn, visitorExitBtn, museumOpenBtn, museumClosedBtn, museumFullBtn, rejectedPurchasesBtn;
+    public static Button visitorEnterBtn;
+    public static Button visitorExitBtn;
+    public static Button museumOpenBtn;
+    public static Button museumClosedBtn;
+    public static Button museumFullBtn;
+    public static Button rejectedPurchasesBtn;
+    public static Button queuedVisitorBtn;
 
     @Override
     public void start(Stage stage) throws Exception {
@@ -93,13 +99,33 @@ public class Stats extends Application {
         museumClosedBtn = new Button("museumClosedBtn");
         museumFullBtn = new Button("museumFullBtn");
         rejectedPurchasesBtn = new Button("rejectedPurchasesBtn");
+        // queuedVisitorBtn = new Button("queuedVisitorBtn");
 
+        // queuedVisitorBtn.setOnAction(new EventHandler<ActionEvent>() {
+        //     @Override
+        //     public void handle(ActionEvent e) {
+        //         if (getMuseumStatus() != "CLOSED") {
+        //             if (getMuseumStatus() == "OPEN") {
+        //                 decreaseQueuedVisitor();
+        //                 increaseCurrentVisitor();
+        //             } else if (getMuseumStatus() == "FULL") {
+        //                 increaseQueuedVisitor();
+        //             }
+        //             if (getHourlyVisitorLimit() <= getCurrentVisitor()) {
+        //                 museumFull();
+        //             }
+        //             if (getDailyVisitorLimit() <= getTotalVisitor()) {
+        //                 museumClosed();
+        //             }
+        //         }
+        //     }
+        // });
         visitorEnterBtn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
                 if (getMuseumStatus() != "CLOSED") {
                     if (getMuseumStatus() == "OPEN") {
-                        decreaseQueuedVisitor();
+                        // decreaseQueuedVisitor();
                         increaseCurrentVisitor();
                     } else if (getMuseumStatus() == "FULL") {
                         increaseQueuedVisitor();
@@ -110,6 +136,8 @@ public class Stats extends Application {
                     if (getDailyVisitorLimit() <= getTotalVisitor()) {
                         museumClosed();
                     }
+                } else{
+                    increaseQueuedVisitor();
                 }
             }
         });

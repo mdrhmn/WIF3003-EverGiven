@@ -24,8 +24,8 @@ public class Log extends Application {
         museumLogPane.add(root,0,0);
     }
 
-    public GridPane getLayout() throws Exception {
-        start(new Stage());
-        return museumLogPane;
-    }
+    // public GridPane getLayout() throws Exception {
+    //     start(new Stage());
+    //     return museumLogPane;
+    // }
 }

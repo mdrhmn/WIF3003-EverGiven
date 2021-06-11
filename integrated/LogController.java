@@ -20,7 +20,6 @@ public class LogController {
 
     public void initialize() {
         ps = new PrintStream(new Console(console));
-        ps.println("Hello World");
     }
 
     public void button(ActionEvent event) {
@@ -29,9 +28,9 @@ public class LogController {
         System.out.println("Hello World");
     }
 
-    public static void displayText(String text) {
-        console.appendText(text);
-    }
+    // public static void displayText(String text) {
+    //     console.appendText(text);
+    // }
 
     public class Console extends OutputStream {
         private TextArea console;

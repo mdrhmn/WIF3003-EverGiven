@@ -2,6 +2,7 @@
 import javafx.scene.control.Button;
 import javafx.geometry.Insets;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
@@ -78,8 +79,8 @@ public class Menu extends Application {
             try {
                 // stage.setScene(gui.getScene());
                 if (getID() > -1) {
-                    runMuseum.setTestCase(1);
                     stage.setScene(gui.getScene());
+                    runMuseum.setTestCase(1);
                 } else {
                     opt.setStyle("-fx-border-width:3;-fx-border-color:#b4d1f3;");
                 }

@@ -7,6 +7,8 @@
 import java.util.Random;
 import java.util.concurrent.*;
 
+import javafx.application.Platform;
+
 public class Museum {
 
     // Count total number of visitors
@@ -80,6 +82,9 @@ public class Museum {
         this.westExit = new Exit("WE", this);
         System.out.println(
                 "\n############################################## MUSEUM TICKETS OPEN ##############################################\n");
+        Platform.runLater(() -> {
+            Stats.museumClosedBtn.fire();
+        });
     }
 
     public boolean isTicketsCloseFlag() {
@@ -209,8 +214,7 @@ public class Museum {
             // visitor.visitorTime.getPurchaseTime()
             // + " - Tickets " + ticketsList + " sold");
 
-            System.out.println(Museum.worldTime.getFormattedCurrentTime()
-                    + " - Tickets " + ticketsList + " sold");
+            System.out.println(Museum.worldTime.getFormattedCurrentTime() + " - Tickets " + ticketsList + " sold");
 
             for (int i = 0; i < ticketThread.length; i++) {
                 ticketThread[i].start();
@@ -258,8 +262,7 @@ public class Museum {
             // visitor.visitorTime.getPurchaseTime()
             // + " - Ticket " + ticketID + " sold");
 
-            System.out.println(Museum.worldTime.getFormattedCurrentTime()
-                    + " - Ticket " + ticketID + " sold");
+            System.out.println(Museum.worldTime.getFormattedCurrentTime() + " - Ticket " + ticketID + " sold");
 
             ticketThread[0].start();
         }

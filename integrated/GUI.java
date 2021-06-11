@@ -20,7 +20,9 @@ public class GUI extends Application {
     public void start(Stage stage) throws Exception {
         Stats statsLayout = new Stats();
         Log logLayout = new Log();
-        HBox hBox = new HBox(logLayout.getLayout(), statsLayout.getLayout());
+        // HBox hBox = new HBox(logLayout.getLayout(), statsLayout.getLayout());
+        HBox hBox = new HBox(statsLayout.getLayout());
+
 
         // Creating a scene object
         // Scene scene = new Scene(hBox);

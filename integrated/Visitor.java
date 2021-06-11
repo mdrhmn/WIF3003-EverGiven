@@ -7,6 +7,8 @@
 import java.util.Random;
 import java.util.concurrent.locks.*;
 
+import javafx.application.Platform;
+
 public class Visitor implements Runnable {
     private final String visitorID;
     private final int noOfTickets;
@@ -66,6 +68,10 @@ public class Visitor implements Runnable {
                         museum.setTicketsCloseFlag(true);
                     }
                 } else if (Museum.totalTickets.getNumber() + this.getNoOfTickets() > museum.getDailyVisitorsLimit()) {
+                    Platform.runLater(() -> {
+                        Stats.museumFullBtn.fire();
+                        Stats.rejectedPurchasesBtn.fire();
+                    });
                     if (!museum.isDailyVisitorsLimitFlag()) {
                         int totalVisitors = Museum.totalTickets.getNumber() + 1;
                         if (totalVisitors > museum.getDailyVisitorsLimit()) {
