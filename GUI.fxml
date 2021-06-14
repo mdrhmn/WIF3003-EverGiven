@@ -1,0 +1,589 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1077.0" prefWidth="1168.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUIController">
+  <columnConstraints>
+    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+  </columnConstraints>
+  <rowConstraints>
+    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+    <RowConstraints maxHeight="336.0" minHeight="10.0" prefHeight="277.0" vgrow="SOMETIMES" />
+    <RowConstraints maxHeight="320.0" minHeight="10.0" prefHeight="303.0" vgrow="SOMETIMES" />
+  </rowConstraints>
+   <children>
+      <BorderPane prefHeight="693.0" prefWidth="522.0" GridPane.rowSpan="3">
+         <top>
+            <VBox alignment="CENTER" BorderPane.alignment="CENTER">
+               <children>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Welcoming Message" textAlignment="CENTER" wrappingWidth="170.0">
+                     <VBox.margin>
+                        <Insets bottom="10.0" />
+                     </VBox.margin>
+                  </Text>
+                  <TextArea editable="false" prefHeight="297.0" prefWidth="540.0" text="This is a JavaFX application for our team (Ever Given)'s submission for Concurrent Programming [WIF3003] Group Project (Phase 2) titled 'Museum Under Pandemic' in Semester 2, 2020/2021 session.&#10;&#10;The purpose of this assignment is to assess the students’ ability to apply adequate programming skills and use appropriate constructs in the Java language to solve a concurrent problem. &#10;&#10;Team Members:&#10;1. Muhammad Rahiman bin Abdulmanab&#10;2. Nur Faidz Hazirah binti Nor'Azman&#10;3. Muhammad Luqman bin Sulaiman&#10;4. Muhammad Farouq bin Shaharuddin&#10;&#10;To start the program, you can either select a predefined test case or input your own initial values." wrapText="true" />
+                  <HBox prefHeight="100.0" prefWidth="200.0">
+                     <children>
+                        <VBox alignment="CENTER" prefHeight="100.0" prefWidth="411.0">
+                           <children>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Manual Input" textAlignment="CENTER" />
+                              <HBox alignment="CENTER" prefHeight="69.0" prefWidth="534.0">
+                                 <children>
+                                    <VBox alignment="CENTER" prefWidth="125.0">
+                                       <children>
+                                          <Label text="Daily Visitor Limit">
+                                             <VBox.margin>
+                                                <Insets bottom="10.0" />
+                                             </VBox.margin>
+                                          </Label>
+                                          <TextField fx:id="setDailyVisitorLimitTxtField" alignment="CENTER" prefHeight="25.0" prefWidth="125.0">
+                                             <VBox.margin>
+                                                <Insets left="25.0" right="25.0" />
+                                             </VBox.margin>
+                                          </TextField>
+                                       </children>
+                                    </VBox>
+                                    <VBox alignment="CENTER" prefWidth="125.0">
+                                       <children>
+                                          <Label text="Hourly Visitor Limit">
+                                             <VBox.margin>
+                                                <Insets bottom="10.0" />
+                                             </VBox.margin>
+                                          </Label>
+                                          <TextField fx:id="setHourlyVisitorLimitTxtField" alignment="CENTER">
+                                             <VBox.margin>
+                                                <Insets left="25.0" right="25.0" />
+                                             </VBox.margin>
+                                          </TextField>
+                                       </children>
+                                    </VBox>
+                                 </children>
+                              </HBox>
+                           </children>
+                        </VBox>
+                        <VBox alignment="CENTER" prefHeight="100.0" prefWidth="321.0">
+                           <children>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Test Case Selection" textAlignment="CENTER">
+                                 <VBox.margin>
+                                    <Insets />
+                                 </VBox.margin>
+                              </Text>
+                              <HBox alignment="CENTER" prefHeight="67.0" prefWidth="315.0">
+                                 <children>
+                                    <ComboBox fx:id="cb" prefWidth="150.0" promptText="Select" />
+                                 </children>
+                              </HBox>
+                           </children>
+                        </VBox>
+                     </children>
+                  </HBox>
+                  <Button fx:id="sb" mnemonicParsing="false" prefHeight="25.0" prefWidth="92.0" text="Start" />
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Command Line Output" textAlignment="CENTER">
+                     <VBox.margin>
+                        <Insets bottom="10.0" top="25.0" />
+                     </VBox.margin>
+                  </Text>
+                  <TextArea fx:id="console" prefHeight="543.0" prefWidth="534.0">
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
+                  </TextArea>
+               </children>
+               <BorderPane.margin>
+                  <Insets />
+               </BorderPane.margin>
+            </VBox>
+         </top>
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+         <GridPane.margin>
+            <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
+         </GridPane.margin>
+      </BorderPane>
+      <BorderPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1">
+         <left>
+            <VBox fx:id="museumTime" alignment="CENTER" prefHeight="409.0" prefWidth="300.0" BorderPane.alignment="CENTER">
+               <children>
+                  <Label alignment="CENTER" text="Museum Time" />
+                  <Text fx:id="timerTxtField" strokeType="OUTSIDE" strokeWidth="0.0" text="0000" textAlignment="CENTER">
+                     <font>
+                        <Font name="System Bold" size="40.0" />
+                     </font>
+                  </Text>
+               </children>
+            </VBox>
+         </left>
+         <center>
+            <VBox alignment="CENTER" prefHeight="500.0" prefWidth="298.0" BorderPane.alignment="CENTER">
+               <children>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Status" textAlignment="CENTER" wrappingWidth="170.0">
+                     <VBox.margin>
+                        <Insets bottom="10.0" />
+                     </VBox.margin>
+                  </Text>
+                  <TextField fx:id="statusTxtField" alignment="CENTER" editable="false" prefWidth="166.0">
+                     <VBox.margin>
+                        <Insets bottom="25.0" left="50.0" right="50.0" />
+                     </VBox.margin>
+                     <font>
+                        <Font name="Arial Bold" size="24.0" />
+                     </font>
+                  </TextField>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Total Visitors" textAlignment="CENTER" wrappingWidth="170.0">
+                     <VBox.margin>
+                        <Insets bottom="10.0" />
+                     </VBox.margin>
+                  </Text>
+                  <TextField fx:id="totalVisitorTxtField" alignment="CENTER" editable="false">
+                     <VBox.margin>
+                        <Insets bottom="25.0" left="50.0" right="50.0" />
+                     </VBox.margin>
+                     <font>
+                        <Font name="Arial Bold" size="24.0" />
+                     </font>
+                  </TextField>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Current Visitors" textAlignment="CENTER" wrappingWidth="170.0">
+                     <VBox.margin>
+                        <Insets bottom="10.0" />
+                     </VBox.margin>
+                  </Text>
+                  <TextField fx:id="currentVisitorTxtField" alignment="CENTER" editable="false">
+                     <VBox.margin>
+                        <Insets bottom="25.0" left="50.0" right="50.0" />
+                     </VBox.margin>
+                     <font>
+                        <Font name="Arial Bold" size="24.0" />
+                     </font>
+                  </TextField>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Queued Visitors" textAlignment="CENTER" wrappingWidth="170.0">
+                     <VBox.margin>
+                        <Insets bottom="10.0" />
+                     </VBox.margin>
+                  </Text>
+                  <TextField fx:id="queuedVisitorTxtField" alignment="CENTER" editable="false">
+                     <font>
+                        <Font name="Arial Bold" size="24.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets bottom="25.0" left="50.0" right="50.0" />
+                     </VBox.margin>
+                  </TextField>
+                  <Text layoutX="67.0" layoutY="366.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Rejected Purchases" textAlignment="CENTER" wrappingWidth="170.0">
+                     <VBox.margin>
+                        <Insets bottom="10.0" />
+                     </VBox.margin>
+                  </Text>
+                  <TextField fx:id="rejectedPurchasesTxtField" alignment="CENTER" editable="false" layoutX="60.0" layoutY="379.0">
+                     <font>
+                        <Font name="Arial Bold" size="24.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets bottom="25.0" left="50.0" right="50.0" />
+                     </VBox.margin>
+                  </TextField>
+               </children>
+               <BorderPane.margin>
+                  <Insets />
+               </BorderPane.margin>
+            </VBox>
+         </center>
+         <GridPane.margin>
+            <Insets top="25.0" />
+         </GridPane.margin>
+      </BorderPane>
+      <BorderPane prefWidth="559.0" GridPane.columnIndex="1" GridPane.rowIndex="1" GridPane.rowSpan="2">
+         <GridPane.margin>
+            <Insets bottom="25.0" right="25.0" />
+         </GridPane.margin>
+         <top>
+            <HBox alignment="CENTER" prefHeight="294.0" prefWidth="559.0" BorderPane.alignment="CENTER">
+               <children>
+                  <VBox alignment="CENTER" prefHeight="246.0" prefWidth="285.0">
+                     <children>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="North Entrance (NE)" textAlignment="CENTER" wrappingWidth="170.0">
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin>
+                           <font>
+                              <Font name="Arial" size="13.0" />
+                           </font>
+                        </Text>
+                        <GridPane alignment="CENTER" prefHeight="262.0" prefWidth="281.0">
+                          <columnConstraints>
+                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                          </columnConstraints>
+                          <rowConstraints>
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                          </rowConstraints>
+                           <children>
+                              <VBox alignment="CENTER">
+                                 <children>
+                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="NET1" textAlignment="CENTER">
+                                       <VBox.margin>
+                                          <Insets bottom="10.0" top="10.0" />
+                                       </VBox.margin>
+                                    </Text>
+                                    <TextField fx:id="NET1" alignment="CENTER" editable="false" text="0">
+                                       <font>
+                                          <Font name="Arial Bold" size="24.0" />
+                                       </font>
+                                       <VBox.margin>
+                                          <Insets left="25.0" right="25.0" />
+                                       </VBox.margin>
+                                    </TextField>
+                                 </children>
+                              </VBox>
+                              <VBox alignment="CENTER" GridPane.rowIndex="1">
+                                 <children>
+                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="NET3">
+                                       <VBox.margin>
+                                          <Insets bottom="10.0" top="10.0" />
+                                       </VBox.margin>
+                                    </Text>
+                                    <TextField fx:id="NET3" alignment="CENTER" editable="false" text="0">
+                                       <font>
+                                          <Font name="Arial Bold" size="24.0" />
+                                       </font>
+                                       <VBox.margin>
+                                          <Insets left="25.0" right="25.0" />
+                                       </VBox.margin>
+                                    </TextField>
+                                 </children>
+                              </VBox>
+                              <VBox alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                 <children>
+                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="NET4">
+                                       <VBox.margin>
+                                          <Insets bottom="10.0" top="10.0" />
+                                       </VBox.margin>
+                                    </Text>
+                                    <TextField fx:id="NET4" alignment="CENTER" editable="false" text="0">
+                                       <font>
+                                          <Font name="Arial Bold" size="24.0" />
+                                       </font>
+                                       <VBox.margin>
+                                          <Insets left="25.0" right="25.0" />
+                                       </VBox.margin>
+                                    </TextField>
+                                 </children>
+                              </VBox>
+                              <VBox alignment="CENTER" GridPane.columnIndex="1">
+                                 <children>
+                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="NET2">
+                                       <VBox.margin>
+                                          <Insets bottom="10.0" top="10.0" />
+                                       </VBox.margin>
+                                    </Text>
+                                    <TextField fx:id="NET2" alignment="CENTER" editable="false" text="0">
+                                       <font>
+                                          <Font name="Arial Bold" size="24.0" />
+                                       </font>
+                                       <VBox.margin>
+                                          <Insets left="25.0" right="25.0" />
+                                       </VBox.margin>
+                                    </TextField>
+                                 </children>
+                              </VBox>
+                           </children>
+                        </GridPane>
+                     </children>
+                  </VBox>
+                  <VBox alignment="CENTER" prefHeight="246.0" prefWidth="285.0">
+                     <children>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="South Entrance (NE)" textAlignment="CENTER" wrappingWidth="170.0">
+                           <font>
+                              <Font name="System Bold" size="13.0" />
+                           </font>
+                        </Text>
+                        <GridPane alignment="CENTER" prefHeight="262.0" prefWidth="281.0">
+                           <columnConstraints>
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                           </columnConstraints>
+                           <rowConstraints>
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                           </rowConstraints>
+                           <children>
+                              <VBox alignment="CENTER">
+                                 <children>
+                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="SET1" textAlignment="CENTER">
+                                       <VBox.margin>
+                                          <Insets bottom="10.0" top="10.0" />
+                                       </VBox.margin>
+                                    </Text>
+                                    <TextField fx:id="SET1" alignment="CENTER" editable="false" text="0">
+                                       <font>
+                                          <Font name="Arial Bold" size="24.0" />
+                                       </font>
+                                       <VBox.margin>
+                                          <Insets left="25.0" right="25.0" />
+                                       </VBox.margin>
+                                    </TextField>
+                                 </children>
+                              </VBox>
+                              <VBox alignment="CENTER" GridPane.rowIndex="1">
+                                 <children>
+                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="SET3">
+                                       <VBox.margin>
+                                          <Insets bottom="10.0" top="10.0" />
+                                       </VBox.margin>
+                                    </Text>
+                                    <TextField fx:id="SET3" alignment="CENTER" editable="false" text="0">
+                                       <font>
+                                          <Font name="Arial Bold" size="24.0" />
+                                       </font>
+                                       <VBox.margin>
+                                          <Insets left="25.0" right="25.0" />
+                                       </VBox.margin>
+                                    </TextField>
+                                 </children>
+                              </VBox>
+                              <VBox alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                 <children>
+                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="SET4">
+                                       <VBox.margin>
+                                          <Insets bottom="10.0" top="10.0" />
+                                       </VBox.margin>
+                                    </Text>
+                                    <TextField fx:id="SET4" alignment="CENTER" editable="false" text="0">
+                                       <font>
+                                          <Font name="Arial Bold" size="24.0" />
+                                       </font>
+                                       <VBox.margin>
+                                          <Insets left="25.0" right="25.0" />
+                                       </VBox.margin>
+                                    </TextField>
+                                 </children>
+                              </VBox>
+                              <VBox alignment="CENTER" GridPane.columnIndex="1">
+                                 <children>
+                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="SET2">
+                                       <VBox.margin>
+                                          <Insets bottom="10.0" top="10.0" />
+                                       </VBox.margin>
+                                    </Text>
+                                    <TextField fx:id="SET2" alignment="CENTER" editable="false" text="0">
+                                       <font>
+                                          <Font name="Arial Bold" size="24.0" />
+                                       </font>
+                                       <VBox.margin>
+                                          <Insets left="25.0" right="25.0" />
+                                       </VBox.margin>
+                                    </TextField>
+                                 </children>
+                              </VBox>
+                           </children>
+                        </GridPane>
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+         </top>
+         <center>
+            <HBox alignment="CENTER" prefHeight="258.0" prefWidth="559.0" BorderPane.alignment="CENTER">
+               <children>
+                  <VBox alignment="CENTER" prefHeight="246.0" prefWidth="285.0">
+                     <children>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="West Exit (WE)" textAlignment="CENTER" wrappingWidth="170.0">
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin>
+                           <font>
+                              <Font name="Arial" size="13.0" />
+                           </font>
+                        </Text>
+                        <GridPane alignment="CENTER" prefHeight="262.0" prefWidth="281.0">
+                           <columnConstraints>
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                           </columnConstraints>
+                           <rowConstraints>
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                           </rowConstraints>
+                           <children>
+                              <VBox alignment="CENTER">
+                                 <children>
+                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="WET1" textAlignment="CENTER">
+                                       <VBox.margin>
+                                          <Insets bottom="10.0" top="10.0" />
+                                       </VBox.margin>
+                                    </Text>
+                                    <TextField fx:id="WET1" alignment="CENTER" editable="false" text="0">
+                                       <font>
+                                          <Font name="Arial Bold" size="24.0" />
+                                       </font>
+                                       <VBox.margin>
+                                          <Insets left="25.0" right="25.0" />
+                                       </VBox.margin>
+                                    </TextField>
+                                 </children>
+                              </VBox>
+                              <VBox alignment="CENTER" GridPane.rowIndex="1">
+                                 <children>
+                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="WET3">
+                                       <VBox.margin>
+                                          <Insets bottom="10.0" top="10.0" />
+                                       </VBox.margin>
+                                    </Text>
+                                    <TextField fx:id="WET3" alignment="CENTER" editable="false" text="0">
+                                       <font>
+                                          <Font name="Arial Bold" size="24.0" />
+                                       </font>
+                                       <VBox.margin>
+                                          <Insets left="25.0" right="25.0" />
+                                       </VBox.margin>
+                                    </TextField>
+                                 </children>
+                              </VBox>
+                              <VBox alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                 <children>
+                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="WET4">
+                                       <VBox.margin>
+                                          <Insets bottom="10.0" top="10.0" />
+                                       </VBox.margin>
+                                    </Text>
+                                    <TextField fx:id="WET4" alignment="CENTER" editable="false" text="0">
+                                       <font>
+                                          <Font name="Arial Bold" size="24.0" />
+                                       </font>
+                                       <VBox.margin>
+                                          <Insets left="25.0" right="25.0" />
+                                       </VBox.margin>
+                                    </TextField>
+                                 </children>
+                              </VBox>
+                              <VBox alignment="CENTER" GridPane.columnIndex="1">
+                                 <children>
+                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="WET2">
+                                       <VBox.margin>
+                                          <Insets bottom="10.0" top="10.0" />
+                                       </VBox.margin>
+                                    </Text>
+                                    <TextField fx:id="WET2" alignment="CENTER" editable="false" text="0">
+                                       <font>
+                                          <Font name="Arial Bold" size="24.0" />
+                                       </font>
+                                       <VBox.margin>
+                                          <Insets left="25.0" right="25.0" />
+                                       </VBox.margin>
+                                    </TextField>
+                                 </children>
+                              </VBox>
+                           </children>
+                        </GridPane>
+                     </children>
+                  </VBox>
+                  <VBox alignment="CENTER" prefHeight="246.0" prefWidth="285.0">
+                     <children>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="East Exit (EE)" textAlignment="CENTER" wrappingWidth="170.0">
+                           <font>
+                              <Font name="System Bold" size="13.0" />
+                           </font>
+                        </Text>
+                        <GridPane alignment="CENTER" prefHeight="262.0" prefWidth="281.0">
+                           <columnConstraints>
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                           </columnConstraints>
+                           <rowConstraints>
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                           </rowConstraints>
+                           <children>
+                              <VBox alignment="CENTER">
+                                 <children>
+                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="EET1" textAlignment="CENTER">
+                                       <VBox.margin>
+                                          <Insets bottom="10.0" top="10.0" />
+                                       </VBox.margin>
+                                    </Text>
+                                    <TextField fx:id="EET1" alignment="CENTER" editable="false" text="0">
+                                       <font>
+                                          <Font name="Arial Bold" size="24.0" />
+                                       </font>
+                                       <VBox.margin>
+                                          <Insets left="25.0" right="25.0" />
+                                       </VBox.margin>
+                                    </TextField>
+                                 </children>
+                              </VBox>
+                              <VBox alignment="CENTER" GridPane.rowIndex="1">
+                                 <children>
+                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="EET3">
+                                       <VBox.margin>
+                                          <Insets bottom="10.0" top="10.0" />
+                                       </VBox.margin>
+                                    </Text>
+                                    <TextField fx:id="EET3" alignment="CENTER" editable="false" text="0">
+                                       <font>
+                                          <Font name="Arial Bold" size="24.0" />
+                                       </font>
+                                       <VBox.margin>
+                                          <Insets left="25.0" right="25.0" />
+                                       </VBox.margin>
+                                    </TextField>
+                                 </children>
+                              </VBox>
+                              <VBox alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                 <children>
+                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="EET4">
+                                       <VBox.margin>
+                                          <Insets bottom="10.0" top="10.0" />
+                                       </VBox.margin>
+                                    </Text>
+                                    <TextField fx:id="EET4" alignment="CENTER" editable="false" text="0">
+                                       <font>
+                                          <Font name="Arial Bold" size="24.0" />
+                                       </font>
+                                       <VBox.margin>
+                                          <Insets left="25.0" right="25.0" />
+                                       </VBox.margin>
+                                    </TextField>
+                                 </children>
+                              </VBox>
+                              <VBox alignment="CENTER" GridPane.columnIndex="1">
+                                 <children>
+                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="EET2">
+                                       <VBox.margin>
+                                          <Insets bottom="10.0" top="10.0" />
+                                       </VBox.margin>
+                                    </Text>
+                                    <TextField fx:id="EET2" alignment="CENTER" editable="false" text="0">
+                                       <font>
+                                          <Font name="Arial Bold" size="24.0" />
+                                       </font>
+                                       <VBox.margin>
+                                          <Insets left="25.0" right="25.0" />
+                                       </VBox.margin>
+                                    </TextField>
+                                 </children>
+                              </VBox>
+                           </children>
+                        </GridPane>
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+         </center>
+      </BorderPane>
+   </children>
+</GridPane>
