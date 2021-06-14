@@ -4,7 +4,6 @@
  * and open the template in the editor.
  */
 
-
 import java.util.Random;
 import java.util.concurrent.*;
 import javafx.application.Platform;
@@ -270,9 +269,8 @@ public class Museum {
             // System.out.println(Thread.currentThread().getName() + ":\t" +
             // visitor.visitorTime.getPurchaseTime()
             // + " - Ticket " + ticketID + " sold");
-
             System.out.println(Museum.worldTime.getFormattedCurrentTime() + " - Ticket " + ticketID + " sold");
-    
+
             String text = Museum.worldTime.getFormattedCurrentTime() + " - Ticket " + ticketID + " sold";
 
             Platform.runLater(() -> {

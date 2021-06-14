@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 
+
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -97,7 +98,7 @@ public class Ticket implements Runnable {
                     || Museum.visitorCount.getNumber() + 1 > museum.getIntCurrentVisitorsLimit()) {
                 System.out.println(Museum.worldTime.getFormattedCurrentTime() + " - Current museum capacity is full. "
                         + ticketID + " will have to queue for entry.");
-
+                
                 String text = Museum.worldTime.getFormattedCurrentTime() + " - Current museum capacity is full. "
                         + ticketID + " will have to queue for entry.";
 
@@ -126,9 +127,9 @@ public class Ticket implements Runnable {
             try {
                 lock.lock();
                 if (Museum.worldTime.getCurrentTime() == museum.getMuseumCloseTime()) {
-                    Platform.runLater(() -> {
-                        controller.increaseRejectedPurchase();
-                    });
+//                    Platform.runLater(() -> {
+//                        controller.increaseRejectedPurchase();
+//                    });
                     if (museum.getStatus()) {
                         System.out.println(
                                 "\n################################################## MUSEUM CLOSED ##################################################\n");

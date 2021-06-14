@@ -65,9 +65,9 @@ public class Visitor implements Runnable {
 
                 if (Museum.worldTime.getCurrentTime() > museum.getMuseumTicketCloseTime()) {
                     Platform.runLater(() -> {
-                        museum.controller.increaseRejectedPurchase();
-                        // controller.increaseRejectedPurchase();
-                        museum.controller.museumClosed();
+                        controller.increaseRejectedPurchase();
+//                    controller.increaseRejectedPurchase();
+                        controller.museumClosed();
                     });
                     if (!museum.isTicketsCloseFlag()) {
                         System.out.println(
@@ -75,27 +75,26 @@ public class Visitor implements Runnable {
                         museum.setTicketsCloseFlag(true);
                     }
                 } else if (Museum.totalTickets.getNumber() + this.getNoOfTickets() > museum.getDailyVisitorsLimit()) {
-                    // Platform.runLater(() -> {
-                    // Stats.museumFullBtn.fire();
-                    // Stats.rejectedPurchasesBtn.fire();
-                    // });
-                    // Platform.runLater(() -> {
-                    // controller.increaseRejectedPurchase();
-                    // controller.museumFull();
-                    // });
+//                    Platform.runLater(() -> {
+//                        Stats.museumFullBtn.fire();
+//                        Stats.rejectedPurchasesBtn.fire();
+//                    });
+//                    Platform.runLater(() -> {
+//                        controller.increaseRejectedPurchase();
+//                        controller.museumFull();
+//                    });
 
                     Platform.runLater(() -> {
-                        museum.controller.increaseRejectedPurchase();
-                        // controller.increaseRejectedPurchase();
-                        museum.controller.museumFull();
+                        controller.increaseRejectedPurchase();
+//                    controller.increaseRejectedPurchase();
+                        controller.museumFull();
                     });
 
                     if (!museum.isDailyVisitorsLimitFlag()) {
                         int totalVisitors = Museum.totalTickets.getNumber() + 1;
                         if (totalVisitors > museum.getDailyVisitorsLimit()) {
                             System.out.println(Museum.worldTime.getFormattedCurrentTime()
-                                    + " - Number of purchased tickets exceed daily visitors limit ("
-                                    + Museum.totalTickets.getNumber()
+                                    + " - Number of purchased tickets exceed daily visitors limit (" + Museum.totalTickets.getNumber()
                                     + "). Tickets are no longer available for purchase.");
                         } else {
                             System.out.println(Museum.worldTime.getFormattedCurrentTime()
