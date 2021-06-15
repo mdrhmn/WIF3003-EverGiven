@@ -127,9 +127,9 @@ public class Ticket implements Runnable {
             try {
                 lock.lock();
                 if (Museum.worldTime.getCurrentTime() == museum.getMuseumCloseTime()) {
-//                    Platform.runLater(() -> {
-//                        controller.increaseRejectedPurchase();
-//                    });
+                   Platform.runLater(() -> {
+                        controller.museumClosed();
+                    });
                     if (museum.getStatus()) {
                         System.out.println(
                                 "\n################################################## MUSEUM CLOSED ##################################################\n");

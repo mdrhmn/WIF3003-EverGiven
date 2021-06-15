@@ -5,10 +5,11 @@
  */
 
 
+import java.util.concurrent.locks.*;
+import java.util.Collections;
 import java.util.Random;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.concurrent.locks.*;
+
 
 public class Entrance {
     private final String entranceName;

@@ -1,22 +1,21 @@
 
-import java.io.IOException;
-import java.io.OutputStream;
-import java.io.PrintStream;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javafx.application.Platform;
-import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
-
-import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.application.Platform;
+import javafx.scene.control.Button;
+import javafx.fxml.Initializable;
+import java.util.ResourceBundle;
+import java.util.logging.Logger;
 import javafx.scene.layout.VBox;
+import java.util.logging.Level;
 import javafx.scene.text.Text;
+import java.io.OutputStream;
+import java.io.IOException;
+import java.io.PrintStream;
+import java.util.ArrayList;
+import javafx.fxml.FXML;
+import java.net.URL;
 
 public class GUIController implements Initializable {
 
@@ -78,8 +77,8 @@ public class GUIController implements Initializable {
     public TextField EET2;
 
     public int totalVisitor, currentVisitor, queuedVisitor, rejectedPurchases = 0;
-    public int dailyVisitorLimit, hourlyVisitorLimit = 10;
-    public String museumStatus = "CLOSED";
+    public int dailyVisitorLimit, hourlyVisitorLimit;
+    public String museumStatus = "TICKET CLOSED";
     public PrintStream ps;
 
     /**
@@ -125,9 +124,13 @@ public class GUIController implements Initializable {
     }
 
     public void btnStart() throws InterruptedException, IOException {
-        System.out.println(setDailyVisitorLimitTxtField.getText());
+        if (setHourlyVisitorLimitTxtField.getText().isEmpty()) {
+            setHourlyVisitorLimitTxtField.setText("100");
+        }
 
-        System.out.println(setHourlyVisitorLimitTxtField.getText());
+        if (setDailyVisitorLimitTxtField.getText().isEmpty()) {
+            setDailyVisitorLimitTxtField.setText("900");
+        }
 
         if (cb.getSelectionModel().getSelectedIndex() > -1) {
             switch (cb.getSelectionModel().getSelectedIndex() + 1) {
@@ -151,29 +154,29 @@ public class GUIController implements Initializable {
 
     }
 
-    public void setDailyVisitorLimit(int limit) {
-        dailyVisitorLimit = limit;
-        setDailyVisitorLimitTxtField.setText(Integer.toString(limit));
+    public void ticketOpen() {
+        museumStatus = "TICKET OPEN";
+        statusTxtField.setText(museumStatus);
     }
 
-    public void setHourlyVisitorLimit(int limit) {
-        hourlyVisitorLimit = limit;
-        setHourlyVisitorLimitTxtField.setText(Integer.toString(limit));
+    public void ticketClosed() {
+        museumStatus = "TICKET CLOSED";
+        statusTxtField.setText(museumStatus);
     }
 
     public void museumOpen() {
-        museumStatus = "OPEN";
-        statusTxtField.setText("OPEN");
+        museumStatus = "MUSEUM OPEN";
+        statusTxtField.setText(museumStatus);
     }
 
     public void museumClosed() {
-        museumStatus = "CLOSED";
-        statusTxtField.setText("CLOSED");
+        museumStatus = "MUSEUM CLOSED";
+        statusTxtField.setText(museumStatus);
     }
 
     public void museumFull() {
-        museumStatus = "FULL";
-        statusTxtField.setText("FULL");
+        museumStatus = "MUSEUM FULL";
+        statusTxtField.setText(museumStatus);
     }
 
     private String getMuseumStatus() {
@@ -236,11 +239,11 @@ public class GUIController implements Initializable {
     }
 
     public void visitorEnter() {
-        if (!getMuseumStatus().equals("CLOSED")) {
-            if (getMuseumStatus().equals("OPEN")) {
+        if (!getMuseumStatus().equals("MUSEUM CLOSED")) {
+            if (getMuseumStatus().equals("MUSEUM OPEN")) {
                 decreaseQueuedVisitor();
                 increaseCurrentVisitor();
-            } else if (getMuseumStatus().equals("FULL")) {
+            } else if (getMuseumStatus().equals("MUSEUM FULL")) {
                 increaseQueuedVisitor();
             }
             if (getHourlyVisitorLimit() <= getCurrentVisitor()) {
@@ -256,7 +259,6 @@ public class GUIController implements Initializable {
 
     public void visitorExit() {
         decreaseCurrentVisitor();
-        // currentVisitor.setText(String.valueOf(getCurrentVisitor()));
         museumOpen();
     }
 

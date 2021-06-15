@@ -59,7 +59,6 @@ public class Turnstile {
                 + " exited through Turnstile " + this.turnstileID + "; Visitors count = "
                 + Museum.visitorCount.getNumber() + "; Total visitors count = " + Museum.totalVisitors.getNumber();
         
-        
         ticket.setEntryStatus(false);
         ticket.visitor.ticketsExitCount.increase();
 

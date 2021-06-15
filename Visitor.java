@@ -6,7 +6,6 @@
 
 import java.util.Random;
 import java.util.concurrent.locks.*;
-
 import javafx.application.Platform;
 
 public class Visitor implements Runnable {
@@ -64,29 +63,21 @@ public class Visitor implements Runnable {
                     || Museum.totalTickets.getNumber() + this.getNoOfTickets() > museum.getDailyVisitorsLimit()) {
 
                 if (Museum.worldTime.getCurrentTime() > museum.getMuseumTicketCloseTime()) {
+                    
                     Platform.runLater(() -> {
                         controller.increaseRejectedPurchase();
-//                    controller.increaseRejectedPurchase();
                         controller.museumClosed();
                     });
+
                     if (!museum.isTicketsCloseFlag()) {
                         System.out.println(
                                 "\n############################################## MUSEUM TICKETS CLOSED ##############################################\n");
                         museum.setTicketsCloseFlag(true);
                     }
                 } else if (Museum.totalTickets.getNumber() + this.getNoOfTickets() > museum.getDailyVisitorsLimit()) {
-//                    Platform.runLater(() -> {
-//                        Stats.museumFullBtn.fire();
-//                        Stats.rejectedPurchasesBtn.fire();
-//                    });
-//                    Platform.runLater(() -> {
-//                        controller.increaseRejectedPurchase();
-//                        controller.museumFull();
-//                    });
 
                     Platform.runLater(() -> {
                         controller.increaseRejectedPurchase();
-//                    controller.increaseRejectedPurchase();
                         controller.museumFull();
                     });
 

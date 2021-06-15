@@ -4,8 +4,6 @@
  * and open the template in the editor.
  */
 
-
-// import java.util.concurrent.TimeUnit;
 public class Time {
     private long sysStartTime;
     private long sysCurrTime;

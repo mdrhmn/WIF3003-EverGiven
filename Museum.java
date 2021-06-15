@@ -78,11 +78,6 @@ public class Museum {
         this.random = new Random();
         this.controller = controller;
 
-        Platform.runLater(() -> {
-            controller.setDailyVisitorLimit(dailyVisitorsLimit);
-            controller.setHourlyVisitorLimit(currentIntVisitorsLimit);
-        });
-
         this.northEntrance = new Entrance("NE", this, controller);
         this.southEntrance = new Entrance("SE", this, controller);
         this.eastExit = new Exit("EE", this, controller);
@@ -216,13 +211,11 @@ public class Museum {
             visitor.visitorTime.purchaseTime();
             visitor.visitorTime.setVisitDuration();
 
-            // System.out.println(Thread.currentThread().getName() + ":\t" +
-            // visitor.visitorTime.getPurchaseTime()
-            // + " - Tickets " + ticketsList + " sold");
             System.out.println(Museum.worldTime.getFormattedCurrentTime() + " - Tickets " + ticketsList + " sold");
             String text = Museum.worldTime.getFormattedCurrentTime() + " - Tickets " + ticketsList + " sold";
 
             Platform.runLater(() -> {
+                // controller.ticketOpen();
                 controller.displayText(text);
             });
 
@@ -266,14 +259,12 @@ public class Museum {
             visitor.visitorTime.purchaseTime();
             visitor.visitorTime.setVisitDuration();
 
-            // System.out.println(Thread.currentThread().getName() + ":\t" +
-            // visitor.visitorTime.getPurchaseTime()
-            // + " - Ticket " + ticketID + " sold");
             System.out.println(Museum.worldTime.getFormattedCurrentTime() + " - Ticket " + ticketID + " sold");
 
             String text = Museum.worldTime.getFormattedCurrentTime() + " - Ticket " + ticketID + " sold";
 
             Platform.runLater(() -> {
+                // controller.ticketOpen();
                 controller.displayText(text);
             });
 

@@ -5,13 +5,13 @@
  */
 
 
-import java.io.BufferedReader;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
+import java.util.logging.Logger;
+import java.util.logging.Level;
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.io.FileReader;
 
 public class TicketingSystem implements Runnable {
 
