@@ -5,6 +5,8 @@ import java.io.PrintStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -24,61 +26,61 @@ import javafx.scene.text.Text;
 public class GUIController implements Initializable {
 
     @FXML
-    private TextField setDailyVisitorLimitTxtField;
+    public TextField setDailyVisitorLimitTxtField;
     @FXML
-    private TextField setHourlyVisitorLimitTxtField;
+    public TextField setHourlyVisitorLimitTxtField;
     @FXML
-    private ComboBox<String> cb;
+    public ComboBox<String> cb;
     @FXML
-    private Button sb;
+    public Button sb;
     @FXML
-    private TextArea console;
+    public TextArea console;
     @FXML
-    private VBox museumTime;
+    public VBox museumTime;
     @FXML
-    private Text timerTxtField;
+    public Text timerTxtField;
     @FXML
-    private TextField statusTxtField;
+    public TextField statusTxtField;
     @FXML
-    private TextField totalVisitorTxtField;
+    public TextField totalVisitorTxtField;
     @FXML
-    private TextField currentVisitorTxtField;
+    public TextField currentVisitorTxtField;
     @FXML
-    private TextField queuedVisitorTxtField;
+    public TextField queuedVisitorTxtField;
     @FXML
-    private TextField rejectedPurchasesTxtField;
+    public TextField rejectedPurchasesTxtField;
     @FXML
-    private TextField NET1;
+    public TextField NET1;
     @FXML
-    private TextField NET3;
+    public TextField NET3;
     @FXML
-    private TextField NET4;
+    public TextField NET4;
     @FXML
-    private TextField NET2;
+    public TextField NET2;
     @FXML
-    private TextField SET1;
+    public TextField SET1;
     @FXML
-    private TextField SET3;
+    public TextField SET3;
     @FXML
-    private TextField SET4;
+    public TextField SET4;
     @FXML
-    private TextField SET2;
+    public TextField SET2;
     @FXML
-    private TextField WET1;
+    public TextField WET1;
     @FXML
-    private TextField WET3;
+    public TextField WET3;
     @FXML
-    private TextField WET4;
+    public TextField WET4;
     @FXML
-    private TextField WET2;
+    public TextField WET2;
     @FXML
-    private TextField EET1;
+    public TextField EET1;
     @FXML
-    private TextField EET3;
+    public TextField EET3;
     @FXML
-    private TextField EET4;
+    public TextField EET4;
     @FXML
-    private TextField EET2;
+    public TextField EET2;
 
     public int totalVisitor, currentVisitor, queuedVisitor, rejectedPurchases = 0;
     public int dailyVisitorLimit = 500, hourlyVisitorLimit = 100;
@@ -92,12 +94,16 @@ public class GUIController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         cb.getItems().addAll("Test Case 1", "Test Case 2", "Test Case 3", "Test Case 4", "Test Case 5");
         ps = new PrintStream(new GUIController.Console(console));
-
-        try {
-            museumOperation("TestCaseWithinDailyLimit.txt");
-        } catch (IOException | InterruptedException e) {
-
-        }
+        
+        sb.setOnAction(e -> {
+            try {
+                btnStart();
+            } catch (InterruptedException ex) {
+                Logger.getLogger(GUIController.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IOException ex) {
+                Logger.getLogger(GUIController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        });
     }
 
     public void displayText(String text) {
@@ -121,6 +127,31 @@ public class GUIController implements Initializable {
         public void write(int b) throws IOException {
             appendText(String.valueOf((char) b));
         }
+    }
+    
+    public void btnStart() throws InterruptedException, IOException{
+        
+        if (cb.getSelectionModel().getSelectedIndex() > -1) {
+            switch (cb.getSelectionModel().getSelectedIndex() + 1) {
+                case 1:
+                    museumOperation("TestCaseWithinDailyLimit.txt");
+                    break;
+                case 2:
+                    museumOperation("TestCaseExceedDailyLimit.txt");
+                    break;
+                case 3:
+                    museumOperation("TestCaseWithinCurrentLimit.txt");
+                    break;
+                case 4:
+                    museumOperation("TestCaseExceedCurrentLimit.txt");
+                    break;
+                case 5:
+//                    museumOperation("TestCase-5.txt");
+                    displayText("Test Case 5");
+                    break;
+            }
+        }
+        
     }
 
     public void setDailyVisitorLimit(int limit) {
@@ -208,11 +239,11 @@ public class GUIController implements Initializable {
     }
 
     public void visitorEnter() {
-        if (getMuseumStatus() != "CLOSED") {
-            if (getMuseumStatus() == "OPEN") {
+        if (!getMuseumStatus().equals("CLOSED")) {
+            if (getMuseumStatus().equals("OPEN")) {
                 decreaseQueuedVisitor();
                 increaseCurrentVisitor();
-            } else if (getMuseumStatus() == "FULL") {
+            } else if (getMuseumStatus().equals("FULL")) {
                 increaseQueuedVisitor();
             }
             if (getHourlyVisitorLimit() <= getCurrentVisitor()) {
