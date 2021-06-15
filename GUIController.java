@@ -18,11 +18,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
-/**
- * FXML Controller class
- *
- * @author Jun21
- */
 public class GUIController implements Initializable {
 
     @FXML
@@ -83,7 +78,7 @@ public class GUIController implements Initializable {
     public TextField EET2;
 
     public int totalVisitor, currentVisitor, queuedVisitor, rejectedPurchases = 0;
-    public int dailyVisitorLimit = 500, hourlyVisitorLimit = 100;
+    public int dailyVisitorLimit, hourlyVisitorLimit = 10;
     public String museumStatus = "CLOSED";
     public PrintStream ps;
 
@@ -130,6 +125,10 @@ public class GUIController implements Initializable {
     }
     
     public void btnStart() throws InterruptedException, IOException{
+        System.out.println(setDailyVisitorLimitTxtField.getText());
+        
+        System.out.println(setHourlyVisitorLimitTxtField.getText());
+        
         
         if (cb.getSelectionModel().getSelectedIndex() > -1) {
             switch (cb.getSelectionModel().getSelectedIndex() + 1) {
@@ -277,7 +276,7 @@ public class GUIController implements Initializable {
         // Create Visitors and Museum
         ArrayList<String[]> readList = read.getVisitorList();
 
-        Museum museum = new Museum("Kuching Museum", 100, 500, this);
+        Museum museum = new Museum("Kuching Museum", Integer.parseInt(setHourlyVisitorLimitTxtField.getText()), Integer.parseInt(setDailyVisitorLimitTxtField.getText()), this);
         ArrayList<Visitor> visitorList = new ArrayList<>();
 
         for (int i = 0; i < readList.size(); i++) {
