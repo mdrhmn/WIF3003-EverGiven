@@ -89,7 +89,7 @@ public class GUIController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         cb.getItems().addAll("Test Case 1", "Test Case 2", "Test Case 3", "Test Case 4", "Test Case 5");
         ps = new PrintStream(new GUIController.Console(console));
-        
+
         sb.setOnAction(e -> {
             try {
                 btnStart();
@@ -123,13 +123,12 @@ public class GUIController implements Initializable {
             appendText(String.valueOf((char) b));
         }
     }
-    
-    public void btnStart() throws InterruptedException, IOException{
+
+    public void btnStart() throws InterruptedException, IOException {
         System.out.println(setDailyVisitorLimitTxtField.getText());
-        
+
         System.out.println(setHourlyVisitorLimitTxtField.getText());
-        
-        
+
         if (cb.getSelectionModel().getSelectedIndex() > -1) {
             switch (cb.getSelectionModel().getSelectedIndex() + 1) {
                 case 1:
@@ -145,12 +144,11 @@ public class GUIController implements Initializable {
                     museumOperation("TestCaseExceedCurrentLimit.txt");
                     break;
                 case 5:
-//                    museumOperation("TestCase-5.txt");
                     displayText("Test Case 5");
                     break;
             }
         }
-        
+
     }
 
     public void setDailyVisitorLimit(int limit) {
@@ -276,7 +274,8 @@ public class GUIController implements Initializable {
         // Create Visitors and Museum
         ArrayList<String[]> readList = read.getVisitorList();
 
-        Museum museum = new Museum("Kuching Museum", Integer.parseInt(setHourlyVisitorLimitTxtField.getText()), Integer.parseInt(setDailyVisitorLimitTxtField.getText()), this);
+        Museum museum = new Museum("Kuching Museum", Integer.parseInt(setHourlyVisitorLimitTxtField.getText()),
+                Integer.parseInt(setDailyVisitorLimitTxtField.getText()), this);
         ArrayList<Visitor> visitorList = new ArrayList<>();
 
         for (int i = 0; i < readList.size(); i++) {
