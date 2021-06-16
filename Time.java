@@ -17,7 +17,6 @@ public class Time implements Runnable {
     private long exitTime;
 
     Museum museum;
-    
 
     public Time(Museum museum) {
         this.sysStartTime = System.currentTimeMillis();
@@ -129,8 +128,6 @@ public class Time implements Runnable {
          * will be randomly assigned to the visitor when the visitor is entering the
          * museum.
          */
-        // int randomDuration = (int) ((Math.random() * (150 - 50)) + 50) * 10;
-        // this.visitDuration = randomDuration;
 
         this.sysCurrTime = System.currentTimeMillis();
         calcRealtime(this.sysStartTime, this.sysCurrTime, museum.getMuseumTicketOpenTimeInMillis());

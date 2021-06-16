@@ -46,7 +46,7 @@ public class Turnstile {
         Platform.runLater(() -> {
             museum.controller.increaseEntrance(this.turnstileID);
             museum.controller.dequeueList(ticket.getTicketID());
-            museum.controller.appendTicketsEntry(ticket.getTicketID() + " [" + this.turnstileID + "]\n("
+            museum.controller.appendTicketsEntry(Museum.worldTime.getFormattedCurrentTime() + " hrs - " + ticket.getTicketID() + " [" + this.turnstileID + "] ("
                     + ticket.visitor.visitorTime.getVisitDuration() + " mins)");
             museum.controller.visitorEnter();
         });
@@ -64,7 +64,7 @@ public class Turnstile {
 
         Platform.runLater(() -> {
             museum.controller.increaseExit(this.turnstileID);
-            museum.controller.appendTicketsExit(ticket.getTicketID() + " [" + this.turnstileID + "]");
+            museum.controller.appendTicketsExit(Museum.worldTime.getFormattedCurrentTime() + " hrs - " + ticket.getTicketID() + " [" + this.turnstileID + "]");
             museum.controller.visitorExit();
         });
     }

@@ -221,7 +221,7 @@ public class Museum {
 
             Platform.runLater(() -> {
                 // controller.ticketOpen();
-                controller.appendTicketsSold(text);
+                controller.appendTicketsSold(Museum.worldTime.getFormattedCurrentTime() + " hrs - " + text);
             });
 
             for (int i = 0; i < ticketThread.length; i++) {
@@ -267,7 +267,7 @@ public class Museum {
             System.out.println(Museum.worldTime.getFormattedCurrentTime() + " - Ticket " + ticketID + " sold");
 
             Platform.runLater(() -> {
-                controller.appendTicketsSold(ticketID);
+                controller.appendTicketsSold(Museum.worldTime.getFormattedCurrentTime() + " hrs - " + ticketID);
             });
 
             ticketThread[0].start();
