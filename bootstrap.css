@@ -168,6 +168,18 @@ VBox>.split-menu-button.last>.arrow-button {
 
 /*hover state*/
 
+/* .combo-box .list-cell:hover {
+    -fx-background-color: #0d6efd;
+} */
+
+.combo-box .combo-box-popup .list-cell:hover {
+    -fx-background-color: #0d6efd;
+}
+
+.combo-box-popup .list-view .list-cell:filled:selected, .combo-box-popup .list-view .list-cell:filled:selected:hover {
+    -fx-background-color: #0d6efd;
+}
+
 .color-picker:hover, .date-picker:hover>.arrow-button, .combo-box:hover, .choice-box:hover, .number-button:hover, .left-arrow-button:hover, .right-arrow-button:hover, .button:hover, .menu-button:hover, .toggle-button:hover, .font-menu-button:hover, .split-menu-button>.label:hover, .split-menu-button>.arrow-button:hover {
     -fx-background-color: #e6e6e6;
     -fx-border-color: #acacac;
