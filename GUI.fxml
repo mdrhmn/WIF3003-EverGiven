@@ -4,6 +4,7 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.BorderPane?>
@@ -15,27 +16,27 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="673.0" prefWidth="977.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUIController">
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="650.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUIController">
   <columnConstraints>
-    <ColumnConstraints hgrow="SOMETIMES" maxWidth="489.0" minWidth="10.0" prefWidth="489.0" />
-    <ColumnConstraints hgrow="SOMETIMES" maxWidth="488.0" minWidth="10.0" prefWidth="488.0" />
+    <ColumnConstraints hgrow="SOMETIMES" maxWidth="739.0" minWidth="10.0" prefWidth="540.0" />
+    <ColumnConstraints hgrow="SOMETIMES" maxWidth="673.0" minWidth="10.0" prefWidth="540.0" />
   </columnConstraints>
   <rowConstraints>
-    <RowConstraints maxHeight="674.0" minHeight="10.0" prefHeight="253.0" vgrow="SOMETIMES" />
-    <RowConstraints maxHeight="628.0" minHeight="0.0" prefHeight="453.0" vgrow="SOMETIMES" />
+    <RowConstraints maxHeight="674.0" minHeight="10.0" prefHeight="224.0" vgrow="SOMETIMES" />
+    <RowConstraints maxHeight="628.0" minHeight="0.0" prefHeight="449.0" vgrow="SOMETIMES" />
       <RowConstraints />
   </rowConstraints>
    <children>
       <BorderPane prefWidth="464.0" GridPane.rowSpan="3">
          <top>
-            <VBox alignment="TOP_CENTER" prefHeight="638.0" prefWidth="464.0" BorderPane.alignment="CENTER">
+            <VBox alignment="TOP_CENTER" prefWidth="422.0" BorderPane.alignment="CENTER">
                <children>
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Welcoming Message" textAlignment="CENTER" wrappingWidth="170.0">
+                  <Label text="Welcoming Message">
                      <VBox.margin>
                         <Insets bottom="10.0" />
                      </VBox.margin>
-                  </Text>
-                  <TextArea editable="false" prefHeight="326.0" prefWidth="464.0" text="This is a JavaFX application for our team (Ever Given)'s submission for Concurrent Programming [WIF3003] Group Project (Phase 2) titled 'Museum Under Pandemic' in Semester 2, 2020/2021 session.&#10;&#10;Team Members:&#10;1. Muhammad Rahiman bin Abdulmanab&#10;2. Nur Faidz Hazirah binti Nor'Azman&#10;3. Muhammad Luqman bin Sulaiman&#10;4. Muhammad Farouq bin Shaharuddin&#10;&#10;To start the program, you must select a predefined test case. The hourly and daily limits of the museum are set to 100 and 900 respectively.&#10;&#10;The following are the test cases available:&#10;&#10;1. Within Daily Limit&#10;2. Exceed Daily Limit&#10;3. Within Hourly Limit&#10;4. Exceed Hourly Limit" wrapText="true" />
+                  </Label>
+                  <TextArea editable="false" prefHeight="248.0" prefWidth="515.0" text="This is a JavaFX application for our team (Ever Given)'s submission for Concurrent Programming [WIF3003] Group Project (Phase 2) titled 'Museum Under Pandemic' in Semester 2, 2020/2021 session.&#10;&#10;Team Members:&#10;1. Muhammad Rahiman bin Abdulmanab&#10;2. Nur Faidz Hazirah binti Nor'Azman&#10;3. Muhammad Luqman bin Sulaiman&#10;4. Muhammad Farouq bin Shaharuddin&#10;&#10;To start the program, you must select a predefined test case. The hourly and daily limits of the museum are set to 100 and 900 respectively.&#10;&#10;The following are the test cases available:&#10;&#10;1. Within Daily Limit&#10;2. Exceed Daily Limit&#10;3. Within Hourly Limit&#10;4. Exceed Hourly Limit" wrapText="true" />
                   <HBox alignment="CENTER" prefHeight="66.0" prefWidth="464.0">
                      <children>
                         <VBox alignment="CENTER">
@@ -65,16 +66,69 @@
                         <Insets top="10.0" />
                      </VBox.margin>
                   </HBox>
-                  <Label text="Command Line Output">
+                  <HBox>
+                     <children>
+                        <VBox alignment="CENTER" minWidth="100.0">
+                           <children>
+                              <Label text="Tickets Sold">
+                                 <VBox.margin>
+                                    <Insets bottom="10.0" />
+                                 </VBox.margin>
+                              </Label>
+                              <TextArea fx:id="ticketsSoldTxtField" editable="false" prefHeight="225.0">
+                                 <VBox.margin>
+                                    <Insets left="10.0" />
+                                 </VBox.margin>
+                              </TextArea>
+                           </children>
+                           <HBox.margin>
+                              <Insets right="10.0" />
+                           </HBox.margin>
+                        </VBox>
+                        <VBox alignment="CENTER">
+                           <children>
+                              <Label text="Tickets Entry">
+                                 <VBox.margin>
+                                    <Insets bottom="10.0" />
+                                 </VBox.margin>
+                              </Label>
+                              <TextArea fx:id="ticketsEntryTxtField" editable="false" prefHeight="225.0" />
+                           </children>
+                           <HBox.margin>
+                              <Insets right="10.0" />
+                           </HBox.margin>
+                        </VBox>
+                        <VBox alignment="CENTER">
+                           <children>
+                              <Label text="Tickets Exit">
+                                 <VBox.margin>
+                                    <Insets bottom="10.0" />
+                                 </VBox.margin>
+                              </Label>
+                              <TextArea fx:id="ticketsExitTxtField" editable="false" prefHeight="225.0" />
+                           </children>
+                           <HBox.margin>
+                              <Insets right="10.0" />
+                           </HBox.margin>
+                        </VBox>
+                        <VBox alignment="CENTER" prefWidth="75.0">
+                           <children>
+                              <Label text="Tickets Queue">
+                                 <VBox.margin>
+                                    <Insets bottom="10.0" />
+                                 </VBox.margin>
+                              </Label>
+                              <ListView fx:id="ticketsQueueListView" minWidth="114.0" prefHeight="225.0" prefWidth="114.0" />
+                           </children>
+                           <HBox.margin>
+                              <Insets right="10.0" />
+                           </HBox.margin>
+                        </VBox>
+                     </children>
                      <VBox.margin>
-                        <Insets bottom="10.0" top="10.0" />
+                        <Insets top="10.0" />
                      </VBox.margin>
-                  </Label>
-                  <TextArea fx:id="console" prefHeight="335.0" prefWidth="464.0">
-                     <VBox.margin>
-                        <Insets />
-                     </VBox.margin>
-                  </TextArea>
+                  </HBox>
                </children>
                <BorderPane.margin>
                   <Insets top="25.0" />
@@ -90,7 +144,7 @@
       </BorderPane>
       <BorderPane minWidth="0.0" GridPane.columnIndex="1">
          <GridPane.margin>
-            <Insets left="25.0" right="25.0" top="35.0" />
+            <Insets left="25.0" right="25.0" top="60.0" />
          </GridPane.margin>
          <center>
             <HBox alignment="CENTER" BorderPane.alignment="CENTER">
@@ -112,7 +166,7 @@
                               <Insets bottom="5.0" />
                            </VBox.margin>
                         </Label>
-                        <TextField fx:id="statusTxtField" alignment="CENTER" editable="false" prefWidth="237.0" text="TICKET CLOSED">
+                        <TextField fx:id="statusTxtField" alignment="CENTER" editable="false" prefWidth="237.0" text="MUSEUM CLOSED">
                            <VBox.margin>
                               <Insets />
                            </VBox.margin>

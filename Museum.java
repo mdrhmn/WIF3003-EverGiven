@@ -217,11 +217,11 @@ public class Museum {
             visitor.visitorTime.setVisitDuration();
 
             System.out.println(Museum.worldTime.getFormattedCurrentTime() + " - Tickets " + ticketsList + " sold");
-            String text = Museum.worldTime.getFormattedCurrentTime() + " - Tickets " + ticketsList + " sold";
+            String text = ticketsList;
 
             Platform.runLater(() -> {
                 // controller.ticketOpen();
-                controller.displayText(text);
+                controller.appendTicketsSold(text);
             });
 
             for (int i = 0; i < ticketThread.length; i++) {
@@ -266,11 +266,9 @@ public class Museum {
 
             System.out.println(Museum.worldTime.getFormattedCurrentTime() + " - Ticket " + ticketID + " sold");
 
-            String text = Museum.worldTime.getFormattedCurrentTime() + " - Ticket " + ticketID + " sold";
-
             Platform.runLater(() -> {
                 // controller.ticketOpen();
-                controller.displayText(text);
+                controller.appendTicketsSold(ticketID);
             });
 
             ticketThread[0].start();
