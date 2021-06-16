@@ -3,7 +3,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
-import javafx.application.Platform;
 import javafx.scene.control.Button;
 import javafx.fxml.Initializable;
 import java.util.ResourceBundle;
@@ -15,6 +14,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import javafx.fxml.FXML;
 import java.net.URL;
+
+/**
+ * Controller class to handle all GUI update operations
+ */
 
 public class GUIController implements Initializable {
 
@@ -85,7 +88,6 @@ public class GUIController implements Initializable {
     public int totalVisitor, currentVisitor, queuedVisitor, rejectedPurchases = 0;
     public int dailyVisitorLimit, hourlyVisitorLimit;
     public String museumStatus = "MUSEUM CLOSED";
-    // public PrintStream ps;
 
     /**
      * Initializes the controller class.
@@ -93,7 +95,6 @@ public class GUIController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         cb.getItems().addAll("Test Case 1", "Test Case 2", "Test Case 3", "Test Case 4", "Test Case 5");
-        // ps = new PrintStream(new GUIController.Console(console));
         statusTxtField.setStyle("-fx-text-fill: red;");
 
         sb.setOnAction(e -> {
@@ -107,32 +108,49 @@ public class GUIController implements Initializable {
         });
     }
 
-    // public void displayText(String text) {
-    // ps.println(text);
-    // }
-
+    /**
+     * Append sold tickets
+     */
     public void appendTicketsSold(String text) {
         ticketsSoldTxtField.appendText(text + "\n");
     }
 
+    /**
+     * Append entered tickets
+     */
     public void appendTicketsEntry(String text) {
         ticketsEntryTxtField.appendText(text + "\n");
     }
 
+    /**
+     * Append exited tickets
+     */
     public void appendTicketsExit(String text) {
         ticketsExitTxtField.appendText(text + "\n");
     }
 
+    /**
+     * Add queued tickets into queueList
+     */
     public void queueList(String visitor) {
         ticketsQueueListView.getItems().add(visitor);
     }
 
+    /**
+     * Remove queued tickets from queueList
+     */
     public void dequeueList(String visitor) {
         ticketsQueueListView.getItems().remove(visitor);
     }
 
+    /**
+     * Start button to start the program
+     */
     public void btnStart() throws InterruptedException, IOException {
 
+        /**
+         * Select dropdown to select the test cases
+         */
         if (cb.getSelectionModel().getSelectedIndex() > -1) {
             switch (cb.getSelectionModel().getSelectedIndex() + 1) {
                 case 1:
@@ -155,30 +173,45 @@ public class GUIController implements Initializable {
         }
     }
 
+    /**
+     * Change ticket purchase status to open
+     */
     public void ticketOpen() {
         museumStatus = "TICKET OPEN";
         statusTxtField.setText(museumStatus);
         statusTxtField.setStyle("-fx-text-fill: #0275d8;");
     }
 
+    /**
+     * Change ticket purchase status to closed
+     */
     public void ticketClosed() {
         museumStatus = "TICKET CLOSED";
         statusTxtField.setText(museumStatus);
         statusTxtField.setStyle("-fx-text-fill: #f0ad4e;");
     }
 
+    /**
+     * Change museum status to open
+     */
     public void museumOpen() {
         museumStatus = "MUSEUM OPEN";
         statusTxtField.setText(museumStatus);
         statusTxtField.setStyle("-fx-text-fill: green;");
     }
 
+    /**
+     * Change museum status to closed
+     */
     public void museumClosed() {
         museumStatus = "MUSEUM CLOSED";
         statusTxtField.setText(museumStatus);
         statusTxtField.setStyle("-fx-text-fill: red;");
     }
 
+    /**
+     * Change museum status to full
+     */
     public void museumFull() {
         museumStatus = "MUSEUM FULL";
         statusTxtField.setText(museumStatus);
@@ -189,38 +222,61 @@ public class GUIController implements Initializable {
         return museumStatus;
     }
 
+    /**
+     * Update Museum Time text field
+     */
     public void setTime(String time) {
         timerTxtField.setText(time);
     }
 
+    /**
+     * Update Total Visitors counter text field
+     */
     private void displayTotalVisitor() {
         totalVisitorTxtField.setText(String.valueOf(getTotalVisitor()));
     }
 
+    /**
+     * Update Current Visitors counter text field
+     */
     private void displayCurrentVisitor() {
         currentVisitorTxtField.setText(String.valueOf(getCurrentVisitor()));
     }
 
+    /**
+     * Update Queued Visitors counter text field
+     */
     private void displayQueuedVisitor() {
         queuedVisitorTxtField.setText(String.valueOf(getQueuedVisitor()));
     }
 
+    /**
+     * Update Rejected Purchases counter text field. Rejected Purchases here refers
+     * to when visitors attempt to buy tickets when the museum daily limit has been
+     * reached.
+     */
     private void displayRejectedPurchases() {
         rejectedPurchasesTxtField.setText(String.valueOf(getRejectedPurchases()));
     }
 
+    /**
+     * Increase Current Visitors counter
+     */
     private void increaseCurrentVisitor() {
         currentVisitor++;
         totalVisitor++;
+        /**
+         * When number of visitors increase, both Current and Total Visitors counters
+         * will be incremented. Total Visitors counter is cumulative while Current
+         * Visitors counter can fluctuate.
+         */
         displayCurrentVisitor();
         displayTotalVisitor();
     }
 
-    public void increaseQueuedVisitor() {
-        queuedVisitor++;
-        displayQueuedVisitor();
-    }
-
+    /**
+     * Decrease Current Visitors counter
+     */
     private void decreaseCurrentVisitor() {
         if (currentVisitor > 0) {
             currentVisitor--;
@@ -228,6 +284,17 @@ public class GUIController implements Initializable {
         displayCurrentVisitor();
     }
 
+    /**
+     * Increase Queued Visitors counter
+     */
+    public void increaseQueuedVisitor() {
+        queuedVisitor++;
+        displayQueuedVisitor();
+    }
+
+    /**
+     * Decrease Queued Visitors counter
+     */
     private void decreaseQueuedVisitor() {
         if (queuedVisitor > 0) {
             queuedVisitor--;
@@ -256,19 +323,18 @@ public class GUIController implements Initializable {
         return rejectedPurchases;
     }
 
-    // private int getDailyVisitorLimit() {
-    // return dailyVisitorLimit;
-    // }
-
-    // public int getHourlyVisitorLimit() {
-    // return hourlyVisitorLimit;
-    // }
-
+    /**
+     * Method to update Queued Visitor and Current Visitor counters upon visitor
+     * entry
+     */
     public void visitorEnter() {
         decreaseQueuedVisitor();
         increaseCurrentVisitor();
     }
 
+    /**
+     * Method to update QCurrent Visitor counters upon visitor exit
+     */
     public void visitorExit() {
         decreaseCurrentVisitor();
         if (getMuseumStatus().equals("MUSEUM FULL")) {
@@ -276,6 +342,9 @@ public class GUIController implements Initializable {
         }
     }
 
+    /**
+     * Method to update all Entrance turnstile counters
+     */
     public void increaseEntrance(String enter) {
         if (enter.charAt(0) == 'S') {
             switch (Character.getNumericValue(enter.charAt(3))) {
@@ -318,6 +387,9 @@ public class GUIController implements Initializable {
         }
     }
 
+    /**
+     * Method to update all Exit turnstile counters
+     */
     public void increaseExit(String exit) {
         if (exit.charAt(0) == 'W') {
             switch (Character.getNumericValue(exit.charAt(3))) {
@@ -386,10 +458,6 @@ public class GUIController implements Initializable {
             Visitor visitor = new Visitor(visitorID, noOfTickets, museum);
             visitorList.add(visitor);
         }
-
-        // Timer timer = new Timer(museum, this);
-        // Thread timerThread = new Thread(timer);
-        // timerThread.start();
 
         // Create Visitor thread
         for (int i = 0; i < visitorList.size(); i++) {

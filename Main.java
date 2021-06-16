@@ -9,8 +9,15 @@ public class Main extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
+        /**
+         * Load GUI design from FXML file
+         */
         Parent root = FXMLLoader.load(getClass().getResource("GUI.fxml"));
         Scene scene = new Scene(root);
+        // scene.getStylesheets().add("bootstrap.css");
+        /**
+         * Prevent user from resizing the window (to avoid glitches)
+         */
         stage.setResizable(false);
         stage.setScene(scene);
         stage.show();

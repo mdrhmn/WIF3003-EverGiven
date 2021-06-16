@@ -18,7 +18,7 @@ public class Visitor implements Runnable {
     Time visitorTime;
     Museum museum;
     Random random;
-    // GUIController controller;
+    
 
     public static Lock lock = new ReentrantLock();
 

@@ -9,7 +9,7 @@ import javafx.application.Platform;
 public class Turnstile {
     private final String turnstileID;
     Museum museum;
-    // GUIController controller;
+    
     boolean turnstileStatus;
 
     public Turnstile(String turnstileID, Museum museum) {

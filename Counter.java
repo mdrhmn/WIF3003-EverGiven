@@ -1,7 +1,6 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * The Counter class is mainly used for increment/decrement operations related
+ * to visitors and tickets.
  */
 
 public class Counter {
@@ -11,18 +10,30 @@ public class Counter {
         count = 0;
     }
 
+    /**
+     * Synchronized increment method
+     */
     public synchronized void increase() {
         count++;
     }
 
+    /**
+     * Synchronized decrement method
+     */
     public synchronized void decrease() {
         count--;
     }
 
+    /**
+     * Retrieve count value (getter)
+     */
     public int getNumber() {
         return count;
     }
 
+    /**
+     * Set count value (setter)
+     */
     public void setNumber(int number) {
         this.count = number;
     }

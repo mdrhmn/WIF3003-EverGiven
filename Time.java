@@ -17,7 +17,7 @@ public class Time implements Runnable {
     private long exitTime;
 
     Museum museum;
-    // GUIController controller;
+    
 
     public Time(Museum museum) {
         this.sysStartTime = System.currentTimeMillis();
@@ -185,9 +185,7 @@ public class Time implements Runnable {
                 // Initialize integer min starting from 0 to 59 representing minutes in
                 // clock minutes start from 00 to 59.
                 for (int min = 0; min <= 59; min++) {
-
                     try {
-
                         if (hours == 9 && min == 0) {// The time museum open at 0900
                             museum.controller.museumOpen();
                         } else if (hours == 17 && min == 0) {// The time museum about to close at

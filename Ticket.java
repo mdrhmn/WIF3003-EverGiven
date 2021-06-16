@@ -29,7 +29,7 @@ public class Ticket implements Runnable {
     private Condition isClose = lock.newCondition();
     private Semaphore currentVisitorsLimit;
 
-    // GUIController controller;
+    
     Time ticketTime;
     Museum museum;
     Visitor visitor;

@@ -1,16 +1,11 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
-
 import java.util.concurrent.locks.*;
 import java.util.Collections;
 import java.util.Random;
 import java.util.Arrays;
 
-
+/**
+ * The Entrance class is used for handling ticket exit out of museum
+ */
 public class Exit {
     private final String exitName;
     Museum museum;
@@ -39,24 +34,34 @@ public class Exit {
         return exitName;
     }
 
+    /**
+     * Method to handle ticket exit by randomly selecting which exit turnstile to
+     * use
+     */
     public void exit(Ticket ticket) throws InterruptedException {
 
         lock.lock();
         int selected_turnstile = -1;
         Integer[] turnstileNum = { 0, 1, 2, 3 };
+
         // Randomise turnstile order
         Collections.shuffle(Arrays.asList(turnstileNum));
 
         for (int i = 0; i < 4; i++) {
             selected_turnstile = turnstileNum[i];
-            // when the selected turnstile is not in use
+
+            /**
+             * If selected turnstile is not in use
+             */
             if (!turnstile[selected_turnstile].getTurnstileStatus()) {
                 turnstile[selected_turnstile].setTurnstileStatus(true);
                 turnstile[selected_turnstile].exit(ticket);
+
                 while (ticket.visitor.ticketsExitCount.getNumber() != ticket.visitor.getNoOfTickets()) {
                     active.await();
                 }
                 active.signalAll();
+                
                 turnstile[selected_turnstile].setTurnstileStatus(false);
                 break;
             } // when all turnstiles occupied and there are more tickets to exit
