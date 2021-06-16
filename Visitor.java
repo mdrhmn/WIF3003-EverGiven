@@ -18,7 +18,7 @@ public class Visitor implements Runnable {
     Time visitorTime;
     Museum museum;
     Random random;
-    GUIController controller;
+    // GUIController controller;
 
     public static Lock lock = new ReentrantLock();
 
@@ -63,29 +63,28 @@ public class Visitor implements Runnable {
                     || Museum.totalTickets.getNumber() + this.getNoOfTickets() > museum.getDailyVisitorsLimit()) {
 
                 if (Museum.worldTime.getCurrentTime() > museum.getMuseumTicketCloseTime()) {
-                    
-                    Platform.runLater(() -> {
-                        controller.increaseRejectedPurchase();
-                        controller.museumClosed();
-                    });
 
                     if (!museum.isTicketsCloseFlag()) {
                         System.out.println(
                                 "\n############################################## MUSEUM TICKETS CLOSED ##############################################\n");
                         museum.setTicketsCloseFlag(true);
+                        Platform.runLater(() -> {
+                            museum.controller.ticketClosed();
+                        });
                     }
                 } else if (Museum.totalTickets.getNumber() + this.getNoOfTickets() > museum.getDailyVisitorsLimit()) {
 
                     Platform.runLater(() -> {
-                        controller.increaseRejectedPurchase();
-                        controller.museumFull();
+                        museum.controller.increaseRejectedPurchase();
+                        museum.controller.ticketClosed();
                     });
 
                     if (!museum.isDailyVisitorsLimitFlag()) {
                         int totalVisitors = Museum.totalTickets.getNumber() + 1;
                         if (totalVisitors > museum.getDailyVisitorsLimit()) {
                             System.out.println(Museum.worldTime.getFormattedCurrentTime()
-                                    + " - Number of purchased tickets exceed daily visitors limit (" + Museum.totalTickets.getNumber()
+                                    + " - Number of purchased tickets exceed daily visitors limit ("
+                                    + Museum.totalTickets.getNumber()
                                     + "). Tickets are no longer available for purchase.");
                         } else {
                             System.out.println(Museum.worldTime.getFormattedCurrentTime()

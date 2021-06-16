@@ -4,8 +4,6 @@
  * and open the template in the editor.
  */
 
-
-
 public class Counter {
     private int count;
 

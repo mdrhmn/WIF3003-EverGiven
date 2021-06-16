@@ -1,10 +1,12 @@
+import javafx.application.Platform;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
 
-public class Time {
+public class Time implements Runnable {
     private long sysStartTime;
     private long sysCurrTime;
     private long currentTime;
@@ -15,6 +17,7 @@ public class Time {
     private long exitTime;
 
     Museum museum;
+    // GUIController controller;
 
     public Time(Museum museum) {
         this.sysStartTime = System.currentTimeMillis();
@@ -165,5 +168,45 @@ public class Time {
 
     public long getExitTime() {
         return this.exitTime;
+    }
+
+    @Override
+    public void run() {
+
+        int num = 8;// Initialize integer num with 8 because the ticket selling start at 0800.
+
+        // Initialize integer hours that starting from 8 to 18 which represent
+        // the museum start selling ticket from 0800 and the museum closed at 1800.
+        for (int hours = num; hours <= 18; hours++) {
+
+            if (hours == 18)
+                break;
+            else {
+                // Initialize integer min starting from 0 to 59 representing minutes in
+                // clock minutes start from 00 to 59.
+                for (int min = 0; min <= 59; min++) {
+
+                    try {
+
+                        if (hours == 9 && min == 0) {// The time museum open at 0900
+                            museum.controller.museumOpen();
+                        } else if (hours == 17 && min == 0) {// The time museum about to close at
+                            museum.controller.ticketClosed();
+                        } else if (hours == 18 && min == 0) {// The time museum close at 1800
+                            museum.controller.museumClosed();
+                        }
+
+                        Platform.runLater(() -> {
+                            museum.controller.setTime(Museum.worldTime.getFormattedCurrentTime());
+                        });
+
+                        Thread.sleep(500);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+
+                    }
+                }
+            }
+        }
     }
 }

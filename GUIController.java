@@ -20,9 +20,9 @@ import java.net.URL;
 public class GUIController implements Initializable {
 
     @FXML
-    public TextField setDailyVisitorLimitTxtField;
+    public TextField dailyVisitorLimitTxtField;
     @FXML
-    public TextField setHourlyVisitorLimitTxtField;
+    public TextField hourlyVisitorLimitTxtField;
     @FXML
     public ComboBox<String> cb;
     @FXML
@@ -124,18 +124,11 @@ public class GUIController implements Initializable {
     }
 
     public void btnStart() throws InterruptedException, IOException {
-        if (setHourlyVisitorLimitTxtField.getText().isEmpty()) {
-            setHourlyVisitorLimitTxtField.setText("100");
-        }
-
-        if (setDailyVisitorLimitTxtField.getText().isEmpty()) {
-            setDailyVisitorLimitTxtField.setText("900");
-        }
 
         if (cb.getSelectionModel().getSelectedIndex() > -1) {
             switch (cb.getSelectionModel().getSelectedIndex() + 1) {
                 case 1:
-                    museumOperation("TestCaseWithinDailyLimit.txt");
+                    museumOperation("TestCaseWithinDailyLimit_813.txt");
                     break;
                 case 2:
                     museumOperation("TestCaseExceedDailyLimit.txt");
@@ -150,8 +143,8 @@ public class GUIController implements Initializable {
                     displayText("Test Case 5");
                     break;
             }
+            sb.setDisable(true);
         }
-
     }
 
     public void ticketOpen() {
@@ -183,30 +176,55 @@ public class GUIController implements Initializable {
         return museumStatus;
     }
 
+    public void setTime(String time) {
+        timerTxtField.setText(time);
+    }
+
+    private void displayTotalVisitor() {
+        totalVisitorTxtField.setText(String.valueOf(getTotalVisitor()));
+    }
+
+    private void displayCurrentVisitor() {
+        currentVisitorTxtField.setText(String.valueOf(getCurrentVisitor()));
+    }
+
+    private void displayQueuedVisitor() {
+        queuedVisitorTxtField.setText(String.valueOf(getQueuedVisitor()));
+    }
+
+    private void displayRejectedPurchases() {
+        rejectedPurchasesTxtField.setText(String.valueOf(getRejectedPurchases()));
+    }
+
     private void increaseCurrentVisitor() {
         currentVisitor++;
         totalVisitor++;
-        currentVisitorTxtField.setText(String.valueOf(getCurrentVisitor()));
-        totalVisitorTxtField.setText(String.valueOf(getTotalVisitor()));
+        displayCurrentVisitor();
+        displayTotalVisitor();
     }
 
     public void increaseQueuedVisitor() {
         queuedVisitor++;
-        queuedVisitorTxtField.setText(String.valueOf(getQueuedVisitor()));
+        displayQueuedVisitor();
     }
 
     private void decreaseCurrentVisitor() {
         if (currentVisitor > 0) {
             currentVisitor--;
         }
-        currentVisitorTxtField.setText(String.valueOf(getCurrentVisitor()));
+        displayCurrentVisitor();
     }
 
     private void decreaseQueuedVisitor() {
         if (queuedVisitor > 0) {
             queuedVisitor--;
         }
-        queuedVisitorTxtField.setText(String.valueOf(getQueuedVisitor()));
+        displayQueuedVisitor();
+    }
+
+    public void increaseRejectedPurchase() {
+        rejectedPurchases++;
+        displayRejectedPurchases();
     }
 
     private int getCurrentVisitor() {
@@ -221,45 +239,28 @@ public class GUIController implements Initializable {
         return totalVisitor;
     }
 
-    public void increaseRejectedPurchase() {
-        rejectedPurchases++;
-        rejectedPurchasesTxtField.setText(String.valueOf(getRejectedPurchases()));
-    }
-
     private int getRejectedPurchases() {
         return rejectedPurchases;
     }
 
-    private int getDailyVisitorLimit() {
-        return dailyVisitorLimit;
-    }
+    // private int getDailyVisitorLimit() {
+    //     return dailyVisitorLimit;
+    // }
 
-    public int getHourlyVisitorLimit() {
-        return hourlyVisitorLimit;
-    }
+    // public int getHourlyVisitorLimit() {
+    //     return hourlyVisitorLimit;
+    // }
 
     public void visitorEnter() {
-        if (!getMuseumStatus().equals("MUSEUM CLOSED")) {
-            if (getMuseumStatus().equals("MUSEUM OPEN")) {
-                decreaseQueuedVisitor();
-                increaseCurrentVisitor();
-            } else if (getMuseumStatus().equals("MUSEUM FULL")) {
-                increaseQueuedVisitor();
-            }
-            if (getHourlyVisitorLimit() <= getCurrentVisitor()) {
-                museumFull();
-            }
-            if (getDailyVisitorLimit() <= getTotalVisitor()) {
-                museumClosed();
-            }
-        } else {
-            increaseQueuedVisitor();
-        }
+        decreaseQueuedVisitor();
+        increaseCurrentVisitor();
     }
 
     public void visitorExit() {
         decreaseCurrentVisitor();
-        museumOpen();
+        if (getMuseumStatus().equals("MUSEUM FULL")) {
+            museumOpen();
+        }
     }
 
     public void museumOperation(String filename) throws InterruptedException, IOException {
@@ -276,8 +277,7 @@ public class GUIController implements Initializable {
         // Create Visitors and Museum
         ArrayList<String[]> readList = read.getVisitorList();
 
-        Museum museum = new Museum("Kuching Museum", Integer.parseInt(setHourlyVisitorLimitTxtField.getText()),
-                Integer.parseInt(setDailyVisitorLimitTxtField.getText()), this);
+        Museum museum = new Museum("Kuching Museum", 100, 900, this);
         ArrayList<Visitor> visitorList = new ArrayList<>();
 
         for (int i = 0; i < readList.size(); i++) {
@@ -289,6 +289,10 @@ public class GUIController implements Initializable {
             Visitor visitor = new Visitor(visitorID, noOfTickets, museum);
             visitorList.add(visitor);
         }
+
+        // Timer timer = new Timer(museum, this);
+        // Thread timerThread = new Thread(timer);
+        // timerThread.start();
 
         // Create Visitor thread
         for (int i = 0; i < visitorList.size(); i++) {

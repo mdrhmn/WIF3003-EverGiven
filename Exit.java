@@ -17,19 +17,17 @@ public class Exit {
     Turnstile[] turnstile = new Turnstile[4];
     Random random;
     int turnstileInUse;
-    GUIController controller;
     public static Lock lock = new ReentrantLock(); // Create a lock
     private Condition active = lock.newCondition();
 
-    public Exit(String exitName, Museum museum, GUIController controller) {
+    public Exit(String exitName, Museum museum) {
         this.exitName = exitName;
         this.museum = museum;
         this.random = new Random();
-        this.controller = controller;
 
         for (int i = 0; i < 4; i++) {
             String turnstileID = this.exitName + "T" + (i + 1);
-            turnstile[i] = new Turnstile(turnstileID, museum, controller);
+            turnstile[i] = new Turnstile(turnstileID, museum);
         }
     }
 

@@ -15,62 +15,30 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="856.0" prefWidth="977.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUIController">
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="673.0" prefWidth="977.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUIController">
   <columnConstraints>
     <ColumnConstraints hgrow="SOMETIMES" maxWidth="489.0" minWidth="10.0" prefWidth="489.0" />
     <ColumnConstraints hgrow="SOMETIMES" maxWidth="488.0" minWidth="10.0" prefWidth="488.0" />
   </columnConstraints>
   <rowConstraints>
-    <RowConstraints maxHeight="674.0" minHeight="10.0" prefHeight="411.0" vgrow="SOMETIMES" />
-    <RowConstraints maxHeight="448.0" minHeight="0.0" prefHeight="433.0" vgrow="SOMETIMES" />
+    <RowConstraints maxHeight="674.0" minHeight="10.0" prefHeight="253.0" vgrow="SOMETIMES" />
+    <RowConstraints maxHeight="628.0" minHeight="0.0" prefHeight="453.0" vgrow="SOMETIMES" />
       <RowConstraints />
   </rowConstraints>
    <children>
-      <BorderPane prefHeight="693.0" prefWidth="522.0" GridPane.rowSpan="3">
+      <BorderPane prefWidth="464.0" GridPane.rowSpan="3">
          <top>
-            <VBox alignment="CENTER" prefHeight="828.0" prefWidth="417.0" BorderPane.alignment="CENTER">
+            <VBox alignment="TOP_CENTER" prefHeight="638.0" prefWidth="464.0" BorderPane.alignment="CENTER">
                <children>
                   <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Welcoming Message" textAlignment="CENTER" wrappingWidth="170.0">
                      <VBox.margin>
                         <Insets bottom="10.0" />
                      </VBox.margin>
                   </Text>
-                  <TextArea editable="false" prefHeight="224.0" prefWidth="534.0" text="This is a JavaFX application for our team (Ever Given)'s submission for Concurrent Programming [WIF3003] Group Project (Phase 2) titled 'Museum Under Pandemic' in Semester 2, 2020/2021 session.&#10;&#10;Team Members:&#10;1. Muhammad Rahiman bin Abdulmanab&#10;2. Nur Faidz Hazirah binti Nor'Azman&#10;3. Muhammad Luqman bin Sulaiman&#10;4. Muhammad Farouq bin Shaharuddin&#10;&#10;To start the program, you must select a predefined test case." wrapText="true" />
-                  <HBox prefHeight="100.0" prefWidth="200.0">
+                  <TextArea editable="false" prefHeight="326.0" prefWidth="464.0" text="This is a JavaFX application for our team (Ever Given)'s submission for Concurrent Programming [WIF3003] Group Project (Phase 2) titled 'Museum Under Pandemic' in Semester 2, 2020/2021 session.&#10;&#10;Team Members:&#10;1. Muhammad Rahiman bin Abdulmanab&#10;2. Nur Faidz Hazirah binti Nor'Azman&#10;3. Muhammad Luqman bin Sulaiman&#10;4. Muhammad Farouq bin Shaharuddin&#10;&#10;To start the program, you must select a predefined test case. The hourly and daily limits of the museum are set to 100 and 900 respectively.&#10;&#10;The following are the test cases available:&#10;&#10;1. Within Daily Limit&#10;2. Exceed Daily Limit&#10;3. Within Hourly Limit&#10;4. Exceed Hourly Limit" wrapText="true" />
+                  <HBox alignment="CENTER" prefHeight="66.0" prefWidth="464.0">
                      <children>
-                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="449.0">
-                           <children>
-                              <VBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
-                                 <children>
-                                    <Label text="Daily Visitor Limit">
-                                       <VBox.margin>
-                                          <Insets bottom="10.0" />
-                                       </VBox.margin>
-                                    </Label>
-                                    <TextField fx:id="setDailyVisitorLimitTxtField" alignment="CENTER" prefHeight="25.0" prefWidth="125.0">
-                                       <VBox.margin>
-                                          <Insets left="25.0" right="25.0" />
-                                       </VBox.margin>
-                                    </TextField>
-                                 </children>
-                              </VBox>
-                              <VBox alignment="CENTER">
-                                 <children>
-                                    <Label text="Hourly Visitor Limit">
-                                       <VBox.margin>
-                                          <Insets bottom="10.0" />
-                                       </VBox.margin>
-                                    </Label>
-                                    <TextField fx:id="setHourlyVisitorLimitTxtField" alignment="CENTER">
-                                       <VBox.margin>
-                                          <Insets left="25.0" right="25.0" />
-                                       </VBox.margin>
-                                    </TextField>
-                                 </children>
-                              </VBox>
-                           </children>
-                        </HBox>
-                        <VBox alignment="CENTER" prefHeight="100.0" prefWidth="321.0">
+                        <VBox alignment="CENTER">
                            <children>
                               <Label text="Test Case Selection">
                                  <VBox.margin>
@@ -80,22 +48,36 @@
                               <ComboBox fx:id="cb" prefWidth="150.0" promptText="Select" />
                            </children>
                         </VBox>
+                        <HBox alignment="CENTER">
+                           <children>
+                              <Button fx:id="sb" mnemonicParsing="false" prefHeight="25.0" prefWidth="92.0" text="Start">
+                                 <HBox.margin>
+                                    <Insets top="27.0" />
+                                 </HBox.margin>
+                              </Button>
+                           </children>
+                           <HBox.margin>
+                              <Insets left="25.0" right="25.0" />
+                           </HBox.margin>
+                        </HBox>
                      </children>
-                  </HBox>
-                  <Button fx:id="sb" mnemonicParsing="false" prefHeight="25.0" prefWidth="92.0" text="Start" />
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Command Line Output" textAlignment="CENTER">
                      <VBox.margin>
-                        <Insets bottom="10.0" top="25.0" />
+                        <Insets top="10.0" />
                      </VBox.margin>
-                  </Text>
-                  <TextArea fx:id="console" prefHeight="400.0" prefWidth="439.0">
+                  </HBox>
+                  <Label text="Command Line Output">
+                     <VBox.margin>
+                        <Insets bottom="10.0" top="10.0" />
+                     </VBox.margin>
+                  </Label>
+                  <TextArea fx:id="console" prefHeight="335.0" prefWidth="464.0">
                      <VBox.margin>
                         <Insets />
                      </VBox.margin>
                   </TextArea>
                </children>
                <BorderPane.margin>
-                  <Insets />
+                  <Insets top="25.0" />
                </BorderPane.margin>
             </VBox>
          </top>
@@ -103,50 +85,56 @@
             <Insets />
          </opaqueInsets>
          <GridPane.margin>
-            <Insets bottom="25.0" left="25.0" top="25.0" />
+            <Insets bottom="25.0" left="25.0" />
          </GridPane.margin>
       </BorderPane>
-      <BorderPane prefWidth="488.0" GridPane.columnIndex="1">
+      <BorderPane minWidth="0.0" GridPane.columnIndex="1">
          <GridPane.margin>
-            <Insets right="25.0" top="25.0" />
+            <Insets left="25.0" right="25.0" top="35.0" />
          </GridPane.margin>
          <center>
-            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="488.0" BorderPane.alignment="CENTER">
+            <HBox alignment="CENTER" BorderPane.alignment="CENTER">
                <children>
-                  <VBox fx:id="museumTime" alignment="CENTER" prefHeight="233.0" prefWidth="270.0">
+                  <VBox fx:id="museumTime" alignment="CENTER">
                      <children>
                         <Label alignment="CENTER" text="Museum Time" />
                         <Text fx:id="timerTxtField" strokeType="OUTSIDE" strokeWidth="0.0" text="0000" textAlignment="CENTER">
                            <font>
-                              <Font name="System Bold" size="40.0" />
+                              <Font size="40.0" />
                            </font>
                         </Text>
                      </children>
                   </VBox>
-                  <VBox alignment="CENTER" prefHeight="233.0" prefWidth="415.0">
+                  <VBox alignment="CENTER" prefHeight="69.0" prefWidth="262.0">
                      <children>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Status" textAlignment="CENTER" wrappingWidth="170.0">
+                        <Label alignment="CENTER" text="Status">
                            <VBox.margin>
-                              <Insets bottom="10.0" />
+                              <Insets bottom="5.0" />
                            </VBox.margin>
-                        </Text>
-                        <TextField fx:id="statusTxtField" alignment="CENTER" editable="false" text="TICKET CLOSED">
+                        </Label>
+                        <TextField fx:id="statusTxtField" alignment="CENTER" editable="false" prefWidth="237.0" text="TICKET CLOSED">
                            <VBox.margin>
-                              <Insets bottom="10.0" left="25.0" right="25.0" />
+                              <Insets />
                            </VBox.margin>
                            <font>
                               <Font name="Arial Bold" size="24.0" />
                            </font>
                         </TextField>
                      </children>
+                     <HBox.margin>
+                        <Insets left="25.0" />
+                     </HBox.margin>
                   </VBox>
                </children>
+               <BorderPane.margin>
+                  <Insets />
+               </BorderPane.margin>
             </HBox>
          </center>
          <bottom>
-            <HBox prefHeight="100.0" prefWidth="463.0" BorderPane.alignment="CENTER">
+            <HBox prefWidth="367.0" BorderPane.alignment="CENTER">
                <children>
-                  <VBox alignment="CENTER">
+                  <VBox alignment="CENTER" prefWidth="127.0">
                      <children>
                         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Total Visitors" textAlignment="CENTER" wrappingWidth="170.0">
                            <VBox.margin>
@@ -206,11 +194,44 @@
                         </TextField>
                      </children>
                   </VBox>
+                  <VBox alignment="CENTER">
+                     <children>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Hourly Visitor Limit" textAlignment="CENTER" wrappingWidth="170.0">
+                           <VBox.margin>
+                              <Insets bottom="10.0" />
+                           </VBox.margin>
+                        </Text>
+                        <TextField fx:id="hourlyVisitorLimitTxtField" alignment="CENTER" editable="false" text="100">
+                           <VBox.margin>
+                              <Insets bottom="10.0" left="50.0" right="50.0" />
+                           </VBox.margin>
+                           <font>
+                              <Font name="Arial Bold" size="24.0" />
+                           </font>
+                        </TextField>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Daily Visitor Limit" textAlignment="CENTER" wrappingWidth="170.0">
+                           <VBox.margin>
+                              <Insets bottom="10.0" />
+                           </VBox.margin>
+                        </Text>
+                        <TextField fx:id="dailyVisitorLimitTxtField" alignment="CENTER" editable="false" text="900">
+                           <VBox.margin>
+                              <Insets bottom="10.0" left="50.0" right="50.0" />
+                           </VBox.margin>
+                           <font>
+                              <Font name="Arial Bold" size="24.0" />
+                           </font>
+                        </TextField>
+                     </children>
+                  </VBox>
                </children>
+               <BorderPane.margin>
+                  <Insets top="10.0" />
+               </BorderPane.margin>
             </HBox>
          </bottom>
       </BorderPane>
-      <BorderPane GridPane.columnIndex="1" GridPane.rowIndex="1" GridPane.rowSpan="2">
+      <BorderPane prefWidth="438.0" GridPane.columnIndex="1" GridPane.rowIndex="1" GridPane.rowSpan="2">
          <GridPane.margin>
             <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
          </GridPane.margin>
@@ -392,6 +413,9 @@
                      </children>
                   </VBox>
                </children>
+               <BorderPane.margin>
+                  <Insets />
+               </BorderPane.margin>
             </HBox>
          </top>
          <center>
@@ -491,11 +515,7 @@
                   </VBox>
                   <VBox alignment="CENTER" prefHeight="246.0" prefWidth="285.0">
                      <children>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="East Exit (EE)" textAlignment="CENTER" wrappingWidth="170.0">
-                           <font>
-                              <Font name="System Bold" size="13.0" />
-                           </font>
-                        </Text>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="East Exit (EE)" textAlignment="CENTER" wrappingWidth="170.0" />
                         <GridPane alignment="CENTER" prefHeight="162.0">
                            <columnConstraints>
                               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />

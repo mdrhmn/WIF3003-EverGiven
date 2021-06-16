@@ -4,7 +4,6 @@
  * and open the template in the editor.
  */
 
-
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -30,13 +29,13 @@ public class Ticket implements Runnable {
     private Condition isClose = lock.newCondition();
     private Semaphore currentVisitorsLimit;
 
-    GUIController controller;
+    // GUIController controller;
     Time ticketTime;
     Museum museum;
     Visitor visitor;
 
     public Ticket(Semaphore currentVisitorsLimit, String ticketID, int selectedEntrance, int selectedExit,
-            Museum museum, Visitor visitor, GUIController controller) {
+            Museum museum, Visitor visitor) {
         this.currentVisitorsLimit = currentVisitorsLimit;
         this.ticketID = ticketID;
         this.museum = museum;
@@ -45,7 +44,6 @@ public class Ticket implements Runnable {
         this.selectedEntrance = selectedEntrance;
         this.selectedExit = selectedExit;
         this.ticketTime = new Time(museum);
-        this.controller = controller;
         this.ticketTime.setSysStartTime(this.visitor.visitorTime.getSysStartTime());
     }
 
@@ -78,6 +76,13 @@ public class Ticket implements Runnable {
                  * Tickets purchased before museum open time (9:00 a.m.) will have to wait until
                  * museum has opened for entry
                  */
+
+                if (Museum.worldTime.getCurrentTime() < museum.getMuseumOpenTime()) {
+                    Platform.runLater(() -> {
+                        museum.controller.increaseQueuedVisitor();
+                    });
+                }
+
                 while (Museum.worldTime.getCurrentTime() < museum.getMuseumOpenTime()) {
                     isOpen.await(10, TimeUnit.MILLISECONDS);
                 }
@@ -87,8 +92,9 @@ public class Ticket implements Runnable {
                     System.out.println(
                             "\n################################################## MUSEUM OPEN ##################################################\n");
                     museum.setStatus(true);
+                    
                     Platform.runLater(() -> {
-                        controller.museumOpen();
+                        museum.controller.museumOpen();
                     });
                 }
                 lock.unlock();
@@ -98,13 +104,13 @@ public class Ticket implements Runnable {
                     || Museum.visitorCount.getNumber() + 1 > museum.getIntCurrentVisitorsLimit()) {
                 System.out.println(Museum.worldTime.getFormattedCurrentTime() + " - Current museum capacity is full. "
                         + ticketID + " will have to queue for entry.");
-                
+
                 String text = Museum.worldTime.getFormattedCurrentTime() + " - Current museum capacity is full. "
                         + ticketID + " will have to queue for entry.";
 
                 Platform.runLater(() -> {
-                    controller.increaseQueuedVisitor();
-                    controller.displayText(text);
+                    museum.controller.increaseQueuedVisitor();
+                    // museum.controller.displayText(text);
                 });
             }
 
@@ -127,8 +133,8 @@ public class Ticket implements Runnable {
             try {
                 lock.lock();
                 if (Museum.worldTime.getCurrentTime() == museum.getMuseumCloseTime()) {
-                   Platform.runLater(() -> {
-                        controller.museumClosed();
+                    Platform.runLater(() -> {
+                        museum.controller.museumClosed();
                     });
                     if (museum.getStatus()) {
                         System.out.println(

@@ -74,18 +74,23 @@ public class Museum {
         totalTickets = new Counter();
         totalVisitors = new Counter();
         worldTime = new Time(this);
+        Thread timerThread = new Thread(worldTime);
+        timerThread.start();
 
         this.random = new Random();
         this.controller = controller;
 
-        this.northEntrance = new Entrance("NE", this, controller);
-        this.southEntrance = new Entrance("SE", this, controller);
-        this.eastExit = new Exit("EE", this, controller);
-        this.westExit = new Exit("WE", this, controller);
+        this.northEntrance = new Entrance("NE", this);
+        this.southEntrance = new Entrance("SE", this);
+        this.eastExit = new Exit("EE", this);
+        this.westExit = new Exit("WE", this);
 
         System.out.println(
                 "\n############################################## MUSEUM TICKETS OPEN ##############################################\n");
 
+        Platform.runLater(() -> {
+            controller.ticketOpen();
+        });
     }
 
     public boolean isTicketsCloseFlag() {
@@ -198,7 +203,7 @@ public class Museum {
                 }
 
                 visitorTickets[i] = new Ticket(currentVisitorsLimit, ticketID, selectedEntrance, selectedExit,
-                        visitor.museum, visitor, controller);
+                        visitor.museum, visitor);
                 ticketThread[i] = new Thread(visitorTickets[i]);
             }
 
@@ -248,7 +253,7 @@ public class Museum {
             String ticketID = String.format("T%04d", totalTickets.getNumber());
 
             ticketThread[0] = new Thread(new Ticket(currentVisitorsLimit, ticketID, selectedEntrance, selectedExit,
-                    visitor.museum, visitor, controller));
+                    visitor.museum, visitor));
 
             /*
              * There is also a timestamp of purchase on each ticket. 4. Visitors enter the

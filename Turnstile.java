@@ -9,13 +9,12 @@ import javafx.application.Platform;
 public class Turnstile {
     private final String turnstileID;
     Museum museum;
-    GUIController controller;
+    // GUIController controller;
     boolean turnstileStatus;
 
-    public Turnstile(String turnstileID, Museum museum, GUIController controller) {
+    public Turnstile(String turnstileID, Museum museum) {
         this.turnstileID = turnstileID;
         this.museum = museum;
-        this.controller = controller;
         turnstileStatus = false;
     }
 
@@ -43,8 +42,8 @@ public class Turnstile {
         ticket.visitor.ticketsEnteredCount.increase();
 
         Platform.runLater(() -> {
-            controller.displayText(text);
-            controller.visitorEnter();
+            museum.controller.displayText(text);
+            museum.controller.visitorEnter();
         });
     }
 
@@ -58,13 +57,13 @@ public class Turnstile {
         String text = Museum.worldTime.getFormattedCurrentTime() + " - Ticket " + ticket.getTicketID()
                 + " exited through Turnstile " + this.turnstileID + "; Visitors count = "
                 + Museum.visitorCount.getNumber() + "; Total visitors count = " + Museum.totalVisitors.getNumber();
-        
+
         ticket.setEntryStatus(false);
         ticket.visitor.ticketsExitCount.increase();
 
         Platform.runLater(() -> {
-            controller.displayText(text);
-            controller.visitorExit();
+            museum.controller.displayText(text);
+            museum.controller.visitorExit();
         });
     }
 
