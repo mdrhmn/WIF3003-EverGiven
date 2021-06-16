@@ -9,7 +9,7 @@ import javafx.application.Platform;
 public class Turnstile {
     private final String turnstileID;
     Museum museum;
-    
+
     boolean turnstileStatus;
 
     public Turnstile(String turnstileID, Museum museum) {
@@ -46,8 +46,8 @@ public class Turnstile {
         Platform.runLater(() -> {
             museum.controller.increaseEntrance(this.turnstileID);
             museum.controller.dequeueList(ticket.getTicketID());
-            museum.controller.appendTicketsEntry(
-                    ticket.getTicketID() + " ( " + ticket.visitor.visitorTime.getVisitDuration() + " mins )");
+            museum.controller.appendTicketsEntry(ticket.getTicketID() + " [" + this.turnstileID + "]\n("
+                    + ticket.visitor.visitorTime.getVisitDuration() + " mins)");
             museum.controller.visitorEnter();
         });
     }
@@ -59,19 +59,12 @@ public class Turnstile {
                 + " exited through Turnstile " + this.turnstileID + "; Visitors count = "
                 + Museum.visitorCount.getNumber() + "; Total visitors count = " + Museum.totalVisitors.getNumber());
 
-        // String text = Museum.worldTime.getFormattedCurrentTime() + " - Ticket " +
-        // ticket.getTicketID()
-        // + " exited through Turnstile " + this.turnstileID + "; Visitors count = "
-        // + Museum.visitorCount.getNumber() + "; Total visitors count = " +
-        // Museum.totalVisitors.getNumber();
-
         ticket.setEntryStatus(false);
         ticket.visitor.ticketsExitCount.increase();
 
         Platform.runLater(() -> {
             museum.controller.increaseExit(this.turnstileID);
-            museum.controller
-                    .appendTicketsExit(ticket.getTicketID() + " (" + Museum.worldTime.getFormattedCurrentTime() + ")");
+            museum.controller.appendTicketsExit(ticket.getTicketID() + " [" + this.turnstileID + "]");
             museum.controller.visitorExit();
         });
     }

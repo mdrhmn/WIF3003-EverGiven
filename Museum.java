@@ -267,7 +267,6 @@ public class Museum {
             System.out.println(Museum.worldTime.getFormattedCurrentTime() + " - Ticket " + ticketID + " sold");
 
             Platform.runLater(() -> {
-                // controller.ticketOpen();
                 controller.appendTicketsSold(ticketID);
             });
 

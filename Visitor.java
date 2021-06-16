@@ -18,7 +18,6 @@ public class Visitor implements Runnable {
     Time visitorTime;
     Museum museum;
     Random random;
-    
 
     public static Lock lock = new ReentrantLock();
 
@@ -68,6 +67,7 @@ public class Visitor implements Runnable {
                         System.out.println(
                                 "\n############################################## MUSEUM TICKETS CLOSED ##############################################\n");
                         museum.setTicketsCloseFlag(true);
+
                         Platform.runLater(() -> {
                             museum.controller.ticketClosed();
                         });

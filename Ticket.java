@@ -29,7 +29,6 @@ public class Ticket implements Runnable {
     private Condition isClose = lock.newCondition();
     private Semaphore currentVisitorsLimit;
 
-    
     Time ticketTime;
     Museum museum;
     Visitor visitor;
@@ -93,7 +92,7 @@ public class Ticket implements Runnable {
                     System.out.println(
                             "\n################################################## MUSEUM OPEN ##################################################\n");
                     museum.setStatus(true);
-                    
+
                     Platform.runLater(() -> {
                         museum.controller.museumOpen();
                     });
@@ -106,14 +105,13 @@ public class Ticket implements Runnable {
                 System.out.println(Museum.worldTime.getFormattedCurrentTime() + " - Current museum capacity is full. "
                         + ticketID + " will have to queue for entry.");
 
-                // String text = Museum.worldTime.getFormattedCurrentTime() + " - Current museum capacity is full. "
-                //         + ticketID + " will have to queue for entry.";
+                // String text = Museum.worldTime.getFormattedCurrentTime() + " - Current museum
+                // capacity is full. "
+                // + ticketID + " will have to queue for entry.";
 
                 Platform.runLater(() -> {
                     museum.controller.increaseQueuedVisitor();
                     museum.controller.queueList(ticketID);
-                    // museum.controller.appendTicketsSold(ticketID);
-                    // museum.controller.displayText(text);
                 });
             }
 

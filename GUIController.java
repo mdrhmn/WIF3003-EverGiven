@@ -18,7 +18,6 @@ import java.net.URL;
 /**
  * Controller class to handle all GUI update operations
  */
-
 public class GUIController implements Initializable {
 
     @FXML
@@ -112,21 +111,21 @@ public class GUIController implements Initializable {
      * Append sold tickets
      */
     public void appendTicketsSold(String text) {
-        ticketsSoldTxtField.appendText(text + "\n");
+        ticketsSoldTxtField.appendText(text + "\n\n");
     }
 
     /**
      * Append entered tickets
      */
     public void appendTicketsEntry(String text) {
-        ticketsEntryTxtField.appendText(text + "\n");
+        ticketsEntryTxtField.appendText(text + "\n\n");
     }
 
     /**
      * Append exited tickets
      */
     public void appendTicketsExit(String text) {
-        ticketsExitTxtField.appendText(text + "\n");
+        ticketsExitTxtField.appendText(text + "\n\n");
     }
 
     /**

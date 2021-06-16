@@ -16,7 +16,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="650.0" prefWidth="1191.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUIController">
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="650.0" prefWidth="1191.0" style="-fx-background-color: linear-gradient(#e2eefc, #f9e4ef);" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUIController">
   <columnConstraints>
     <ColumnConstraints hgrow="SOMETIMES" maxWidth="739.0" minWidth="10.0" prefWidth="540.0" />
     <ColumnConstraints hgrow="SOMETIMES" maxWidth="673.0" minWidth="10.0" prefWidth="540.0" />
@@ -36,7 +36,7 @@
                         <Insets bottom="10.0" />
                      </VBox.margin>
                   </Label>
-                  <TextArea editable="false" prefHeight="248.0" prefWidth="515.0" text="This is a JavaFX application for our team (Ever Given)'s submission for Concurrent Programming [WIF3003] Group Project (Phase 2) titled 'Museum Under Pandemic' in Semester 2, 2020/2021 session.&#10;&#10;Team Members:&#10;1. Muhammad Rahiman bin Abdulmanab&#10;2. Nur Faidz Hazirah binti Nor'Azman&#10;3. Muhammad Luqman bin Sulaiman&#10;4. Muhammad Farouq bin Shaharuddin&#10;&#10;To start the program, you must select a predefined test case. The hourly and daily limits of the museum are set to 100 and 900 respectively.&#10;&#10;The following are the test cases available:&#10;&#10;1. Best Case Scenario&#10;2. Normal Case Scenario&#10;3. Worse Case Scenario&#10;4. Exceed Hourly Limit&#10;5. Exceed Daily Limit" wrapText="true" />
+                  <TextArea editable="false" prefHeight="248.0" prefWidth="515.0" stylesheets="@bootstrap.css" text="This is a JavaFX application for our team (Ever Given)'s submission for Concurrent Programming [WIF3003] Group Project (Phase 2) titled 'Museum Under Pandemic' in Semester 2, 2020/2021 session.&#10;&#10;Team Members:&#10;1. Muhammad Rahiman bin Abdulmanab (17138489/2)&#10;2. Nur Faidz Hazirah binti Nor'Azman (17070482/1)&#10;3. Muhammad Luqman bin Sulaiman (17171306/1)&#10;4. Muhammad Farouq bin Shaharuddin (17124811/1)&#10;&#10;To start the program, you must select a predefined test case. The hourly and daily limits of the museum are set to 100 and 900 respectively.&#10;&#10;The following are the test cases available:&#10;&#10;1. Best Case Scenario&#10;2. Normal Case Scenario&#10;3. Worse Case Scenario&#10;4. Exceed Hourly Limit&#10;5. Exceed Daily Limit" wrapText="true" />
                   <HBox alignment="CENTER" prefHeight="66.0" prefWidth="464.0">
                      <children>
                         <VBox alignment="CENTER">
@@ -46,12 +46,12 @@
                                     <Insets bottom="10.0" />
                                  </VBox.margin>
                               </Label>
-                              <ComboBox fx:id="cb" prefWidth="150.0" promptText="Select" />
+                              <ComboBox fx:id="cb" prefWidth="150.0" promptText="Select" stylesheets="@bootstrap.css" />
                            </children>
                         </VBox>
                         <HBox alignment="CENTER">
                            <children>
-                              <Button fx:id="sb" mnemonicParsing="false" prefHeight="25.0" prefWidth="92.0" text="Start">
+                              <Button fx:id="sb" mnemonicParsing="false" prefHeight="25.0" prefWidth="92.0" stylesheets="@bootstrap.css" text="Start">
                                  <HBox.margin>
                                     <Insets top="27.0" />
                                  </HBox.margin>
@@ -75,7 +75,7 @@
                                     <Insets bottom="10.0" />
                                  </VBox.margin>
                               </Label>
-                              <TextArea fx:id="ticketsSoldTxtField" editable="false" prefHeight="225.0" wrapText="true">
+                              <TextArea fx:id="ticketsSoldTxtField" editable="false" prefHeight="225.0" stylesheets="@bootstrap.css" wrapText="true">
                                  <VBox.margin>
                                     <Insets left="10.0" />
                                  </VBox.margin>
@@ -92,7 +92,7 @@
                                     <Insets bottom="10.0" />
                                  </VBox.margin>
                               </Label>
-                              <TextArea fx:id="ticketsEntryTxtField" editable="false" prefHeight="225.0" />
+                              <TextArea fx:id="ticketsEntryTxtField" editable="false" prefHeight="225.0" stylesheets="@bootstrap.css" wrapText="true" />
                            </children>
                            <HBox.margin>
                               <Insets right="10.0" />
@@ -105,7 +105,7 @@
                                     <Insets bottom="10.0" />
                                  </VBox.margin>
                               </Label>
-                              <TextArea fx:id="ticketsExitTxtField" editable="false" prefHeight="225.0" />
+                              <TextArea fx:id="ticketsExitTxtField" editable="false" prefHeight="225.0" stylesheets="@bootstrap.css" wrapText="true" />
                            </children>
                            <HBox.margin>
                               <Insets right="10.0" />
@@ -118,7 +118,7 @@
                                     <Insets bottom="10.0" />
                                  </VBox.margin>
                               </Label>
-                              <ListView fx:id="ticketsQueueListView" minWidth="100.0" prefHeight="225.0" />
+                              <ListView fx:id="ticketsQueueListView" minWidth="100.0" prefHeight="225.0" stylesheets="@bootstrap.css" />
                            </children>
                            <HBox.margin>
                               <Insets right="10.0" />
@@ -161,7 +161,7 @@
                   </VBox>
                   <VBox alignment="CENTER" prefHeight="69.0" prefWidth="262.0">
                      <children>
-                        <Label alignment="CENTER" text="Status">
+                        <Label alignment="CENTER" text="Status" textAlignment="CENTER">
                            <VBox.margin>
                               <Insets bottom="5.0" />
                            </VBox.margin>
