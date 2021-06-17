@@ -77,7 +77,7 @@ public class Entrance {
             }
 
             /**
-             * If all turnstiles are occupised but there are more tickets to enter
+             * If all turnstiles are occupied but there are more tickets to enter
              */
             else if (i == 3 && turnstile[selected_turnstile].getTurnstileStatus()) {
                 occupied.signalAll();

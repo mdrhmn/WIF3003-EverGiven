@@ -1,11 +1,5 @@
 import javafx.application.Platform;
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 public class Time implements Runnable {
     private long sysStartTime;
     private long sysCurrTime;
@@ -23,52 +17,87 @@ public class Time implements Runnable {
         this.museum = museum;
     }
 
+    /**
+    * Return visitor entry time in time format
+    */
     public String getEntryTime() {
         String normalisedTime = String.format("%04d", this.entryTime);
         return normalisedTime;
     }
 
+    /**
+    * Return visitor entry time in system time format (millisecond)
+    */
     public long getLongEntryTime() {
         return this.entryTime;
     }
 
+    /**
+    * Return visitor purchase time in time format
+    */
     public String getPurchaseTime() {
         String normalisedTime = String.format("%04d", this.purchaseTime);
         return normalisedTime;
     }
-
+    /**
+    * Return visitor purchase time in system time format(millisecond)
+    */    
     public long getLongPurchaseTime() {
         return this.purchaseTime;
     }
 
+    /**
+    * Return visitor purchase duration 
+    */
     public long getPurchaseDuration() {
         return this.purchaseDuration / 10;
     }
 
+    /**
+    * Return visitor visit duration
+    */
     public long getVisitDuration() {
         return this.visitDuration / 10;
     }
 
+    /**
+    * Return visitor purchase duration in millisecond
+    */
     public long getPurchaseDurationInMillis() {
         return this.purchaseDuration;
     }
 
+    /**
+    * Return visitor visit duration in millisecond
+    */
     public long getVisitDurationInMillis() {
         return this.visitDuration;
     }
 
+    /**
+    * Return program start time in time format
+    */
     public long getSysStartTime() {
         return this.sysStartTime;
     }
 
+    /**
+    * Return program start time in system time format
+    */
     public void setSysStartTime(long sysStartTime) {
         this.sysStartTime = sysStartTime;
     }
 
+    /**
+    * Return program system current time format
+    */
     public long getSysCurrTime() {
         return this.sysCurrTime;
     }
 
+    /**
+    * Return normalised current time 
+    */
     public String getFormattedCurrentTime() {
         this.sysCurrTime = System.currentTimeMillis();
         calcRealtime(this.sysStartTime, this.sysCurrTime, museum.getMuseumTicketOpenTimeInMillis());
@@ -76,12 +105,19 @@ public class Time implements Runnable {
         return normalisedTime;
     }
 
+    /**
+    * Return current time in time format
+    */
     public long getCurrentTime() {
         this.sysCurrTime = System.currentTimeMillis();
         calcRealtime(this.sysStartTime, this.sysCurrTime, museum.getMuseumTicketOpenTimeInMillis());
         return this.currentTime;
     }
 
+    /**
+    * Calculate the current time in time format by separate hour and minute, adding together and 
+    * combine them back
+    */
     public void calcRealtime(long sysStartTime, long sysCurrTime, long startTime) {
         // startTime = purchase time, enter museum
         // currentTime = System current time but normalised
@@ -110,7 +146,7 @@ public class Time implements Runnable {
      * First request to purchase tickets will be made at 8.00 a.m.
      */
     public void purchaseTime() throws InterruptedException {
-        /*
+        /**
          * Subsequent purchase will be made every 1-4 minutes. Each purchase will be for
          * 1-4 tickets
          */
@@ -123,7 +159,7 @@ public class Time implements Runnable {
     }
 
     public void entryTime() throws InterruptedException {
-        /*
+        /**
          * Each visitor stays in the museum for 50-150 minutes. The duration of stay
          * will be randomly assigned to the visitor when the visitor is entering the
          * museum.
@@ -138,11 +174,17 @@ public class Time implements Runnable {
         }
     }
 
+    /**
+    * Set visitor visit duration
+    */
     public void setVisitDuration() {
         int randomDuration = (int) ((Math.random() * (150 - 50)) + 50) * 10;
         this.visitDuration = randomDuration;
     }
 
+    /**
+    * Calculate the exit time for the visitor with same method applied on calcRealtime()
+    */
     public void setExitTime(long duration, long startTime) {
         long hr1 = (duration / 60);
         long min1 = duration - (hr1 * 60);
@@ -163,6 +205,9 @@ public class Time implements Runnable {
         }
     }
 
+    /**
+    * Return visitor exit time
+    */
     public long getExitTime() {
         return this.exitTime;
     }
@@ -170,27 +215,53 @@ public class Time implements Runnable {
     @Override
     public void run() {
 
-        int num = 8;// Initialize integer num with 8 because the ticket selling start at 0800.
+        /**
+         * Museum time starts at 8
+         */
+        int starting_hour = 8;
 
-        // Initialize integer hours that starting from 8 to 18 which represent
-        // the museum start selling ticket from 0800 and the museum closed at 1800.
-        for (int hours = num; hours <= 18; hours++) {
+        /**
+         * Hours initialised from 8 to 18 to represent the simulation operating hours
+         * from 0800 until 1800.
+         */
+        for (int hours = starting_hour; hours <= 18; hours++) {
 
+            /**
+             * If hours reached 18, break the loop to stop the timer. The number of minutes
+             * may slightly exceed 00 when the timer stopped.
+             */
             if (hours == 18)
                 break;
             else {
-                // Initialize integer min starting from 0 to 59 representing minutes in
-                // clock minutes start from 00 to 59.
+
+                /**
+                 * Minutes values are initialised from 0 to 9
+                 */
                 for (int min = 0; min <= 59; min++) {
                     try {
-                        if (hours == 9 && min == 0) {// The time museum open at 0900
+
+                        /**
+                         * If hours is at 9, change museum status to Museum Open
+                         */
+                        if (hours == 9 && min == 0) {
                             museum.controller.museumOpen();
-                        } else if (hours == 17 && min == 0) {// The time museum about to close at
+                        }
+                        /**
+                         * If hours is at 17, change museum status to Ticket Closed
+                         */
+                        else if (hours == 17 && min == 0) {
                             museum.controller.ticketClosed();
-                        } else if (hours == 18 && min == 0) {// The time museum close at 1800
+                        }
+                        /**
+                         * If hours is at 18, change museum status to Museum Closed
+                         */
+                        else if (hours == 18 && min == 0) {
                             museum.controller.museumClosed();
                         }
 
+                        /**
+                         * Use Platform.runLater() to update GUI
+                         */
                         Platform.runLater(() -> {
                             museum.controller.setTime(Museum.worldTime.getFormattedCurrentTime());
                         });

@@ -1,18 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import javafx.application.Platform;
-
-//import java.lang.System.Logger;
-//import java.lang.System.Logger.Level;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.*;
+import javafx.application.Platform;
+import java.util.logging.Logger;
+import java.util.logging.Level;
 import java.util.concurrent.*;
 
 public class Ticket implements Runnable {
@@ -71,11 +61,10 @@ public class Ticket implements Runnable {
         try {
             try {
                 lock.lock();
-                /*
+                /**
                  * Tickets purchased before museum open time (9:00 a.m.) will have to wait until
                  * museum has opened for entry
                  */
-
                 if (Museum.worldTime.getCurrentTime() < museum.getMuseumOpenTime()) {
                     Platform.runLater(() -> {
                         museum.controller.increaseQueuedVisitor();
@@ -100,55 +89,65 @@ public class Ticket implements Runnable {
                 lock.unlock();
             }
 
-            if (currentVisitorsLimit.hasQueuedThreads()
-                    || Museum.visitorCount.getNumber() + 1 > museum.getIntCurrentVisitorsLimit()) {
-                System.out.println(Museum.worldTime.getFormattedCurrentTime() + " - Current museum capacity is full. "
-                        + ticketID + " will have to queue for entry.");
+            boolean flag = false;
+            if (Museum.totalVisitors.getNumber() + museum.controller.getQueuedVisitor() < museum
+                    .getDailyVisitorsLimit()) {
 
-                // String text = Museum.worldTime.getFormattedCurrentTime() + " - Current museum
-                // capacity is full. "
-                // + ticketID + " will have to queue for entry.";
+                if (currentVisitorsLimit.hasQueuedThreads()
+                        || Museum.visitorCount.getNumber() + 1 > museum.getIntCurrentVisitorsLimit()) {
 
+                    System.out.println(Museum.worldTime.getFormattedCurrentTime()
+                            + " - Current museum capacity is full. " + ticketID + " will have to queue for entry.");
+                    Platform.runLater(() -> {
+                        museum.controller.increaseQueuedVisitor();
+                        museum.controller.queueList(ticketID);
+                    });
+                }
+                
+            } else {
+                flag = true;
                 Platform.runLater(() -> {
-                    museum.controller.increaseQueuedVisitor();
-                    museum.controller.queueList(ticketID);
+                    museum.controller.ticketClosed();
+                    museum.controller.increaseRejectedPurchase();
                 });
             }
 
-            currentVisitorsLimit.acquire();
-            visitor.visitorTime.entryTime();
-            this.ticketTime.entryTime();
-            museum.enterMuseum(this);
+            if (!flag) {
+                currentVisitorsLimit.acquire();
+                visitor.visitorTime.entryTime();
+                this.ticketTime.entryTime();
+                museum.enterMuseum(this);
 
-            try {
-                lock.lock();
-                while (Museum.worldTime.getCurrentTime() < museum.getMuseumCloseTime()
-                        && Museum.worldTime.getCurrentTime() < this.ticketTime.getExitTime()) {
-                    isClose.await(10, TimeUnit.MILLISECONDS);
-                }
-                isClose.signalAll();
-            } finally {
-                lock.unlock();
-            }
-
-            try {
-                lock.lock();
-                if (Museum.worldTime.getCurrentTime() == museum.getMuseumCloseTime()) {
-                    Platform.runLater(() -> {
-                        museum.controller.museumClosed();
-                    });
-                    if (museum.getStatus()) {
-                        System.out.println(
-                                "\n################################################## MUSEUM CLOSED ##################################################\n");
-                        museum.setStatus(false);
+                try {
+                    lock.lock();
+                    while (Museum.worldTime.getCurrentTime() < museum.getMuseumCloseTime()
+                            && Museum.worldTime.getCurrentTime() < this.ticketTime.getExitTime()) {
+                        isClose.await(10, TimeUnit.MILLISECONDS);
                     }
+                    isClose.signalAll();
+                } finally {
+                    lock.unlock();
                 }
-            } finally {
-                lock.unlock();
-            }
 
-            museum.exitMuseum(this);
-            currentVisitorsLimit.release();
+                try {
+                    lock.lock();
+                    if (Museum.worldTime.getCurrentTime() == museum.getMuseumCloseTime()) {
+                        Platform.runLater(() -> {
+                            museum.controller.museumClosed();
+                        });
+                        if (museum.getStatus()) {
+                            System.out.println(
+                                    "\n################################################## MUSEUM CLOSED ##################################################\n");
+                            museum.setStatus(false);
+                        }
+                    }
+                } finally {
+                    lock.unlock();
+                }
+
+                museum.exitMuseum(this);
+                currentVisitorsLimit.release();
+            }
 
         } catch (Exception ex) {
             Logger.getLogger(Visitor.class.getName()).log(Level.SEVERE, null, ex);

@@ -93,7 +93,8 @@ public class GUIController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        cb.getItems().addAll("Test Case 1", "Test Case 2", "Test Case 3", "Test Case 4", "Test Case 5");
+        cb.getItems().addAll("TC1 - Best Case Scenario", "TC2 - Normal Case Scenario", "TC3 - Worst Case Scenario",
+                "TC4 - Exceed Hourly Limit", "TC5 - Exceed Daily Limit");
         statusTxtField.setStyle("-fx-text-fill: red;");
 
         sb.setOnAction(e -> {
@@ -153,19 +154,19 @@ public class GUIController implements Initializable {
         if (cb.getSelectionModel().getSelectedIndex() > -1) {
             switch (cb.getSelectionModel().getSelectedIndex() + 1) {
                 case 1:
-                    museumOperation("TestCaseWithinDailyLimit_813.txt");
+                    museumOperation("BestCaseScenario.txt");
                     break;
                 case 2:
-                    museumOperation("TestCaseExceedDailyLimit.txt");
+                    museumOperation("NormalCaseScenario.txt");
                     break;
                 case 3:
-                    museumOperation("TestCaseWithinCurrentLimit.txt");
+                    museumOperation("WorstCaseScenario.txt");
                     break;
                 case 4:
-                    museumOperation("TestCaseExceedCurrentLimit.txt");
+                    museumOperation("ExceedHourlyLimit.txt");
                     break;
                 case 5:
-                    // displayText("Test Case 5");
+                    museumOperation("ExceedDailyLimit.txt");
                     break;
             }
             sb.setDisable(true);
@@ -310,7 +311,7 @@ public class GUIController implements Initializable {
         return currentVisitor;
     }
 
-    private int getQueuedVisitor() {
+    public int getQueuedVisitor() {
         return queuedVisitor;
     }
 
@@ -431,6 +432,9 @@ public class GUIController implements Initializable {
         }
     }
 
+    /**
+     * To start the opration by getting the test case from text file
+     */
     public void museumOperation(String filename) throws InterruptedException, IOException {
         System.out.println("\nRUNNING TEST CASE " + filename + ":");
 

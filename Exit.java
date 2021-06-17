@@ -4,7 +4,7 @@ import java.util.Random;
 import java.util.Arrays;
 
 /**
- * The Entrance class is used for handling ticket exit out of museum
+ * The Exit class is used for handling ticket exit out of museum
  */
 public class Exit {
     private final String exitName;

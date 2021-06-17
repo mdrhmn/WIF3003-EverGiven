@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 
 import java.util.Random;
 import java.util.concurrent.locks.*;
@@ -61,17 +56,25 @@ public class Visitor implements Runnable {
             if (Museum.worldTime.getCurrentTime() > museum.getMuseumTicketCloseTime()
                     || Museum.totalTickets.getNumber() + this.getNoOfTickets() > museum.getDailyVisitorsLimit()) {
 
+                /*
+                 * Ticket purchase will be rejected when the current time has passed 5:00 p.m.
+                 */
                 if (Museum.worldTime.getCurrentTime() > museum.getMuseumTicketCloseTime()) {
+
+                    Platform.runLater(() -> {
+                        // museum.controller.ticketClosed();
+                        museum.controller.increaseRejectedPurchase();
+                    });
 
                     if (!museum.isTicketsCloseFlag()) {
                         System.out.println(
                                 "\n############################################## MUSEUM TICKETS CLOSED ##############################################\n");
                         museum.setTicketsCloseFlag(true);
-
-                        Platform.runLater(() -> {
-                            museum.controller.ticketClosed();
-                        });
                     }
+                    /*
+                     * Ticket purchase will be rejected when the purchased tickets have reached the
+                     * museum daily limit
+                     */
                 } else if (Museum.totalTickets.getNumber() + this.getNoOfTickets() > museum.getDailyVisitorsLimit()) {
 
                     Platform.runLater(() -> {
