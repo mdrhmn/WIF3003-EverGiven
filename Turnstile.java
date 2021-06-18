@@ -73,7 +73,6 @@ public class Turnstile {
 
         Platform.runLater(() -> {
             museum.controller.increaseExit(this.turnstileID);
-            // museum.controller.dequeueList(ticket.getTicketID());
             museum.controller.appendTicketsExit(Museum.worldTime.getFormattedCurrentTime() + " hrs - "
                     + ticket.getTicketID() + " [" + this.turnstileID + "]");
             museum.controller.visitorExit();

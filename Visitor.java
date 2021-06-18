@@ -66,13 +66,14 @@ public class Visitor implements Runnable {
                      */
                     Platform.runLater(() -> {
                         museum.controller.increaseRejectedPurchase();
+                        museum.controller.ticketClosed();
                     });
 
-                    if (!museum.isTicketsCloseFlag()) {
-                        System.out.println(
-                                "\n############################################## MUSEUM TICKETS CLOSED ##############################################\n");
-                        museum.setTicketsCloseFlag(true);
-                    }
+                    // if (!museum.isTicketsCloseFlag()) {
+                    //     // System.out.println(
+                    //     //         "\n############################################## MUSEUM TICKETS CLOSED ##############################################\n");
+                    //     museum.setTicketsCloseFlag(true);
+                    // }
                     /*
                      * Ticket purchase will be rejected when the purchased tickets have reached the
                      * museum daily limit

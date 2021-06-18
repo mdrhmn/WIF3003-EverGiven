@@ -80,8 +80,9 @@ public class Ticket implements Runnable {
                 isOpen.signalAll();
             } finally {
                 if (!museum.getStatus()) {
-                    System.out.println(
-                            "\n################################################## MUSEUM OPEN ##################################################\n");
+                    // System.out.println(
+                    // "\n################################################## MUSEUM OPEN
+                    // ##################################################\n");
                     museum.setStatus(true);
 
                     Platform.runLater(() -> {
@@ -145,30 +146,32 @@ public class Ticket implements Runnable {
 
                 try {
                     lock.lock();
+                    
                     while (Museum.worldTime.getCurrentTime() < museum.getMuseumCloseTime()
                             && Museum.worldTime.getCurrentTime() < this.ticketTime.getExitTime()) {
                         isClose.await(10, TimeUnit.MILLISECONDS);
                     }
+
                     isClose.signalAll();
                 } finally {
                     lock.unlock();
                 }
 
-                try {
-                    lock.lock();
-                    if (Museum.worldTime.getCurrentTime() == museum.getMuseumCloseTime()) {
-                        Platform.runLater(() -> {
-                            museum.controller.museumClosed();
-                        });
-                        if (museum.getStatus()) {
-                            System.out.println(
-                                    "\n################################################## MUSEUM CLOSED ##################################################\n");
-                            museum.setStatus(false);
-                        }
-                    }
-                } finally {
-                    lock.unlock();
-                }
+                // try {
+                //     lock.lock();
+                //     if (Museum.worldTime.getCurrentTime() == museum.getMuseumCloseTime()) {
+                //         Platform.runLater(() -> {
+                //             museum.controller.museumClosed();
+                //         });
+                //         if (museum.getStatus()) {
+                //             // System.out.println(
+                //             //         "\n################################################## MUSEUM CLOSED ##################################################\n");
+                //             museum.setStatus(false);
+                //         }
+                //     }
+                // } finally {
+                //     lock.unlock();
+                // }
 
                 museum.exitMuseum(this);
                 currentVisitorsLimit.release();

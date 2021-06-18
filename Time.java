@@ -10,12 +10,31 @@ public class Time implements Runnable {
     private long entryTime;
     private long exitTime;
 
+    String current_time;
+    int current_hour;
+    int current_mins;
+
     Museum museum;
 
     public Time(Museum museum) {
         this.sysStartTime = System.currentTimeMillis();
         this.museum = museum;
     }
+
+    public String getFormattedCurrentTime() {
+        return current_time;
+    }
+
+    /**
+     * Return normalised current time
+     */
+    // public String getFormattedCurrentTime() {
+    // this.sysCurrTime = System.currentTimeMillis();
+    // calcRealtime(this.sysStartTime, this.sysCurrTime,
+    // museum.getMuseumTicketOpenTimeInMillis());
+    // String normalisedTime = String.format("%04d", this.currentTime);
+    // return normalisedTime;
+    // }
 
     /**
      * Return visitor entry time in time format
@@ -97,51 +116,45 @@ public class Time implements Runnable {
     }
 
     /**
-     * Return normalised current time
-     */
-    public String getFormattedCurrentTime() {
-        this.sysCurrTime = System.currentTimeMillis();
-        calcRealtime(this.sysStartTime, this.sysCurrTime, museum.getMuseumTicketOpenTimeInMillis());
-        String normalisedTime = String.format("%04d", this.currentTime);
-        return normalisedTime;
-    }
-
-    /**
      * Return current time in time format
      */
     public long getCurrentTime() {
-        this.sysCurrTime = System.currentTimeMillis();
-        calcRealtime(this.sysStartTime, this.sysCurrTime, museum.getMuseumTicketOpenTimeInMillis());
-        return this.currentTime;
+        // this.sysCurrTime = System.currentTimeMillis();
+        // calcRealtime(this.sysStartTime, this.sysCurrTime,
+        // museum.getMuseumTicketOpenTimeInMillis());
+        // return this.currentTime;
+
+        return Integer.valueOf(Museum.worldTime.getFormattedCurrentTime());
     }
 
     /**
      * Calculate the current time in time format by separate hour and minute, adding
      * together and combine them back
      */
-    public void calcRealtime(long sysStartTime, long sysCurrTime, long startTime) {
-        // startTime = purchase time, enter museum
-        // currentTime = System current time but normalised
-        long timeElapsed = sysCurrTime - sysStartTime;
-        timeElapsed = timeElapsed / 50;
-        long hr1 = (timeElapsed / 600);
-        long min1 = timeElapsed - (hr1 * 600);
+    // public void calcRealtime(long sysStartTime, long sysCurrTime, long startTime)
+    // {
+    // // startTime = purchase time, enter museum
+    // // currentTime = System current time but normalised
+    // long timeElapsed = sysCurrTime - sysStartTime;
+    // timeElapsed = timeElapsed / 50;
+    // long hr1 = (timeElapsed / 600);
+    // long min1 = timeElapsed - (hr1 * 600);
 
-        long hr2 = startTime / 1000;
-        long min2 = startTime % 1000;
+    // long hr2 = startTime / 1000;
+    // long min2 = startTime % 1000;
 
-        long hr3 = (hr1 + hr2) * 1000;
-        long min3 = min1 + min2;
+    // long hr3 = (hr1 + hr2) * 1000;
+    // long min3 = min1 + min2;
 
-        if (min3 >= 600) {
-            long hr4 = (min3 / 600) * 1000;
-            long min4 = min3 - ((hr4 / 1000) * 600);
-            long sum = (hr3 + hr4 + min4) / 10;
-            this.currentTime = sum;
-        } else {
-            this.currentTime = (hr3 + min3) / 10;
-        }
-    }
+    // if (min3 >= 600) {
+    // long hr4 = (min3 / 600) * 1000;
+    // long min4 = min3 - ((hr4 / 1000) * 600);
+    // long sum = (hr3 + hr4 + min4) / 10;
+    // this.currentTime = sum;
+    // } else {
+    // this.currentTime = (hr3 + min3) / 10;
+    // }
+    // }
 
     /*
      * First request to purchase tickets will be made at 8.00 a.m.
@@ -155,8 +168,11 @@ public class Time implements Runnable {
         this.purchaseDuration = randomSubsequentPurchase;
 
         this.sysCurrTime = System.currentTimeMillis();
-        calcRealtime(this.sysStartTime, this.sysCurrTime, museum.getMuseumTicketOpenTimeInMillis());
-        this.purchaseTime = this.currentTime;
+        // calcRealtime(this.sysStartTime, this.sysCurrTime,
+        // museum.getMuseumTicketOpenTimeInMillis());
+        // this.purchaseTime = this.currentTime;
+        this.purchaseTime = this.getCurrentTime();
+
     }
 
     public void entryTime() throws InterruptedException {
@@ -167,11 +183,13 @@ public class Time implements Runnable {
          */
 
         this.sysCurrTime = System.currentTimeMillis();
-        calcRealtime(this.sysStartTime, this.sysCurrTime, museum.getMuseumTicketOpenTimeInMillis());
+        // calcRealtime(this.sysStartTime, this.sysCurrTime,
+        // museum.getMuseumTicketOpenTimeInMillis());
         if (this.currentTime < museum.getMuseumOpenTime()) {
             this.entryTime = museum.getMuseumOpenTime();
         } else {
-            this.entryTime = this.currentTime;
+            // this.entryTime = this.currentTime;
+            this.entryTime = this.getCurrentTime();
         }
     }
 
@@ -229,77 +247,86 @@ public class Time implements Runnable {
         for (int hours = starting_hour; hours <= 18; hours++) {
 
             /**
-             * If hours reached 18, break the loop to stop the timer. The number of minutes
-             * may slightly exceed 00 when the timer stopped.
+             * Minutes values are initialized from 0 to 9
              */
-            if (hours == 18)
-                break;
-            else {
+            for (int min = 0; min <= 59; min++) {
+                try {
+                    String time = String.format("%02d", hours) + String.format("%02d", min);
+                    current_time = time;
+                    current_hour = hours;
+                    current_mins = min;
 
-                /**
-                 * Minutes values are initialized from 0 to 9
-                 */
-                for (int min = 0; min <= 59; min++) {
-                    try {
+                    boolean flag = true;
+                    // System.out.println("Aiman's time: " + hours + "-" + min);
+                    // System.out.println("Farouq's time: " + Museum.worldTime.getCurrentTime());
 
-                        boolean flag = true;
-
-                        /**
-                         * If hours is at 9, change museum status to Museum Open
-                         */
-                        if (hours == 9 && min == 0) {
-                            Platform.runLater(() -> {
-                                museum.controller.museumOpen();
-                            });
-                        }
-                        /**
-                         * If hours is at 17, change museum status to Ticket Closed
-                         */
-                        else if (hours == 17 && min == 0) {
-                            Platform.runLater(() -> {
-                                museum.controller.ticketClosed();
-                            });
-                            flag = false;
-                        }
-                        /**
-                         * If hours is at 18, change museum status to Museum Closed
-                         */
-                        else if (hours == 18 && min == 0) {
-                            Platform.runLater(() -> {
-                                museum.controller.museumClosed();
-                            });
-                        }
-
-                        /**
-                         * Use Platform.runLater() to update GUI
-                         */
+                    /**
+                     * If hours is at 9, change museum status to Museum Open
+                     */
+                    if (hours == 9 && min == 0) {
                         Platform.runLater(() -> {
-                            museum.controller.setTime(Museum.worldTime.getFormattedCurrentTime());
+                            museum.controller.museumOpen();
+                        });
+                        System.out.println(
+                                "\n################################################## MUSEUM OPEN ##################################################\n");
+                    }
+
+                    /**
+                     * If hours is at 17, change museum status to Ticket Closed
+                     */
+                    else if (hours == 17 && min <= 0) {
+                        Platform.runLater(() -> {
+                            museum.controller.ticketClosed();
+                        });
+                        System.out.println(
+                                "\n################################################## TICKET CLOSED ##################################################\n");
+                        flag = false;
+                    }
+                    /**
+                     * If hours is at 18, change museum status to Museum Closed. If hours reached
+                     * 18, break the loop to stop the timer. The number of minutes may slightly
+                     * exceed 00 when the timer stopped.
+                     */
+                    else if (hours == 18 && min <= 1) {
+                        Platform.runLater(() -> {
+                            museum.controller.museumClosed();
                         });
 
-                        /**
-                         * Update Museum Status when current visitor is equal to hourly limits.
-                         */
-                        if (flag) {
-                            if (museum.controller.getMuseumStatus() == "MUSEUM OPEN"
-                                    || museum.controller.getMuseumStatus() == "MUSEUM FULL") {
-                                if (museum.controller.getCurrentVisitor() < museum.controller.getHourlyVisitorLimit()) {
-                                    Platform.runLater(() -> {
-                                        museum.controller.museumOpen();
-                                    });
-                                } else {
-                                    Platform.runLater(() -> {
-                                        museum.controller.museumFull();
-                                    });
-                                }
+                        System.out.println(
+                                "\n################################################## MUSEUM CLOSED ##################################################\n");
+
+                        break;
+                    }
+
+                    /**
+                     * Use Platform.runLater() to update GUI
+                     */
+                    Platform.runLater(() -> {
+                        museum.controller.setTime(time);
+                    });
+
+                    /**
+                     * Update Museum Status when current visitor is equal to hourly limits.
+                     */
+                    if (flag) {
+                        if (museum.controller.getMuseumStatus() == "MUSEUM OPEN"
+                                || museum.controller.getMuseumStatus() == "MUSEUM FULL") {
+                            if (museum.controller.getCurrentVisitor() < museum.controller.getHourlyVisitorLimit()) {
+                                Platform.runLater(() -> {
+                                    museum.controller.museumOpen();
+                                });
+                            } else {
+                                Platform.runLater(() -> {
+                                    museum.controller.museumFull();
+                                });
                             }
                         }
-
-                        Thread.sleep(500);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-
                     }
+
+                    Thread.sleep(500);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+
                 }
             }
         }
