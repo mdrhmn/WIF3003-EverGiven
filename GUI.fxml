@@ -31,7 +31,7 @@
          <top>
             <VBox alignment="TOP_CENTER" prefWidth="422.0" BorderPane.alignment="CENTER">
                <children>
-                  <Label text="Welcoming Message">
+                  <Label text="Welcoming Message &amp; Instructions">
                      <VBox.margin>
                         <Insets bottom="10.0" />
                      </VBox.margin>
