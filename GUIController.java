@@ -475,7 +475,7 @@ public class GUIController implements Initializable {
         Museum museum = new Museum("UM Museum", 100, 900, this);
         // Thread timerThread = new Thread(Museum.worldTime);
         // timerThread.start();
-        
+
         ArrayList<Visitor> visitorList = new ArrayList<>();
 
         for (int i = 0; i < readList.size(); i++) {

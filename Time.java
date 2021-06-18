@@ -10,7 +10,7 @@ public class Time implements Runnable {
     private long entryTime;
     private long exitTime;
 
-    String current_time;
+    String current_time = "0800";
     int current_hour;
     int current_mins;
 
@@ -131,30 +131,29 @@ public class Time implements Runnable {
      * Calculate the current time in time format by separate hour and minute, adding
      * together and combine them back
      */
-    // public void calcRealtime(long sysStartTime, long sysCurrTime, long startTime)
-    // {
-    // // startTime = purchase time, enter museum
-    // // currentTime = System current time but normalised
-    // long timeElapsed = sysCurrTime - sysStartTime;
-    // timeElapsed = timeElapsed / 50;
-    // long hr1 = (timeElapsed / 600);
-    // long min1 = timeElapsed - (hr1 * 600);
+    public void calcRealtime(long sysStartTime, long sysCurrTime, long startTime) {
+        // startTime = purchase time, enter museum
+        // currentTime = System current time but normalised
+        long timeElapsed = sysCurrTime - sysStartTime;
+        timeElapsed = timeElapsed / 50;
+        long hr1 = (timeElapsed / 600);
+        long min1 = timeElapsed - (hr1 * 600);
 
-    // long hr2 = startTime / 1000;
-    // long min2 = startTime % 1000;
+        long hr2 = startTime / 1000;
+        long min2 = startTime % 1000;
 
-    // long hr3 = (hr1 + hr2) * 1000;
-    // long min3 = min1 + min2;
+        long hr3 = (hr1 + hr2) * 1000;
+        long min3 = min1 + min2;
 
-    // if (min3 >= 600) {
-    // long hr4 = (min3 / 600) * 1000;
-    // long min4 = min3 - ((hr4 / 1000) * 600);
-    // long sum = (hr3 + hr4 + min4) / 10;
-    // this.currentTime = sum;
-    // } else {
-    // this.currentTime = (hr3 + min3) / 10;
-    // }
-    // }
+        if (min3 >= 600) {
+            long hr4 = (min3 / 600) * 1000;
+            long min4 = min3 - ((hr4 / 1000) * 600);
+            long sum = (hr3 + hr4 + min4) / 10;
+            this.currentTime = sum;
+        } else {
+            this.currentTime = (hr3 + min3) / 10;
+        }
+    }
 
     /*
      * First request to purchase tickets will be made at 8.00 a.m.
@@ -168,10 +167,9 @@ public class Time implements Runnable {
         this.purchaseDuration = randomSubsequentPurchase;
 
         this.sysCurrTime = System.currentTimeMillis();
-        // calcRealtime(this.sysStartTime, this.sysCurrTime,
-        // museum.getMuseumTicketOpenTimeInMillis());
-        // this.purchaseTime = this.currentTime;
-        this.purchaseTime = this.getCurrentTime();
+        calcRealtime(this.sysStartTime, this.sysCurrTime, museum.getMuseumTicketOpenTimeInMillis());
+        this.purchaseTime = this.currentTime;
+        // this.purchaseTime = this.getCurrentTime();
 
     }
 
@@ -183,13 +181,12 @@ public class Time implements Runnable {
          */
 
         this.sysCurrTime = System.currentTimeMillis();
-        // calcRealtime(this.sysStartTime, this.sysCurrTime,
-        // museum.getMuseumTicketOpenTimeInMillis());
+        calcRealtime(this.sysStartTime, this.sysCurrTime, museum.getMuseumTicketOpenTimeInMillis());
         if (this.currentTime < museum.getMuseumOpenTime()) {
             this.entryTime = museum.getMuseumOpenTime();
         } else {
-            // this.entryTime = this.currentTime;
-            this.entryTime = this.getCurrentTime();
+            this.entryTime = this.currentTime;
+            // this.entryTime = this.getCurrentTime();
         }
     }
 
@@ -257,8 +254,6 @@ public class Time implements Runnable {
                     current_mins = min;
 
                     boolean flag = true;
-                    // System.out.println("Aiman's time: " + hours + "-" + min);
-                    // System.out.println("Farouq's time: " + Museum.worldTime.getCurrentTime());
 
                     /**
                      * If hours is at 9, change museum status to Museum Open
