@@ -473,8 +473,8 @@ public class GUIController implements Initializable {
         ArrayList<String[]> readList = read.getVisitorList();
 
         Museum museum = new Museum("UM Museum", 100, 900, this);
-        // Thread timerThread = new Thread(Museum.worldTime);
-        // timerThread.start();
+        Thread timerThread = new Thread(Museum.worldTime);
+        timerThread.start();
 
         ArrayList<Visitor> visitorList = new ArrayList<>();
 
