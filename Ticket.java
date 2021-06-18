@@ -109,7 +109,7 @@ public class Ticket implements Runnable {
                      */
                     System.out.println(Museum.worldTime.getFormattedCurrentTime()
                             + " - Current museum capacity is full. " + ticketID + " will have to queue for entry.");
-                    System.out.println("QUEUED: " + currentVisitorsLimit);
+                    // System.out.println("QUEUED: " + currentVisitorsLimit);
 
                     /**
                      * Check if number of total visitors and queued visitor is within the daily
@@ -137,7 +137,7 @@ public class Ticket implements Runnable {
             if (!exceedDailyLimit) {
                 currentVisitorsLimit.acquire();
                 currentVisitorsLimit.availablePermits();
-                System.out.println("ACQUIRED: " + currentVisitorsLimit);
+                // System.out.println("ACQUIRED: " + currentVisitorsLimit);
 
                 visitor.visitorTime.entryTime();
                 this.ticketTime.entryTime();
