@@ -18,86 +18,87 @@ public class Time implements Runnable {
     }
 
     /**
-    * Return visitor entry time in time format
-    */
+     * Return visitor entry time in time format
+     */
     public String getEntryTime() {
         String normalisedTime = String.format("%04d", this.entryTime);
         return normalisedTime;
     }
 
     /**
-    * Return visitor entry time in system time format (millisecond)
-    */
+     * Return visitor entry time in system time format (millisecond)
+     */
     public long getLongEntryTime() {
         return this.entryTime;
     }
 
     /**
-    * Return visitor purchase time in time format
-    */
+     * Return visitor purchase time in time format
+     */
     public String getPurchaseTime() {
         String normalisedTime = String.format("%04d", this.purchaseTime);
         return normalisedTime;
     }
+
     /**
-    * Return visitor purchase time in system time format(millisecond)
-    */    
+     * Return visitor purchase time in system time format(millisecond)
+     */
     public long getLongPurchaseTime() {
         return this.purchaseTime;
     }
 
     /**
-    * Return visitor purchase duration 
-    */
+     * Return visitor purchase duration
+     */
     public long getPurchaseDuration() {
         return this.purchaseDuration / 10;
     }
 
     /**
-    * Return visitor visit duration
-    */
+     * Return visitor visit duration
+     */
     public long getVisitDuration() {
         return this.visitDuration / 10;
     }
 
     /**
-    * Return visitor purchase duration in millisecond
-    */
+     * Return visitor purchase duration in millisecond
+     */
     public long getPurchaseDurationInMillis() {
         return this.purchaseDuration;
     }
 
     /**
-    * Return visitor visit duration in millisecond
-    */
+     * Return visitor visit duration in millisecond
+     */
     public long getVisitDurationInMillis() {
         return this.visitDuration;
     }
 
     /**
-    * Return program start time in time format
-    */
+     * Return program start time in time format
+     */
     public long getSysStartTime() {
         return this.sysStartTime;
     }
 
     /**
-    * Return program start time in system time format
-    */
+     * Return program start time in system time format
+     */
     public void setSysStartTime(long sysStartTime) {
         this.sysStartTime = sysStartTime;
     }
 
     /**
-    * Return program system current time format
-    */
+     * Return program system current time format
+     */
     public long getSysCurrTime() {
         return this.sysCurrTime;
     }
 
     /**
-    * Return normalised current time 
-    */
+     * Return normalised current time
+     */
     public String getFormattedCurrentTime() {
         this.sysCurrTime = System.currentTimeMillis();
         calcRealtime(this.sysStartTime, this.sysCurrTime, museum.getMuseumTicketOpenTimeInMillis());
@@ -106,8 +107,8 @@ public class Time implements Runnable {
     }
 
     /**
-    * Return current time in time format
-    */
+     * Return current time in time format
+     */
     public long getCurrentTime() {
         this.sysCurrTime = System.currentTimeMillis();
         calcRealtime(this.sysStartTime, this.sysCurrTime, museum.getMuseumTicketOpenTimeInMillis());
@@ -115,9 +116,9 @@ public class Time implements Runnable {
     }
 
     /**
-    * Calculate the current time in time format by separate hour and minute, adding together and 
-    * combine them back
-    */
+     * Calculate the current time in time format by separate hour and minute, adding
+     * together and combine them back
+     */
     public void calcRealtime(long sysStartTime, long sysCurrTime, long startTime) {
         // startTime = purchase time, enter museum
         // currentTime = System current time but normalised
@@ -175,16 +176,17 @@ public class Time implements Runnable {
     }
 
     /**
-    * Set visitor visit duration
-    */
+     * Set visitor visit duration
+     */
     public void setVisitDuration() {
         int randomDuration = (int) ((Math.random() * (150 - 50)) + 50) * 10;
         this.visitDuration = randomDuration;
     }
 
     /**
-    * Calculate the exit time for the visitor with same method applied on calcRealtime()
-    */
+     * Calculate the exit time for the visitor with same method applied on
+     * calcRealtime()
+     */
     public void setExitTime(long duration, long startTime) {
         long hr1 = (duration / 60);
         long min1 = duration - (hr1 * 60);
@@ -206,8 +208,8 @@ public class Time implements Runnable {
     }
 
     /**
-    * Return visitor exit time
-    */
+     * Return visitor exit time
+     */
     public long getExitTime() {
         return this.exitTime;
     }
@@ -221,7 +223,7 @@ public class Time implements Runnable {
         int starting_hour = 8;
 
         /**
-         * Hours initialised from 8 to 18 to represent the simulation operating hours
+         * Hours initialized from 8 to 18 to represent the simulation operating hours
          * from 0800 until 1800.
          */
         for (int hours = starting_hour; hours <= 18; hours++) {
@@ -235,7 +237,7 @@ public class Time implements Runnable {
             else {
 
                 /**
-                 * Minutes values are initialised from 0 to 9
+                 * Minutes values are initialized from 0 to 9
                  */
                 for (int min = 0; min <= 59; min++) {
                     try {
@@ -244,19 +246,25 @@ public class Time implements Runnable {
                          * If hours is at 9, change museum status to Museum Open
                          */
                         if (hours == 9 && min == 0) {
-                            museum.controller.museumOpen();
+                            Platform.runLater(() -> {
+                                museum.controller.museumOpen();
+                            });
                         }
                         /**
                          * If hours is at 17, change museum status to Ticket Closed
                          */
                         else if (hours == 17 && min == 0) {
-                            museum.controller.ticketClosed();
+                            Platform.runLater(() -> {
+                                museum.controller.ticketClosed();
+                            });
                         }
                         /**
                          * If hours is at 18, change museum status to Museum Closed
                          */
                         else if (hours == 18 && min == 0) {
-                            museum.controller.museumClosed();
+                            Platform.runLater(() -> {
+                                museum.controller.museumClosed();
+                            });
                         }
 
                         /**
@@ -265,6 +273,22 @@ public class Time implements Runnable {
                         Platform.runLater(() -> {
                             museum.controller.setTime(Museum.worldTime.getFormattedCurrentTime());
                         });
+
+                        /**
+                         * Update Museum Status when current visitor is equal to hourly limits.
+                         */
+                        if (museum.controller.getMuseumStatus() == "MUSEUM OPEN"
+                                || museum.controller.getMuseumStatus() == "MUSEUM FULL") {
+                            if (museum.controller.getCurrentVisitor() < museum.controller.getHourlyVisitorLimit()) {
+                                Platform.runLater(() -> {
+                                    museum.controller.museumOpen();
+                                });
+                            } else {
+                                Platform.runLater(() -> {
+                                    museum.controller.museumFull();
+                                });
+                            }
+                        }
 
                         Thread.sleep(500);
                     } catch (InterruptedException e) {
