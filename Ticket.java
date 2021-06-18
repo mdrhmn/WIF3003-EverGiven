@@ -89,13 +89,19 @@ public class Ticket implements Runnable {
                 lock.unlock();
             }
 
+            /**
+             * Check if number of total visitors and queued visitor is within the daily
+             * visitor limit
+             */
             boolean flag = false;
             if (Museum.totalVisitors.getNumber() + museum.controller.getQueuedVisitor() < museum
                     .getDailyVisitorsLimit()) {
 
                 if (currentVisitorsLimit.hasQueuedThreads()
                         || Museum.visitorCount.getNumber() + 1 > museum.getIntCurrentVisitorsLimit()) {
-
+                    /**
+                     * Visitors have to queue for entry
+                     */
                     System.out.println(Museum.worldTime.getFormattedCurrentTime()
                             + " - Current museum capacity is full. " + ticketID + " will have to queue for entry.");
                     Platform.runLater(() -> {
@@ -103,8 +109,12 @@ public class Ticket implements Runnable {
                         museum.controller.queueList(ticketID);
                     });
                 }
-                
             } else {
+                /**
+                 * Total Visitor and Queued Visitor exceed daily visitor limit.
+                 * Change Museum status to "Ticket Closed" 
+                 * Increase rejected purchase
+                 */
                 flag = true;
                 Platform.runLater(() -> {
                     museum.controller.ticketClosed();

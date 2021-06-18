@@ -61,8 +61,10 @@ public class Visitor implements Runnable {
                  */
                 if (Museum.worldTime.getCurrentTime() > museum.getMuseumTicketCloseTime()) {
 
+                    /*
+                     * GUI: Increase rejected purchases counter
+                     */
                     Platform.runLater(() -> {
-                        // museum.controller.ticketClosed();
                         museum.controller.increaseRejectedPurchase();
                     });
 
@@ -77,6 +79,10 @@ public class Visitor implements Runnable {
                      */
                 } else if (Museum.totalTickets.getNumber() + this.getNoOfTickets() > museum.getDailyVisitorsLimit()) {
 
+                    /*
+                     * GUI: Increase rejected purchases counter
+                     * GUI: Change museum status to 'ticket closed'
+                     */
                     Platform.runLater(() -> {
                         museum.controller.increaseRejectedPurchase();
                         museum.controller.ticketClosed();

@@ -31,13 +31,6 @@ public class Turnstile {
                 + ticket.visitor.visitorTime.getVisitDuration() + " minutes; Current visitors count = "
                 + Museum.visitorCount.getNumber());
 
-        // String text = Museum.worldTime.getFormattedCurrentTime() + " - Ticket " +
-        // ticket.getTicketID()
-        // + " entered through Turnstile " + this.turnstileID + ". Staying for "
-        // + ticket.visitor.visitorTime.getVisitDuration() + " minutes; Current visitors
-        // count = "
-        // + Museum.visitorCount.getNumber();
-
         ticket.ticketTime.setExitTime(ticket.visitor.visitorTime.getVisitDuration(),
                 ticket.ticketTime.getLongEntryTime());
         ticket.setEntryStatus(true);

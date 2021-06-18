@@ -85,7 +85,7 @@ public class GUIController implements Initializable {
 
     public int net1, net2, net3, net4, set1, set2, set3, set4, wet1, wet2, wet3, wet4, eet1, eet2, eet3, eet4;
     public int totalVisitor, currentVisitor, queuedVisitor, rejectedPurchases = 0;
-    public int dailyVisitorLimit, hourlyVisitorLimit;
+    public int dailyVisitorLimit=900, hourlyVisitorLimit=100;
     public String museumStatus = "MUSEUM CLOSED";
 
     /**
@@ -94,7 +94,7 @@ public class GUIController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         cb.getItems().addAll("TC1 - Best Case Scenario", "TC2 - Normal Case Scenario", "TC3 - Worst Case Scenario",
-                "TC4 - Exceed Hourly Limit", "TC5 - Exceed Daily Limit");
+                "TC4 - Exceed Hourly Limit", "TC5 - Exceed Ticket Time Purchase");
         statusTxtField.setStyle("-fx-text-fill: red;");
 
         sb.setOnAction(e -> {
@@ -166,7 +166,7 @@ public class GUIController implements Initializable {
                     museumOperation("ExceedHourlyLimit.txt");
                     break;
                 case 5:
-                    museumOperation("ExceedDailyLimit.txt");
+                    museumOperation("ExceedTicketTimePurchase.txt");
                     break;
             }
             sb.setDisable(true);
@@ -218,7 +218,10 @@ public class GUIController implements Initializable {
         statusTxtField.setStyle("-fx-text-fill: yellow;");
     }
 
-    private String getMuseumStatus() {
+    /**
+     * Get Museum Status
+     */
+    public String getMuseumStatus() {
         return museumStatus;
     }
 
@@ -302,23 +305,38 @@ public class GUIController implements Initializable {
         displayQueuedVisitor();
     }
 
+    /**
+     * Increase rejected Purchase counter
+     */
     public void increaseRejectedPurchase() {
         rejectedPurchases++;
         displayRejectedPurchases();
     }
 
-    private int getCurrentVisitor() {
+    /**
+     * Get total current visitor GUI counter value
+     */
+    public int getCurrentVisitor() {
         return currentVisitor;
     }
 
+    /**
+     * Get number of queued visitor GUI counter
+     */
     public int getQueuedVisitor() {
         return queuedVisitor;
     }
 
+    /**
+     * Get number of total visitor visited the museum GUI counter
+     */
     private int getTotalVisitor() {
         return totalVisitor;
     }
 
+    /**
+     * Get number of total rejected purchased GUI counter
+     */
     private int getRejectedPurchases() {
         return rejectedPurchases;
     }
@@ -340,6 +358,10 @@ public class GUIController implements Initializable {
         if (getMuseumStatus().equals("MUSEUM FULL")) {
             museumOpen();
         }
+    }
+
+    public int getHourlyVisitorLimit(){
+        return hourlyVisitorLimit;
     }
 
     /**
@@ -433,7 +455,7 @@ public class GUIController implements Initializable {
     }
 
     /**
-     * To start the opration by getting the test case from text file
+     * To start the operation by getting the test case from text file
      */
     public void museumOperation(String filename) throws InterruptedException, IOException {
         System.out.println("\nRUNNING TEST CASE " + filename + ":");
