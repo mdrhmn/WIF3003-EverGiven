@@ -242,6 +242,8 @@ public class Time implements Runnable {
                 for (int min = 0; min <= 59; min++) {
                     try {
 
+                        boolean flag = true;
+
                         /**
                          * If hours is at 9, change museum status to Museum Open
                          */
@@ -257,6 +259,7 @@ public class Time implements Runnable {
                             Platform.runLater(() -> {
                                 museum.controller.ticketClosed();
                             });
+                            flag = false;
                         }
                         /**
                          * If hours is at 18, change museum status to Museum Closed
@@ -277,16 +280,18 @@ public class Time implements Runnable {
                         /**
                          * Update Museum Status when current visitor is equal to hourly limits.
                          */
-                        if (museum.controller.getMuseumStatus() == "MUSEUM OPEN"
-                                || museum.controller.getMuseumStatus() == "MUSEUM FULL") {
-                            if (museum.controller.getCurrentVisitor() < museum.controller.getHourlyVisitorLimit()) {
-                                Platform.runLater(() -> {
-                                    museum.controller.museumOpen();
-                                });
-                            } else {
-                                Platform.runLater(() -> {
-                                    museum.controller.museumFull();
-                                });
+                        if (flag) {
+                            if (museum.controller.getMuseumStatus() == "MUSEUM OPEN"
+                                    || museum.controller.getMuseumStatus() == "MUSEUM FULL") {
+                                if (museum.controller.getCurrentVisitor() < museum.controller.getHourlyVisitorLimit()) {
+                                    Platform.runLater(() -> {
+                                        museum.controller.museumOpen();
+                                    });
+                                } else {
+                                    Platform.runLater(() -> {
+                                        museum.controller.museumFull();
+                                    });
+                                }
                             }
                         }
 

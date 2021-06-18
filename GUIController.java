@@ -85,7 +85,7 @@ public class GUIController implements Initializable {
 
     public int net1, net2, net3, net4, set1, set2, set3, set4, wet1, wet2, wet3, wet4, eet1, eet2, eet3, eet4;
     public int totalVisitor, currentVisitor, queuedVisitor, rejectedPurchases = 0;
-    public int dailyVisitorLimit=900, hourlyVisitorLimit=100;
+    public int dailyVisitorLimit = 900, hourlyVisitorLimit = 100;
     public String museumStatus = "MUSEUM CLOSED";
 
     /**
@@ -170,6 +170,7 @@ public class GUIController implements Initializable {
                     break;
             }
             sb.setDisable(true);
+            cb.setDisable(true);
         }
     }
 
@@ -215,7 +216,7 @@ public class GUIController implements Initializable {
     public void museumFull() {
         museumStatus = "MUSEUM FULL";
         statusTxtField.setText(museumStatus);
-        statusTxtField.setStyle("-fx-text-fill: yellow;");
+        statusTxtField.setStyle("-fx-text-fill: #553C7B;");
     }
 
     /**
@@ -298,7 +299,7 @@ public class GUIController implements Initializable {
     /**
      * Decrease Queued Visitors counter
      */
-    private void decreaseQueuedVisitor() {
+    public void decreaseQueuedVisitor() {
         if (queuedVisitor > 0) {
             queuedVisitor--;
         }
@@ -351,7 +352,7 @@ public class GUIController implements Initializable {
     }
 
     /**
-     * Method to update QCurrent Visitor counters upon visitor exit
+     * Method to update Current Visitor counters upon visitor exit
      */
     public void visitorExit() {
         decreaseCurrentVisitor();
@@ -360,7 +361,7 @@ public class GUIController implements Initializable {
         }
     }
 
-    public int getHourlyVisitorLimit(){
+    public int getHourlyVisitorLimit() {
         return hourlyVisitorLimit;
     }
 
@@ -471,7 +472,7 @@ public class GUIController implements Initializable {
         // Create Visitors and Museum
         ArrayList<String[]> readList = read.getVisitorList();
 
-        Museum museum = new Museum("Kuching Museum", 100, 900, this);
+        Museum museum = new Museum("UM Museum", 100, 900, this);
         ArrayList<Visitor> visitorList = new ArrayList<>();
 
         for (int i = 0; i < readList.size(); i++) {
@@ -490,6 +491,9 @@ public class GUIController implements Initializable {
             Thread visitorThread = new Thread(visitor);
             visitorThread.start();
         }
+
+        Thread timerThread = new Thread(Museum.worldTime);
+        timerThread.start();
     }
 
 }

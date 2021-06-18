@@ -68,9 +68,10 @@ public class Museum {
         visitorCount = new Counter();
         totalTickets = new Counter();
         totalVisitors = new Counter();
+        
         worldTime = new Time(this);
-        Thread timerThread = new Thread(worldTime);
-        timerThread.start();
+        // Thread timerThread = new Thread(worldTime);
+        // timerThread.start();
 
         this.random = new Random();
         this.controller = controller;

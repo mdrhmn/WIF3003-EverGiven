@@ -14,7 +14,7 @@ public class Main extends Application {
          */
         Parent root = FXMLLoader.load(getClass().getResource("GUI.fxml"));
         Scene scene = new Scene(root);
-        // scene.getStylesheets().add("bootstrap.css");
+        
         /**
          * Prevent user from resizing the window (to avoid glitches)
          */

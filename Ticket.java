@@ -18,6 +18,7 @@ public class Ticket implements Runnable {
     private Condition isOpen = lock.newCondition();
     private Condition isClose = lock.newCondition();
     private Semaphore currentVisitorsLimit;
+    private boolean queued = false;
 
     Time ticketTime;
     Museum museum;
@@ -69,6 +70,7 @@ public class Ticket implements Runnable {
                     Platform.runLater(() -> {
                         museum.controller.increaseQueuedVisitor();
                         museum.controller.queueList(ticketID);
+                        queued = true;
                     });
                 }
 
@@ -93,10 +95,13 @@ public class Ticket implements Runnable {
              * Check if number of total visitors and queued visitor is within the daily
              * visitor limit
              */
-            boolean flag = false;
+            boolean exceedDailyLimit = false;
+
             if (Museum.totalVisitors.getNumber() + museum.controller.getQueuedVisitor() < museum
                     .getDailyVisitorsLimit()) {
-
+                /**
+                 * If number of current visitors exceed hourly visitor limit
+                 */
                 if (currentVisitorsLimit.hasQueuedThreads()
                         || Museum.visitorCount.getNumber() + 1 > museum.getIntCurrentVisitorsLimit()) {
                     /**
@@ -104,26 +109,36 @@ public class Ticket implements Runnable {
                      */
                     System.out.println(Museum.worldTime.getFormattedCurrentTime()
                             + " - Current museum capacity is full. " + ticketID + " will have to queue for entry.");
-                    Platform.runLater(() -> {
-                        museum.controller.increaseQueuedVisitor();
-                        museum.controller.queueList(ticketID);
-                    });
+                    System.out.println("QUEUED: " + currentVisitorsLimit);
+
+                    /**
+                     * Check if number of total visitors and queued visitor is within the daily
+                     * visitor limit
+                     */
+                    if (!queued) {
+                        Platform.runLater(() -> {
+                            museum.controller.increaseQueuedVisitor();
+                            museum.controller.queueList(ticketID);
+                        });
+                    }
                 }
             } else {
                 /**
-                 * Total Visitor and Queued Visitor exceed daily visitor limit.
-                 * Change Museum status to "Ticket Closed" 
-                 * Increase rejected purchase
+                 * Total Visitor and Queued Visitor exceed daily visitor limit. Change Museum
+                 * status to "Ticket Closed" Increase rejected purchase
                  */
-                flag = true;
+                exceedDailyLimit = true;
                 Platform.runLater(() -> {
                     museum.controller.ticketClosed();
                     museum.controller.increaseRejectedPurchase();
                 });
             }
 
-            if (!flag) {
+            if (!exceedDailyLimit) {
                 currentVisitorsLimit.acquire();
+                currentVisitorsLimit.availablePermits();
+                System.out.println("ACQUIRED: " + currentVisitorsLimit);
+
                 visitor.visitorTime.entryTime();
                 this.ticketTime.entryTime();
                 museum.enterMuseum(this);
