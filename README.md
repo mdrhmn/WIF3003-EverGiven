@@ -45,3 +45,7 @@ assigned to the visitor when the visitor is entering the museum.
 ## Tasks
 
 Form a group of 4-5 members (not confined to your tutorial group) to develop the program. Use an online collaboration tool (Github, Trello, etc.) for collaborative development. Assessments will be done in Weeks 9 (Phase 1) and 14 (Phase 2). Each member’s responsibility and contribution must be reported.
+
+## GUI Design
+
+https://imgur.com/fEMSkZ6
