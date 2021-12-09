@@ -2,7 +2,7 @@
 
 ## Introduction
 
-This is the repository for our team (Ever Givem)'s submission for WIF3003 Group Project for Semester 2, 2020/2021 session. The purpose of this assignment is to assess the students’ ability to apply adequate programming skills and use appropriate constructs in the Java language to solve a concurrent problem.
+This is the repository for our team (Ever Given)'s submission for WIF3003 Group Project for Semester 2, 2020/2021 session. The purpose of this assignment is to assess the students’ ability to apply adequate programming skills and use appropriate constructs in the Java language to solve a concurrent problem.
 
 Team Members:
 1. **Muhammad Rahiman bin Abdulmanab**
