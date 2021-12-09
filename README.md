@@ -1,4 +1,4 @@
-# WIF3003 Group Project: Museum During Pandemic
+# WIF3003 Assignment: Museum During Pandemic
 
 ## Introduction
 
